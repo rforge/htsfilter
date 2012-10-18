@@ -5,7 +5,7 @@ Version: 0.1.0
 Date: 2012-10-16
 Author: Andrea Rau, Melina Gallopin, Gilles Celeux, and Florence Jaffrezic
 Maintainer: Andrea Rau <andrea.rau@jouy.inra.fr>
-Depends: R (>= 2.15.0), methods, Biobase (>= 2.16.0), edgeR (>= 2.6.10), DESeq (>= 1.8.3), EDASeq 
+Depends: methods, Biobase (>= 2.16.0), edgeR (>= 2.6.10), DESeq (>= 1.8.3), EDASeq 
 Suggests: pasilla
 Description: This package implements a filtering procedure for replicated high-throughput sequencing data based on a global Jaccard similarity index in order to identify genes with low, constant levels of expression across one or more experimental conditions.
 License: Artistic-2.0

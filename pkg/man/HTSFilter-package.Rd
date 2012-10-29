@@ -15,7 +15,7 @@ more experimental conditions.
 Package: \tab HTSFilter\cr
 Type: \tab Package\cr
 Version: \tab 0.1.0\cr
-Date: \tab 2012-10-16\cr
+Date: \tab 2012-10-29\cr
 License: \tab Artistic-2.0\cr
 }
 }
@@ -43,33 +43,21 @@ for replicated high-throughput sequencing experiments. (Manuscript in progress).
 \examples{
 
 library(HTSFilter)
-library(pasilla)
-data("pasillaGenes")
-
+data("sultan")
 
 ## Matrix
-dat <- counts(pasillaGenes)
-conds <- pData(pasillaGenes)$condition
+dat <- exprs(sultan)
+conds <- pData(sultan)$cell.line
 \dontrun{Jacc <- HTSFilter(dat, conds)}
 \dontrun{dat <- Jacc$filteredData  ## Matrix}
 
-
-## Count Data Set (DESeq)
-cds <- pasillaGenes
-\dontrun{Jacc <- HTSFilter(cds, conds = pData(cds)$condition)}
-\dontrun{cds <- Jacc$filteredData  ## S4 class CountDataSet}
-
-
 ## DGEList (edgeR)
-dge <- DGEList(counts=counts(pasillaGenes), group=pData(pasillaGenes)$condition)
+dge <- DGEList(counts=dat, group=conds)
 \dontrun{Jacc <- HTSFilter(dge)}
 \dontrun{dge <- Jacc$filteredData  ## S3 class DGEList}
 
-
-## SeqExpressionSet (EDASeq)
-ses <- newSeqExpressionSet(counts(pasillaGenes), phenoData = phenoData(pasillaGenes))
-\dontrun{Jacc <- HTSFilter(ses, conds = pData(ses)$condition, s.len = 25)}
-\dontrun{ses <- Jacc$filteredData  ## S4 class SeqExpressionSet}
-
+## Count Data Set (DESeq)
+\dontrun{Jacc <- HTSFilter(dat, conds}
+\dontrun{cds <- newCountDataSet(Jacc$filteredData, conds)  ## S4 class CountDataSet}
 
 }

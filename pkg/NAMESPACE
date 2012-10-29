@@ -2,18 +2,18 @@ import(methods)
 import(Biobase)
 
 ## import classes
-importClassesFrom(DESeq, CountDataSet)
-importClassesFrom(EDASeq, SeqExpressionSet)
+## importClassesFrom(DESeq, CountDataSet)
+## importClassesFrom(EDASeq, SeqExpressionSet)
 importClassesFrom(edgeR, DGEList)
 
 ## import S4 methods
-importMethodsFrom(DESeq, counts, conditions)
-importMethodsFrom(EDASeq, exprs)
+## importMethodsFrom(DESeq, counts, conditions)
+## importMethodsFrom(EDASeq, exprs)
 
 ## import methods
 importFrom(edgeR, calcNormFactors, DGEList)
-importFrom(DESeq, estimateSizeFactorsForMatrix, newCountDataSet)
-importFrom(EDASeq, newSeqExpressionSet)
+## importFrom(DESeq, estimateSizeFactorsForMatrix, newCountDataSet)
+## importFrom(EDASeq, newSeqExpressionSet)
 
 ## export methods
 exportMethods(HTSFilter)

@@ -25,25 +25,23 @@ of replicates within each experimental condition.
      loess.span=0.3, normalization=c("TMM", "DESeq", "none"), 
      plot=TRUE, plot.name=NA)
 
-\S4method{HTSFilter}{DGEList}(x, s.min=1, s.max=200, s.len=100, 
-     loess.span=0.3, normalization=c("TMM", "DESeq", "none"), 
-     plot=TRUE, plot.name=NA)
-
-\S4method{HTSFilter}{SeqExpressionSet}(x, conds=NA, s.min=1, s.max=200, s.len=100, 
-     loess.span=0.3, normalization=c("TMM", "DESeq", "none"), 
-     plot=TRUE, plot.name=NA)
-
-
+%\S4method{HTSFilter}{DGEList}(x, s.min=1, s.max=200, s.len=100, 
+%     loess.span=0.3, normalization=c("TMM", "DESeq", "none"), 
+%     plot=TRUE, plot.name=NA)
+%
+%\S4method{HTSFilter}{SeqExpressionSet}(x, conds=NA, s.min=1, s.max=200, s.len=100, 
+%     loess.span=0.3, normalization=c("TMM", "DESeq", "none"), 
+%     plot=TRUE, plot.name=NA)
+%
 }
 
 \arguments{
   \item{x}{
-A numeric matrix representing the counts of dimension (\emph{g} x \emph{n}), for \emph{g} genes in \emph{n} samples;
-a \code{\linkS4class{CountDataSet}} object; a \code{DGEList} object; or a \code{\linkS4class{SeqExpressionSet}} object.
+A numeric matrix representing the counts of dimension (\emph{g} x \emph{n}), for \emph{g} genes in \emph{n} samples, or a \code{DGEList} object.
 }
   \item{conds}{
 Vector of length \emph{n} identifying the experimental condition of each of the \emph{n} samples; required when sQuote(x)
-is a numeric matrix, and optionally for \code{\linkS4class{CountDataSet}} and \code{\linkS4class{SeqExpressionSet}}.
+is a numeric matrix.
 }
   \item{s.min}{
 Minimum value of filtering threshold to be considered, with default value equal to 1
@@ -94,9 +92,7 @@ quantities, we may calculate the Jaccard similarity index between the two vector
 
 \value{
 \item{filteredData }{An object of the same class as \code{x} containing the data that passed the filter.
-When \code{x} is a \code{\linkS4class{CountDataSet}} object, the filtered data are contained in the \code{countData}
-slot; when \code{x} is a \code{DGEList} object, the filtered data are contained in the \code{counts} slot; 
-when \code{x} is a \code{\linkS4class{SeqExpressionSet}} object, the filtered data are contained in the \code{exprs} slot.}
+When code{x} is a \code{DGEList} object, the filtered data are contained in the \code{counts} slot.}
 %
 \item{on }{A binary vector of length \emph{g}, where 1 indicates a gene with normalized expression
 greater than the optimal filtering threshold \code{s.optimal} in at least one sample (irrespective of 
@@ -139,33 +135,22 @@ Filter should only be calculated on REPLICATED high-throughput sequencing data.
 \examples{
 
 library(HTSFilter)
-library(pasilla)
-data("pasillaGenes")
-
+data("sultan")
 
 ## Matrix
-dat <- counts(pasillaGenes)
-conds <- pData(pasillaGenes)$condition
+dat <- exprs(sultan)
+conds <- pData(sultan)$cell.line
 \dontrun{Jacc <- HTSFilter(dat, conds)}
 \dontrun{dat <- Jacc$filteredData  ## Matrix}
 
-
-## Count Data Set (DESeq)
-cds <- pasillaGenes
-\dontrun{Jacc <- HTSFilter(cds, conds = pData(cds)$condition)}
-\dontrun{cds <- Jacc$filteredData  ## S4 class CountDataSet}
-
-
 ## DGEList (edgeR)
-dge <- DGEList(counts=counts(pasillaGenes), group=pData(pasillaGenes)$condition)
+dge <- DGEList(counts=dat, group=conds)
 \dontrun{Jacc <- HTSFilter(dge)}
 \dontrun{dge <- Jacc$filteredData  ## S3 class DGEList}
 
-
-## SeqExpressionSet (EDASeq)
-ses <- newSeqExpressionSet(counts(pasillaGenes), phenoData = phenoData(pasillaGenes))
-\dontrun{Jacc <- HTSFilter(ses, conds = pData(ses)$condition, s.len = 25)}
-\dontrun{ses <- Jacc$filteredData  ## S4 class SeqExpressionSet}
+## Count Data Set (DESeq)
+\dontrun{Jacc <- HTSFilter(dat, conds}
+\dontrun{cds <- newCountDataSet(Jacc$filteredData, conds)  ## S4 class CountDataSet}
 
 }
 \keyword{ methods }

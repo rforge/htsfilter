@@ -135,6 +135,7 @@ Filter should only be calculated on REPLICATED high-throughput sequencing data.
 \examples{
 
 library(HTSFilter)
+library(Biobase)
 data("sultan")
 
 ## Matrix

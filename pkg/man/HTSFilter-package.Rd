@@ -43,6 +43,7 @@ for replicated high-throughput sequencing experiments. (Manuscript in progress).
 \examples{
 
 library(HTSFilter)
+library(Biobase)
 data("sultan")
 
 ## Matrix

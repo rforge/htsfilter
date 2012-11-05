@@ -76,6 +76,7 @@ To begin, we load the \Rpackage{HTSFilter} package, and attach the gene-level co
 
 <<loadingPackages>>=
 library(HTSFilter)
+library(Biobase)
 data("sultan")
 pData(sultan)
 dim(sultan)

@@ -1,5 +1,5 @@
 import(methods)
-import(Biobase)
+## import(Biobase)
 
 ## import classes
 ## importClassesFrom(DESeq, CountDataSet)

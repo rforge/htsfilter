@@ -4,7 +4,7 @@
 		.Platform$GUI=="Rgui") {
 
 		winMenuAddItem("Vignettes", "HTSFilter",
-		"shell.exec(system.file(\"doc\",\"HTSFilter_vignette.pdf\", package=\"HTSFilter\"))")
+		"shell.exec(system.file(\"doc\",\"HTSFilter.pdf\", package=\"HTSFilter\"))")
 
 	}
 }

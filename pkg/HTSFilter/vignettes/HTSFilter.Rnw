@@ -102,7 +102,7 @@ dim(filter$removedData)
 
 \begin{figure}[t!]
 \centering
-\includegraphics[width = .65\textwidth]{HTSFilter_vignette-matrix.png}
+\includegraphics[width = .65\textwidth]{HTSFilter-matrix.png}
 \caption{Global Jaccard index for the \Robject{sultan} data calculated for a variety of threshold values after TMM normalization \cite{Robinson2010}, with a loess curve (blue line) superposed and data-based threshold values (red cross and red dotted line) equal to 11.764.\label{fig1}}
 \end{figure}
 
@@ -127,7 +127,7 @@ class(cds)
 
 \begin{figure}[t!]
 \centering
-\includegraphics[width = .65\textwidth]{HTSFilter_vignette-cds.png}
+\includegraphics[width = .65\textwidth]{HTSFilter-cds.png}
 \caption{Global Jaccard index for the \Robject{sultan} data calculated for a variety of threshold values after DESeq normalization \cite{Anders2010}, with a loess curve (blue line) superposed and data-based threshold values (red cross and red dotted line) equal to 10.429.\label{fig2}}
 \end{figure}
 
@@ -186,7 +186,7 @@ Note that the filtered data are of the same class as the original data, \Rclass{
 %
 %\begin{figure}[t!]
 %\centering
-%\includegraphics[width = .65\textwidth]{HTSFilter_vignette-sesfig.png}
+%\includegraphics[width = .65\textwidth]{HTSFilter-sesfig.png}
 %\caption{Mean-variance relationship across all seven samples of the \Robject{pasillaGenes} data after data filtering, where the black line corresponds to the Poisson distribution (equal mean and variance) and the red curve is a loess fit. Plot obtained using the \Rfunction{meanVarPlot} function in the \Rpackage{EDASeq} package.\label{fig3}}
 %\end{figure}
 %

@@ -2,6 +2,13 @@
                 RELEASE HISTORY OF HTSFilter PACKAGE
              ========================================
 
+
+		CHANGES in HTSFilter VERSION 0.1.1
+
+-- Some additional documentation about the HTSFilter output
+-- Small changes to vignette
+-- Add HTSFilter method for signature "data.frame"
+
 		CHANGES in HTSFilter VERSION 0.1.0
 
 This is the first release (29 October 2012).

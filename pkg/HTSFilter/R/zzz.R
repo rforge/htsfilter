@@ -1,9 +1,10 @@
-## Register vignette with Windows GUI
-.onAttach <- function(libname, pkgname) {
-	if (.Platform$OS.type == "windows" && 
-		require("Biobase") && interaction() && 
-		.Platform$GUI == "Rgui") {
-		
-		addVigs2WinMenu("HTSFilter")
+.onAttach <- function(libname, pkgname)
+{
+	if(.Platform$OS.type=="windows" && 
+		.Platform$GUI=="Rgui") {
+
+		winMenuAddItem("Vignettes", "HTSFilter",
+		"shell.exec(system.file(\"doc\",\"HTSFilter_vignette.pdf\", package=\"HTSFilter\"))")
+
 	}
 }

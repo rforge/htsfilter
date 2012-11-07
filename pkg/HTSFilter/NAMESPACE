@@ -17,4 +17,3 @@ importFrom(edgeR, calcNormFactors, DGEList)
 
 ## export methods
 exportMethods(HTSFilter)
-

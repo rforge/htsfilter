@@ -36,7 +36,7 @@
 \title{HTSFilter: Independent data-based filtering for replicated high-throughput sequencing experiments
 }
 \author{Andrea Rau, M{\'e}lina Gallopin, Gilles Celeux, Florence Jaffr{\'e}zic}
-\date{Modified: October 29, 2012.   Compiled: \today}
+\date{Modified: November 7, 2012.   Compiled: \today}
 \maketitle
 
 <<echo=FALSE>>=
@@ -72,7 +72,7 @@ The \Rpackage{HTSFilter} package is able to accommodate unnormalized or normaliz
 
 For the purposes of this vignette, we make use of data from a study of sex-specific expression of liver cells in human. Sultan et al. \cite{Sultan2008} obtained a high-throughput sequencing data (using a 1G Illumina Genome Analyzer sequencing machine) from a human embryonic kidney and a B cell line, with two biological replicates each. The raw read counts and phenotype tables were obtained from the ReCount online resource \cite{Frazee2011}.
 
-To begin, we load the \Rpackage{HTSFilter} package, and attach the gene-level count data contained in \Robject{sultan}:
+To begin, we load the \Rpackage{HTSFilter} and \Rpackage{Biobase} packages, and attach the gene-level count data contained in \Robject{sultan}:
 
 <<loadingPackages>>=
 library(HTSFilter)
@@ -86,10 +86,10 @@ The unfiltered data contain 9010 genes in four samples.
 
 
 %--------------------------------------------------
-\section{Matrix class} \label{sec:matrix}
+\section{Matrix and data.frame classs} \label{sec:matrix}
 %--------------------------------------------------
 
-To filter high-throughput sequencing data in the form of a matrix, we first access the expression data, contained in \Robject{exprs(sultan)}, and create a vector identifying the condition labels for each of the samples via the \Rcode{pData} Biobase function. We then filter the data using the \Rfunction{HTSFilter} function, specifying that the number of tested thresholds be only 25 (\Rcode{s.len=25}) rather than the default value of 100 to reduce computation time for this example. Note that as it is unspecified, the default normalization method is used for filtering the data, namely the Trimmed Mean of M-values (TMM) method of Robinson and Oshlack. To use the DESeq normalization method \cite{Anders2010}, \Rcode{normalization="DESeq"} may be specified.
+To filter high-throughput sequencing data in the form of a matrix or data.frame, we first access the expression data, contained in \Robject{exprs(sultan)}, and create a vector identifying the condition labels for each of the samples via the \Rcode{pData} Biobase function. We then filter the data using the \Rfunction{HTSFilter} function, specifying that the number of tested thresholds be only 25 (\Rcode{s.len=25}) rather than the default value of 100 to reduce computation time for this example. Note that as it is unspecified, the default normalization method is used for filtering the data, namely the Trimmed Mean of M-values (TMM) method of Robinson and Oshlack. To use the DESeq normalization method \cite{Anders2010}, \Rcode{normalization="DESeq"} may be specified.
 
 <<matrix, fig=TRUE, include=FALSE>>=
 mat <- exprs(sultan)
@@ -197,7 +197,7 @@ Note that the filtered data are of the same class as the original data, \Rclass{
 
 \section{Alternative normalization using \Rpackage{EDAseq}} \label{sec:EDAseqnorm}
 
-As a final example, we illustrate the use of the \Rpackage{HTSFilter} package with an alternative normalization strategy, namely the full quantile normalization method in the \Rpackage{EDASeq} package; such a step may useful when the TMM or DESeq normalization methods are not appropriate for a given dataset. Once again, we create a new object of the appropriate class with the function \Rfunction{newSeqExpressionSet} and normalize data using the \Rfunction{betweenLaneNormalization} function (with \Rcode{which="full"}) in \Rpackage{EDASeq}.
+As a final example, we illustrate the use of the \Rpackage{HTSFilter} package with an alternative normalization strategy, namely the full quantile normalization method in the \Rpackage{EDASeq} package; such a step may be useful when the TMM or DESeq normalization methods are not appropriate for a given dataset. Once again, we create a new object of the appropriate class with the function \Rfunction{newSeqExpressionSet} and normalize data using the \Rfunction{betweenLaneNormalization} function (with \Rcode{which="full"}) in \Rpackage{EDASeq}.
 
 <<ses2, eval=FALSE>>=
 library(EDASeq)

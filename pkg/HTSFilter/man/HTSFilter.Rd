@@ -3,9 +3,8 @@
 \alias{HTSFilter}
 \alias{HTSFilter-methods}
 \alias{HTSFilter,matrix-method}
-\alias{HTSFilter,CountDataSet-method}
+\alias{HTSFilter,data.frame-method}
 \alias{HTSFilter,DGEList-method}
-\alias{HTSFilter,SeqExpressionSet-method}
 \title{
 Calculate data-based filtering threshold for replicated high-throughput sequencing data.
 }
@@ -16,24 +15,18 @@ of replicates within each experimental condition.
 }
 
 \usage{
+\S4method{HTSFilter}{matrix}(x, conds, s.min=1, s.max=200, s.len=100, 
+     loess.span=0.3, normalization=c("TMM", "DESeq", "none"), 
+     plot=TRUE, plot.name=NA)
 
 \S4method{HTSFilter}{data.frame}(x, conds, s.min=1, s.max=200, s.len=100, 
      loess.span=0.3, normalization=c("TMM", "DESeq", "none"), 
      plot=TRUE, plot.name=NA)
 
-\S4method{HTSFilter}{matrix}(x, conds, s.min=1, s.max=200, s.len=100, 
-     loess.span=0.3, normalization=c("TMM", "DESeq", "none"), 
-     plot=TRUE, plot.name=NA)
-
-%\S4method{HTSFilter}{CountDataSet}(x, conds=NA, s.min=1, s.max=200, s.len=100, 
-%     loess.span=0.3, normalization=c("TMM", "DESeq", "none"), 
-%     plot=TRUE, plot.name=NA)
-
 \S4method{HTSFilter}{DGEList}(x, s.min=1, s.max=200, s.len=100, 
      loess.span=0.3, normalization=c("TMM", "DESeq", "none"), 
      plot=TRUE, plot.name=NA)
-
-%\S4method{HTSFilter}{SeqExpressionSet}(x, conds=NA, s.min=1, s.max=200, s.len=100, 
+%\S4method{HTSFilter}{CountDataSet}(x, conds=NA, s.min=1, s.max=200, s.len=100, 
 %     loess.span=0.3, normalization=c("TMM", "DESeq", "none"), 
 %     plot=TRUE, plot.name=NA)
 }

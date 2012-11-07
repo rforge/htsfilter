@@ -17,27 +17,30 @@ of replicates within each experimental condition.
 
 \usage{
 
+\S4method{HTSFilter}{data.frame}(x, conds, s.min=1, s.max=200, s.len=100, 
+     loess.span=0.3, normalization=c("TMM", "DESeq", "none"), 
+     plot=TRUE, plot.name=NA)
+
 \S4method{HTSFilter}{matrix}(x, conds, s.min=1, s.max=200, s.len=100, 
      loess.span=0.3, normalization=c("TMM", "DESeq", "none"), 
      plot=TRUE, plot.name=NA)
 
-\S4method{HTSFilter}{CountDataSet}(x, conds=NA, s.min=1, s.max=200, s.len=100, 
+%\S4method{HTSFilter}{CountDataSet}(x, conds=NA, s.min=1, s.max=200, s.len=100, 
+%     loess.span=0.3, normalization=c("TMM", "DESeq", "none"), 
+%     plot=TRUE, plot.name=NA)
+
+\S4method{HTSFilter}{DGEList}(x, s.min=1, s.max=200, s.len=100, 
      loess.span=0.3, normalization=c("TMM", "DESeq", "none"), 
      plot=TRUE, plot.name=NA)
 
-%\S4method{HTSFilter}{DGEList}(x, s.min=1, s.max=200, s.len=100, 
-%     loess.span=0.3, normalization=c("TMM", "DESeq", "none"), 
-%     plot=TRUE, plot.name=NA)
-%
 %\S4method{HTSFilter}{SeqExpressionSet}(x, conds=NA, s.min=1, s.max=200, s.len=100, 
 %     loess.span=0.3, normalization=c("TMM", "DESeq", "none"), 
 %     plot=TRUE, plot.name=NA)
-%
 }
 
 \arguments{
   \item{x}{
-A numeric matrix representing the counts of dimension (\emph{g} x \emph{n}), for \emph{g} genes in \emph{n} samples, or a \code{DGEList} object.
+A numeric matrix or data.frame representing the counts of dimension (\emph{g} x \emph{n}), for \emph{g} genes in \emph{n} samples, or a \code{DGEList} object.
 }
   \item{conds}{
 Vector of length \emph{n} identifying the experimental condition of each of the \emph{n} samples; required when sQuote(x)
@@ -102,7 +105,9 @@ filtering threshold in all samples}
 \item{s }{The optimal filtering threshold as identified by the global similarity index}
 %
 \item{indexValues }{A matrix of dimension (\code{s.len} x 2) giving the tested filtering thersholds and the
-corresponding global similarity indices}
+corresponding global similarity indices. Note that the threshold values are equally spaced on the \emph{log}
+scale, and thus unequally space on the count scale (i.e., we test more threshold values at very low levels
+of expression, and fewer at very high levels of expression).}
 %
 \item{normFactor }{A vector of length \emph{n} giving the estimated library sizes estimated by the
 normalization method specified in \code{normalization}}

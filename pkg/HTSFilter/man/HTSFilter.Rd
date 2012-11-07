@@ -99,7 +99,7 @@ filtering threshold in all samples}
 %
 \item{indexValues }{A matrix of dimension (\code{s.len} x 2) giving the tested filtering thersholds and the
 corresponding global similarity indices. Note that the threshold values are equally spaced on the \emph{log}
-scale, and thus unequally space on the count scale (i.e., we test more threshold values at very low levels
+scale, and thus unequally spaced on the count scale (i.e., we test more threshold values at very low levels
 of expression, and fewer at very high levels of expression).}
 %
 \item{normFactor }{A vector of length \emph{n} giving the estimated library sizes estimated by the

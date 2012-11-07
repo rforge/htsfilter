@@ -2,12 +2,13 @@
                 RELEASE HISTORY OF HTSFilter PACKAGE
              ========================================
 
-
 		CHANGES in HTSFilter VERSION 0.1.1
 
 -- Some additional documentation about the HTSFilter output
--- Small changes to vignette
--- Add HTSFilter method for signature "data.frame"
+-- Small changes to vignette: typos, name changed to HTSFilter.pdf to 
+   allow calls to vignette("HTSFilter"), added .onAttach function to
+   zzz.R to add HTSFilter vignette to Windows toolbar.
+-- Added HTSFilter method for signature "data.frame"
 
 		CHANGES in HTSFilter VERSION 0.1.0
 

@@ -25,6 +25,32 @@ setMethod(
 	}
 )
 
+## data.frame
+setMethod(
+	f= "HTSFilter",
+	signature = signature(x="data.frame"),
+	definition = function(x, conds, s.min=1, s.max=200, s.len=100, 
+		loess.span=0.3, normalization=c("TMM", "DESeq", "none"), 
+		plot=TRUE, plot.name=NA) 
+
+	{
+		normalization <- match.arg(normalization)
+		data <- as.matrix(x)
+
+		## Run filter
+		filter <- .HTSFilterBackground(data=data, conds=conds, s.min=s.min,
+			s.max=s.max, s.len=s.len, loess.span=loess.span,
+			normalization=normalization, plot=plot, plot.name=plot.name)
+
+		## Return various results
+		filter.results <- list(filteredData =  filter$data.filter,
+			on = filter$on, s = filter$s.optimal,
+			indexValues = filter$index.values, normFactor = filter$norm.factor,
+			removedData = data[which(filter$on == 0),])
+
+		return(filter.results)
+	}
+)
 
 ## DGElist
 setMethod(

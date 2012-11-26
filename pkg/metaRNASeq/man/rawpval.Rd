@@ -2,10 +2,11 @@
 \alias{rawpval}
 \docType{data}
 \title{
-%%   ~~ data name/kind ... ~~
+Simulated p-values
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of the dataset. ~~
+The p-values provided here result from the following procedure:
+ 1) simulation of two RNA-seq experiments with four replicates in each condition via the \code{\link{sim.function}}, 2) analysis of differentially expressed tags using the DESeq package.
 }
 \usage{data(rawpval)}
 \format{
@@ -15,13 +16,10 @@ List of 2
  $ : num [1:14456] 4.42e-01 3.85e-01 4.89e-01 1.80e-71 6.99e-01 ...
 }
 \details{
-%%  ~~ If necessary, more details than the __description__ above ~~
-}
-\source{
-%%  ~~ reference to a publication or URL from which the data were obtained ~~
+It is possible to reproduce these p-values using the procedure described in the package vignette.
 }
 \references{
-%%  ~~ possibly secondary sources and usages ~~
+A. Rau, G. Marot and F. Jaffrezic (2012). Differential meta-analysis of RNA-seq data. (Manuscript in progress)
 }
 \examples{
 data(rawpval)

@@ -16,19 +16,19 @@ Package: \tab metaRNASeq\cr
 Type: \tab Package\cr
 Version: \tab 1.0\cr
 Date: \tab 2012-11-19\cr
-License: \tab What license is it under?\cr
+License: \tab GPL \cr
 }
 ~~ An overview of how to use the package, including the most important ~~
 ~~ functions ~~
 }
 \author{
-Who wrote it
+Andrea Rau, Guillemette Marot, Florence Jaffrezic 
 
-Maintainer: Who to complain to <yourfault@somewhere.net>
-~~ The author and/or maintainer of the package ~~
+Maintainer: Guillemette Marot <guillemette.marot@inria.fr>
+
 }
 \references{
-~~ Literature or other references for background information ~~
+A. Rau, G. Marot and F. Jaffrezic (2012). Differential meta-analysis of RNA-seq data. (Manuscript in progress)
 }
 ~~ Optionally other standard keywords, one per line, from file KEYWORDS in ~~
 ~~ the R documentation directory ~~

@@ -2,98 +2,56 @@
 \alias{sim.function}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-%%  ~~function to do ... ~~
+Simulation of multiple RNA-seq experiments
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+Simulates several RNA-seq experiments 
 }
 \usage{
 sim.function(param, dispFuncs, nrep = 4, classes = NULL, inter.sd = 0.3)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{param}{
-%%     ~~Describe \code{param} here~~
+  \item{param}{ Mean expression levels:  \code{param} must be a data frame containing at least two columns named "mucond1" and "mucond2" and one row per tag.
 }
   \item{dispFuncs}{
-%%     ~~Describe \code{dispFuncs} here~~
+Dispersion functions which link mean and intra-study variability. 
 }
   \item{nrep}{
-%%     ~~Describe \code{nrep} here~~
+Number of replicates to be simulated in each condition in each study. Ignored if \code{classes} is filled.
 }
   \item{classes}{
-%%     ~~Describe \code{classes} here~~
+List of class memberships, one per study (maximum 20 studies). Each vector or factor of the list can only contain two levels which correspond to the two conditions studied. If NULL, \code{classes} is built as a list of two vectors with \code{nrep} labels 1 (for condition 1) and \code{nrep} labels 2 (for condition 2).
 }
   \item{inter.sd}{
-%%     ~~Describe \code{inter.sd} here~~
+Inter-study variability. By default, \code{inter.sd} is set to 0.3, which corresponds to a medium inter-study variability in the case where \code{\link{param}} and \code{\link{dispFuncs}} parameters are used to simulate data.
 }
-}
-\details{
-%%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+A matrix with simulated expression levels, one row per tag and one column per replicate. Names of studies are given in the colnames of the matrix. 
+}
+\details{
+Details about the simulation procedure are given in the following paper: 
 }
 \references{
-%% ~put references to the literature/web site here ~
-}
-\author{
-%%  ~~who you are~~
+A. Rau, G. Marot and F. Jaffrezic (2012). Differential meta-analysis of RNA-seq data. (Manuscript in progress)
 }
 \note{
-%%  ~~further notes~~
+To be pertinent, one should check that DE tags have the same value of means in \code{param} if the \code{\link{param}} data provided in this package are not used to simulate data.    
 }
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link{metaRNASeq}}
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
+##load simulation parameters
+data(param)
+data(dispFuncs)
 
-## The function is currently defined as
-function (param, dispFuncs, nrep = 4, classes = NULL, inter.sd = 0.3) 
-{
-    if (is.null(classes)) {
-        classes = list(c(rep(1, nrep), rep(2, nrep)), c(rep(1, 
-            nrep), rep(2, nrep)))
-    }
-    sim.means = param[, c("mucond1", "mucond2")]
-    vecstudies <- unlist(lapply(1:length(classes), FUN = function(x) rep(x, 
-        length(classes[[x]]))))
-    vecstudies12 <- vecstudies
-    vecstudies12[which(vecstudies \%in\% seq(1, 19, by = 2))] = 1
-    vecstudies12[which(vecstudies \%in\% seq(2, 20, by = 2))] = 2
-    varinter <- vector("list", length(classes))
-    varinter <- lapply(varinter, function(x) matrix(rnorm(dim(param)[1] * 
-        2, mean = 0, sd = inter.sd), ncol = 2))
-    for (i in 1:length(varinter)) {
-        varinter[[i]][which(param$DE == FALSE), ] <- cbind(varinter[[i]][which(param$DE == 
-            FALSE), 1], varinter[[i]][which(param$DE == FALSE), 
-            1])
-    }
-    calc.size1 <- function(mean) 1/(dispFuncs[[1]][1] + dispFuncs[[1]][2]/mean)
-    calc.size2 <- function(mean) 1/(dispFuncs[[2]][1] + dispFuncs[[2]][2]/mean)
-    matsim <- mapply(function(condition, study) {
-        mean <- sim.means[, condition] * exp(varinter[[study]][, 
-            condition])
-        size <- get(paste("calc.size", study, sep = ""))(rowMeans(sim.means))
-        size <- ifelse(mean > 10, size, 1e+11)
-        rnbinom(dim(param)[1], mu = mean, size = size)
-    }, unlist(classes), vecstudies12)
-    colnames(matsim) = paste("study", vecstudies, "cond", unlist(classes), 
-        sep = "")
-    matsim
-  }
+##simulate data
+matsim <- sim.function(param = param, dispFuncs = dispFuncs)
+sim.conds <- colnames(matsim)
+rownames(matsim) <-paste("tag", 1:dim(matsim)[1],sep="")
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{ methods }
+% __ONLY ONE__ keyword per line

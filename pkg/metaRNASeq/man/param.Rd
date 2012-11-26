@@ -2,22 +2,22 @@
 \alias{param}
 \docType{data}
 \title{
-%%   ~~ data name/kind ... ~~
+Mean simulation parameters
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of the dataset. ~~
+Mean simulation parameters obtained from the analysis of a real dataset
 }
 \usage{data(param)}
 \format{
   A data frame with 26408 observations on the following 3 variables.
   \describe{
-    \item{\code{mucond1}}{a numeric vector}
-    \item{\code{mucond2}}{a numeric vector}
-    \item{\code{DE}}{a logical vector}
+    \item{\code{mucond1}}{a numeric vector with mean parameters for condition 1}
+    \item{\code{mucond2}}{a numeric vector with mean parameters for condition 2}
+    \item{\code{DE}}{a logical vector indicating which tags are differentially expressed (value 1)}
   }
 }
 \details{
-%%  ~~ If necessary, more details than the __description__ above ~~
+Mean parameters provided in this package are empirical means obtained after normalization for library size differences of real data described in the following references.
 }
 \source{
 %%  ~~ reference to a publication or URL from which the data were obtained ~~

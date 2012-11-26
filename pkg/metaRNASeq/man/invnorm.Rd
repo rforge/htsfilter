@@ -2,10 +2,10 @@
 \alias{invnorm}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-%%  ~~function to do ... ~~
+p-value combination using the inverse normal method
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+Combines one sided p-values using the inverse normal method.
 }
 \usage{
 invnorm(pvalonesided, nrep, BHth = 0.05)
@@ -13,68 +13,44 @@ invnorm(pvalonesided, nrep, BHth = 0.05)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{pvalonesided}{
-%%     ~~Describe \code{pvalonesided} here~~
+List of vectors of one sided p-values to be combined.
 }
   \item{nrep}{
-%%     ~~Describe \code{nrep} here~~
+Vector of numbers of replicates used in each study to calculate the previous one-sided p-values. 
 }
   \item{BHth}{
-%%     ~~Describe \code{BHth} here~~
+Benjamini Hochberg threshold. By default, the False Discovery Rate is controlled at 5\%.
 }
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+%%  Mettre une formule?
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+\item{DEindices }{Indices of differentially expressed genes at the chosen Benjamini Hochberg threshold.}
+\item{TestStatistic }{Vector with test statistics for differential expression in the meta-analysis.}
+\item{rawpval }{Vector with raw p-values for differential expression in the meta-analysis.}
+\item{adjpval }{Vector with adjusted p-values for differential expression in the meta-analysis.}
 }
-\references{
-%% ~put references to the literature/web site here ~
-}
-\author{
-%%  ~~who you are~~
-}
+\references{ Hedges, L. and Olkin, I. (1985). Statistical Methods for Meta-Analysis. Academic
+Press. 
+
+A. Rau, G. Marot and F. Jaffrezic (2012). Differential meta-analysis of RNA-seq data. (Manuscript in progress)}
 \note{
-%%  ~~further notes~~
+This function looks like \textit{directpvalcombi{metaMA}}. There is, however, one important difference to calculate p-values. 
+%% A reprendre! For microarrays, it was advised to separate under- and over-expressed genes before the meta-analysis, which is not anymore possible with the use of Poisson like distributions in individual RNAseq studies. That is why the final p-values are one-sided p-values for RNA-seq data, while they were two sided p-values for microarrays.  
 }
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link{metaRNASeq}}
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-function (pvalonesided, nrep, BHth = 0.05) 
-{
-    listres = vector("list", 4)
-    nbstudies = length(pvalonesided)
-    nbreptot = sum(nrep)
-    weight = sqrt(nrep/nbreptot)
-    qnormpval = do.call(cbind, lapply(pvalonesided, FUN = function(x) qnorm(1 - 
-        x)))
-    statc = apply(qnormpval, 1, FUN = function(x) sum(weight * 
-        x, na.rm = TRUE))
-    rpvalc = 1 - pnorm(statc)
-    res = which(p.adjust(rpvalc, method = "BH") <= BHth)
-    listres[[1]] = res
-    listres[[2]] = statc
-    listres[[3]] = rpvalc
-    listres[[4]] = p.adjust(rpvalc, method = "BH")
-    names(listres) = c("DEindices", "TestStatistic", "rawpval", 
-        "adjpval")
-    return(listres)
-  }
+data(rawpval)
+invnormcomb <- invnorm(rawpval,nrep=c(8,8), BHth = 0.05)       #8 replicates had been simulated in each study
+DE <- ifelse(invnormcomb$adjpval<=0.05,1,0)
+hist(invnormcomb$rawpval,nclass=100)
+##A more detailed example is given in the vignette of the package
+vignette("metaRNASeq")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{ methods }
+\keyword{ models }% __ONLY ONE__ keyword per line

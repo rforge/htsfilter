@@ -23,7 +23,8 @@ Benjamini Hochberg threshold. By default, the False Discovery Rate is controlled
 }
 }
 \details{
-%%  Mettre une formule?
+%% to complete if necessary
+Formule?!?
 }
 \value{
 \item{DEindices }{Indices of differentially expressed genes at the chosen Benjamini Hochberg threshold.}
@@ -36,7 +37,7 @@ Press.
 
 A. Rau, G. Marot and F. Jaffrezic (2012). Differential meta-analysis of RNA-seq data. (Manuscript in progress)}
 \note{
-This function looks like \textit{directpvalcombi{metaMA}}. There is, however, one important difference to calculate p-values. 
+This function looks like \emph{directpvalcombi{metaMA}}. There is, however, one important difference to calculate p-values. 
 %% A reprendre! For microarrays, it was advised to separate under- and over-expressed genes before the meta-analysis, which is not anymore possible with the use of Poisson like distributions in individual RNAseq studies. That is why the final p-values are one-sided p-values for RNA-seq data, while they were two sided p-values for microarrays.  
 }
 \seealso{
@@ -48,7 +49,7 @@ invnormcomb <- invnorm(rawpval,nrep=c(8,8), BHth = 0.05)       #8 replicates had
 DE <- ifelse(invnormcomb$adjpval<=0.05,1,0)
 hist(invnormcomb$rawpval,nclass=100)
 ##A more detailed example is given in the vignette of the package
-vignette("metaRNASeq")
+%vignette("metaRNASeq")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

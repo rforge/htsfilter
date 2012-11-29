@@ -20,7 +20,8 @@ Benjamini Hochberg threshold. By default, the False Discovery Rate is controlled
 }
 }
 \details{
-%%  Mettre une formule?
+%% to complete if necessary
+Formule?!?
 }
 \value{
 \item{DEindices }{Indices of differentially expressed genes at the chosen Benjamini Hochberg threshold.}
@@ -42,7 +43,7 @@ fishcomb <- fishercomb(rawpval, BHth = 0.05)
 DE <- ifelse(fishcomb$adjpval<=0.05,1,0)
 hist(fishcomb$rawpval,nclass=100)
 ##A more detailed example is given in the vignette of the package
-vignette("metaRNASeq")
+%vignette("metaRNASeq")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

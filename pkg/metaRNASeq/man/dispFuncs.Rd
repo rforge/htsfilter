@@ -2,10 +2,10 @@
 \alias{dispFuncs}
 \docType{data}
 \title{
-%%   ~~ data name/kind ... ~~
+Dispersion functions
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of the dataset. ~~
+Dispersion functions. EdgeR ? To complete by Andrea
 }
 \usage{data(dispFuncs)}
 \format{
@@ -15,16 +15,15 @@ List of 2
  $ : num [1:2] 0.00557 1.54247
 }
 \details{
-%%  ~~ If necessary, more details than the __description__ above ~~
+To complete
 }
 \source{
-%%  ~~ reference to a publication or URL from which the data were obtained ~~
+To complete if necessary
 }
 \references{
-%%  ~~ possibly secondary sources and usages ~~
+A. Rau, G. Marot and F. Jaffrezic (2012). Differential meta-analysis of RNA-seq data. (Manuscript in progress)
 }
 \examples{
 data(dispFuncs)
-## maybe str(dispFuncs) ; plot(dispFuncs) ...
 }
 \keyword{datasets}

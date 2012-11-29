@@ -4,8 +4,8 @@ Title: Meta-analysis of RNAseq data
 Version: 0.1
 Date: 2012-11-19
 Author: Andrea Rau, Guillemette Marot, Florence Jaffrezic 
-Maintainer: guillemette.marot@inria.fr
-Depends: R (>=2.15)
+Maintainer: Guillemette Marot <guillemette.marot@inria.fr>
+Depends: R (>= 2.15.1)
 Suggests: HTSFilter, DESeq
 Description: This package implements two p-value combination techniques (inverse normal and Fisher methods). It also provides a vignette explaining how to combine data from multiple RNA-seq experiments.
 License: GPL 

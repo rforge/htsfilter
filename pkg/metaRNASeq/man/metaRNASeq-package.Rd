@@ -3,17 +3,17 @@
 \alias{metaRNASeq}
 \docType{package}
 \title{
-Meta-analysis for RNAseq data.
+Meta-analysis for RNA-seq data.
 }
 \description{
-This package implements two p-value combination techniques (inverse normal and Fisher methods). It also provides a vignette explaining how to perform a meta-analysis from two RANseq experiments.
+This package implements two p-value combination techniques (inverse normal and Fisher methods). It also provides a vignette explaining how to perform a meta-analysis from two independent RNA-seq experiments.
 }
 \details{
 \tabular{ll}{
 Package: \tab metaRNASeq\cr
 Type: \tab Package\cr
 Version: \tab 0.1\cr
-Date: \tab 2012-11-29\cr
+Date: \tab 2012-12-03\cr
 License: \tab GPL \cr
 }
 }
@@ -24,7 +24,7 @@ Maintainer: Guillemette Marot <guillemette.marot@inria.fr>
 
 }
 \references{
-A. Rau, G. Marot and F. Jaffrezic (2012). Differential meta-analysis of RNA-seq data. (Manuscript in progress)
+A. Rau, G. Marot and F. Jaffrezic (submitted 2012). Differential meta-analysis of RNA-seq data.
 }
 \keyword{ package }
 \seealso{
@@ -32,6 +32,6 @@ A. Rau, G. Marot and F. Jaffrezic (2012). Differential meta-analysis of RNA-seq 
 \code{\link{fishercomb}}
 }
 \examples{
-###user guide
-%vignette("metaRNASeq")
+## See example in User's Guide:
+## vignette("metaRNASeq")
 }

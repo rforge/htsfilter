@@ -13,7 +13,7 @@ This package implements two p-value combination techniques (inverse normal and F
 Package: \tab metaRNASeq\cr
 Type: \tab Package\cr
 Version: \tab 0.1\cr
-Date: \tab 2012-12-03\cr
+Date: \tab 2012-12-10\cr
 License: \tab GPL \cr
 }
 }

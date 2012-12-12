@@ -33,7 +33,7 @@ variability in the case where \code{\link{param}} and \code{\link{dispFuncs}} pa
 }
 \value{
 A matrix with simulated expression levels, one row per gene and one column per replicate. Names of studies are given 
-in the colnames of the matrix. 
+in the column names of the matrix. 
 }
 \details{
 Details about the simulation procedure are given in the following paper: 
@@ -42,8 +42,9 @@ Details about the simulation procedure are given in the following paper:
 A. Rau, G. Marot and F. Jaffrezic (2012). Differential meta-analysis of RNA-seq data. (Manuscript in progress)
 }
 \note{
-To be pertinent, one should check that DE tags have the same value of means in \code{param} if the \code{\link{param}} 
-data provided in this package are not used to simulate data.    
+If the \code{\link{param}} data provided in this package are not used to simulate data, one should check that the 
+per-condition means in \code{param} are reasonable. Note also that for genes to be simulated as non-differentially
+expressed, the values of "mucond1" and "mucond2" in \code{param} should be equal.
 }
 
 \seealso{

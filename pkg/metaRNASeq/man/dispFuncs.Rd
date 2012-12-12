@@ -12,7 +12,7 @@ package version 1.8.3 (Anders and Huber, 2010).
 \usage{data(dispFuncs)}
 \format{
 List of length 2, where each list is a vector containing the two estimated coefficients (\eqn{\alpha_0} and 
-\eqn{alpha_1}) for the gamma regression for a given study (see details below).
+\eqn{\alpha_1}) for the gamma regression in each study (see details below).
 }
 \details{
 The \code{dispFuncs} object contains the estimated coefficients from the parametric gamma regressions

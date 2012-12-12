@@ -33,7 +33,7 @@ studies with large numbers of biological replicates to be attributed a larger we
 
 Under the null hypothesis, the test statistic \eqn{N_g} follows a N(0,1) distribution. A unilateral
 test on the righthand tail of the distribution may then be performed, and classical procedures for the
-correction of multiple testing, such as that of Benjmaini and Hochberg (1995), may subsequently be applied to
+correction of multiple testing, such as that of Benjamini and Hochberg (1995), may subsequently be applied to
 the obtained \emph{p}-values to control the false discovery rate at a desired level \eqn{\alpha}.
 }
 \value{
@@ -53,12 +53,13 @@ Marot, G. and Mayer, C.-D. (2009). Sequential analysis for microarray data based
 
 A. Rau, G. Marot and F. Jaffrezic (2012). Differential meta-analysis of RNA-seq data. (Manuscript in progress)}
 \note{
-This function resembles the function \emph{directpvalcombi{metaMA}}; there is, however, one important difference in the
-calculation of \emph{p}-values. In particular, for microarray data, it is typically advised to separate under- and 
-over-expressed genes prior to the meta-analysis. In the case of RNA-seq data, differential analyses from individual 
-studies typically make use of negative binomial models and exact tests, which lead to one-sided, rather than two-sided, 
-p-values. As such, we suggest performing a meta-analysis over the full set of genes, followed by an a
-posteriori check, and if necessary filter, of genes with conflicting results (over vs. under expression) among studies.
+This function resembles the function \code{directpvalcombi} in the \emph{metaMA} R package; there is, however, one 
+important difference in the calculation of \emph{p}-values. In particular, for microarray data, it is typically 
+advised to separate under- and over-expressed genes prior to the meta-analysis. In the case of RNA-seq data, 
+differential analyses from individual studies typically make use of negative binomial models and exact tests, 
+which lead to one-sided, rather than two-sided, p-values. As such, we suggest performing a meta-analysis over 
+the full set of genes, followed by an a posteriori check, and if necessary filter, of genes with conflicting 
+results (over vs. under expression) among studies.
 }
 \seealso{
 \code{\link{metaRNASeq}}

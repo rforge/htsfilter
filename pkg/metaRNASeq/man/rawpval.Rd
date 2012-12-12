@@ -10,10 +10,8 @@ The p-values provided here result from the following procedure:
 }
 \usage{data(rawpval)}
 \format{
-  The format is:
-List of 2
- $ : num [1:14456] 8.31e-01 9.08e-01 5.86e-01 9.37e-09 2.87e-01 ...
- $ : num [1:14456] 4.42e-01 3.85e-01 4.89e-01 1.80e-71 6.99e-01 ...
+List of length 2, where each list is a vector containing the raw p-values for 14,456 genes from
+individual differential analyses (obtained using DESeq v1.8.3) of each of the simulated RNA-seq datasets. 
 }
 \details{
 It is possible to reproduce these p-values using the procedure described in the package vignette.

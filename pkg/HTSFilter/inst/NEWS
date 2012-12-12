@@ -2,6 +2,10 @@
                 RELEASE HISTORY OF HTSFilter PACKAGE
              ========================================
 
+		CHANGES in HTSFilter VERSION 0.99.0
+
+-- Version bumped for submission to Bioconductor.
+
 		CHANGES in HTSFilter VERSION 0.1.1
 
 -- Some additional documentation about the HTSFilter output

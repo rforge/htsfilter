@@ -4,8 +4,8 @@ function(indpval,BHth = 0.05)
 	listres = vector("list", 4)
 	logpval=do.call(cbind,lapply(indpval, log))
 	statc=apply(logpval,1, FUN=function(x) -2*sum(x,na.rm=TRUE))
-	statc=apply(logpval,1, FUN=function(x) -2*sum(x))
-	rpvalc = 1 - pchisq(statc, df=(2*length(indpval)))
+	notNA=apply(logpval,1,FUN=function(x) sum(!(is.na(x))))	
+	rpvalc = 1 - pchisq(statc, df=(2*notNA))
 	res = which(p.adjust(rpvalc, method = "BH") <= BHth)
 	listres[[1]] = res
     	listres[[2]] = statc

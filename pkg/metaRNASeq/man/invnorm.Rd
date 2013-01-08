@@ -10,7 +10,7 @@ Combines one sided p-values using the inverse normal method.
 invnorm(pvalonesided, nrep, BHth = 0.05)
 }
 \arguments{
-  \item{pvalonesided}{
+  \item{indpval}{
 List of vectors of one sided p-values to be combined.
 }
   \item{nrep}{

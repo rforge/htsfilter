@@ -1,12 +1,16 @@
 invnorm <-
-function(pvalonesided, nrep, BHth = 0.05) 
+function(indpval, nrep, BHth = 0.05) 
 {
     listres = vector("list", 4)
-    nbstudies = length(pvalonesided)
-    nbreptot = sum(nrep)
-    weight = sqrt(nrep/nbreptot)
-    qnormpval= do.call(cbind,lapply(pvalonesided, FUN=function(x) qnorm(1-x)))
-    statc=apply(qnormpval,1, FUN=function(x) sum(weight*x,na.rm=TRUE))
+    qnormpval= do.call(cbind,lapply(indpval, FUN=function(x) qnorm(1-x)))
+    nrepcorr=t(apply(qnormpval,1,FUN=function(x){ 
+    nrep2=nrep
+    nrep2[which(is.na(x))]=0
+    nrep2}))
+    nreptot=apply(nrepcorr,1,sum)
+    weight=sqrt(nrepcorr/nreptot)
+    wqnormp=weight*qnormpval
+    statc=apply(qnormpval,1, FUN=function(x) sum(wqnormp,na.rm=TRUE))
     rpvalc = 1 - pnorm(statc)
     res = which(p.adjust(rpvalc, method = "BH") <= BHth)
     listres[[1]] = res

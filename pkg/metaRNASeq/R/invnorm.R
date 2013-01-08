@@ -10,7 +10,7 @@ function(indpval, nrep, BHth = 0.05)
     nreptot=apply(nrepcorr,1,sum)
     weight=sqrt(nrepcorr/nreptot)
     wqnormp=weight*qnormpval
-    statc=apply(qnormpval,1, FUN=function(x) sum(wqnormp,na.rm=TRUE))
+    statc=apply(wqnormp,1, FUN=function(x) sum(x,na.rm=TRUE))
     rpvalc = 1 - pnorm(statc)
     res = which(p.adjust(rpvalc, method = "BH") <= BHth)
     listres[[1]] = res

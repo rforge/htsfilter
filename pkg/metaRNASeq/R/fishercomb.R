@@ -6,7 +6,7 @@ function(indpval,BHth = 0.05)
 	statc=apply(logpval,1, FUN=function(x) -2*sum(x,na.rm=TRUE))
 	## Added by Andrea for genes filtered in all samples
 	## (otherwise returns a value of 0)
-	na.index <- which(apply(wqnormp, 1, function(x) sum(is.na(x))) == ncol(wqnormp))
+	na.index <- which(apply(logpval, 1, function(x) sum(is.na(x))) == ncol(logpval))
 	statc[na.index] <- NA
 
 	notNA=apply(logpval,1,FUN=function(x) sum(!(is.na(x))))	

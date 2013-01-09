@@ -11,6 +11,10 @@ function(indpval, nrep, BHth = 0.05)
     weight=sqrt(nrepcorr/nreptot)
     wqnormp=weight*qnormpval
     statc=apply(wqnormp,1, FUN=function(x) sum(x,na.rm=TRUE))
+	## Added by Andrea for genes filtered in all samples
+	## (otherwise returns a value of 0)
+	nan.index <- which(apply(wqnormp, 1, function(x) sum(is.nan(x))) == ncol(wqnormp))
+	statc[nan.index] <- NA
     rpvalc = 1 - pnorm(statc)
     res = which(p.adjust(rpvalc, method = "BH") <= BHth)
     listres[[1]] = res

@@ -25,35 +25,6 @@ function(data.norm.perCondition, log.s){
 }
 
 
-.normalizeData <-
-function(data, conds, normalization) {
-	if(normalization == "TMM") {
-		N <- colSums(data)
-		f <- calcNormFactors(data,method="TMM")
-		TMM <- N*f / mean(N*f)
-		norm.factor <- TMM
-		data.norm <- scale(data, center=FALSE, scale=TMM)
-
-
-	}
-	if(normalization == "DESeq") {
-		## Code taken from DESeq (v1.8.3)
-		## estimateSizeFactorsForMatrix() function:
-#    		loggeomeans <- rowMeans(log(data))
-#   		deseq <- apply(data, 2, function(cnts) exp(median((log(cnts) - 
-#        		loggeomeans)[is.finite(loggeomeans)])))
-		deseq <- estimateSizeFactorsForMatrix(data, locfunc = median)
-		norm.factor <- deseq
-		data.norm <- scale(data, center=FALSE, scale=deseq)
-	}
-	if(normalization == "none") {
-		data.norm <- data
-		norm.factor <- NA
-	}
-	return(list(data.norm = data.norm, norm.factor = norm.factor))
-}
-
-
 .HTSFilterBackground <- 
 function(data, conds, s.min, s.max, s.len, 
 	loess.span, normalization,  plot, plot.name) {
@@ -70,7 +41,7 @@ function(data, conds, s.min, s.max, s.len,
 	}
 
 	## Normalization (calculated on full dataset)
-	norm <- .normalizeData(data = data, conds = conds, 
+	norm <- normalizeData(data = data,  
 		normalization = normalization)
 	data.norm <- norm$data.norm
 	norm.factor <- norm$norm.factor
@@ -115,3 +86,97 @@ function(data, conds, s.min, s.max, s.len,
 
 	return(filter.results)
 }
+
+
+
+
+.HTSBasicFilterBackground <- function(data, method, cutoff.type="value", cutoff=10, 
+	length=NA, normalization) {
+
+	## Sanity checks
+	check <- method %in% c("mean", "sum", "rpkm", "variance", "cpm", "number",
+		"quantile", "max", "cpm.mean", "cpm.sum", "cpm.variance", "cpm.max",
+		"rpkm.mean", "rpkm.sum", "rpkm.variance", "rpkm.max")
+	if(check != TRUE) stop("Only the following basic filters are currently supported:
+		mean, sum, rpkm, variance, cpm, number, quantile, max")
+	if(class(cutoff.type) != "character" & class(cutoff.type) != "numeric" & 
+		length(cutoff.type) != 1)
+		stop(paste("cutoff.type must be equal to a numeric value, or one of the following:\n",
+			dQuote("value"), dQuote("number"), dQuote("quantile")))  
+
+	## Normalize data
+	x <- data
+	norm <- normalizeData(x, normalization)
+	x.norm <- norm$data.norm
+	norm.factor <- norm$norm.factor
+
+	## Prep filtering criteria
+	if(method == "mean") crit <- apply(x.norm, 1, mean);
+	if(method == "sum") crit <- apply(x.norm, 1, sum);
+	if(method == "variance") crit <- apply(x.norm, 1, var);
+	if(method == "max") crit <- apply(x.norm, 1, max);
+	if(method == "cpm" | method == "cpm.mean" | method == "cpm.sum" | 
+		method == "cpm.variance" | method == "cpm.max") {
+		if(normalization != "TMM") message("Note that TMM normalization is used for cpm filter.")
+		dge <- DGEList(counts=x)
+		dge <- calcNormFactors(dge)
+		crit <- cpm(dge)
+		if(method == "cpm.mean") crit <- apply(crit, 1, mean)
+		if(method == "cpm.sum") crit <- apply(crit, 1, sum)
+		if(method == "cpm.variance") crit <- apply(crit, 1, var)
+		if(method == "cpm.max") crit <- apply(crit, 1, max)
+	}
+	if(method == "rpkm" | method == "rpkm.mean" | method == "rpkm.sum" | 
+		method == "rpkm.variance" | method == "rpkm.max") {
+		if(is.na(length) == TRUE | length(length) != nrow(x)) 
+			stop(paste("length needed for rpkm filter"))
+		if(normalization != "TMM") message("Note that TC normalization is used for rpkm filter.")
+		dge <- DGEList(counts=x)
+		dge <- calcNormFactors(dge)
+		crit <- rpkm(dge, normalized.lib.sizes=FALSE)
+		if(method == "rpkm.mean") crit <- apply(crit, 1, mean)
+		if(method == "rpkm.sum") crit <- apply(crit, 1, sum)
+		if(method == "rpkm.variance") crit <- apply(crit, 1, var)
+		if(method == "rpkm.max") crit <- apply(crit, 1, max)
+	}
+
+	## Apply filters
+	if(method == "mean" | method == "sum" | method == "variance" | method == "max" |
+		method == "cpm.mean" | method == "cpm.sum" | method == "cpm.variance" | 
+		method == "cpm.max" | method == "rpkm.mean" | method == "rpkm.sum" | 
+		method == "rpkm.variance" | method == "rpkm.max") {
+
+		if(class(cutoff.type) == "numeric")
+			stop(paste("cutoff.type must be equal to one of the following:\n",
+			dQuote("value"), dQuote("number"), dQuote("quantile")))  
+
+		if(cutoff.type == "value") {
+			on.index <- which(crit > cutoff)
+		}
+		if(cutoff.type == "number") {
+			o <- order(crit, decreasing=TRUE)
+			on.index <- which(o <= cutoff)
+		}
+		if(cutoff.type == "quantile") {
+			q <- quantile(crit, cutoff)
+			on.index <- which(crit > q)
+		}
+	}
+
+	if(method == "cpm" | method == "rpkm") {
+		if(class(cutoff.type) == "character")
+			stop(paste("cutoff.type must be numeric.")) 
+		 on.index <- rowSums(crit>cutoff) >= cutoff.type
+	}
+
+	## Return filter results
+	filteredData <- x; removedData <- NA;
+	if(length(on.index) > 0) filteredData <- x[on.index,]
+	if(length(on.index) < nrow(x)) removedData <- x[-on.index,]
+	on <- 0; on[on.index] <- 1
+	filter.results <- list(filteredData =  filteredData,
+		on = on, normFactor = norm.factor, removedData = removedData, 
+		filterCrit = crit)
+	return(filter.results)
+} 
+

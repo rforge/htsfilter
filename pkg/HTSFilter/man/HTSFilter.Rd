@@ -50,7 +50,7 @@ of replicates within each experimental condition.
 
 \arguments{
   \item{x}{
-A numeric matrix or data.frame representing the counts of dimension (\emph{g} x \emph{n}), for \emph{g} genes in \emph{n} samples, or a \code{DGEList} object.
+A numeric matrix or data.frame representing the counts of dimension (\emph{g} x \emph{n}), for \emph{g} genes in \emph{n} samples, a \code{CountDataSet} object, a \code{DGEList} object, a \code{DGEExact} object, a \code{DGEGLM} object, or a \code{DGELRT} object.
 }
   \item{conds}{
 Vector of length \emph{n} identifying the experimental condition of each of the \emph{n} samples; required when sQuote(x)

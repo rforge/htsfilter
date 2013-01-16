@@ -14,9 +14,11 @@ importMethodsFrom(DESeq, counts, conditions)
 #importMethodsFrom(EDASeq, exprs)
 
 ## import methods
-importFrom(edgeR, calcNormFactors)
+importFrom(edgeR, calcNormFactors, cpm, rpkm)
 importFrom(DESeq, estimateSizeFactorsForMatrix, newCountDataSet)
 #importFrom(EDASeq, newSeqExpressionSet)
 
 ## export methods
 exportMethods(HTSFilter)
+exportMethods(HTSBasicFilter)
+export(normalizeData)

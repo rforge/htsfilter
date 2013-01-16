@@ -20,7 +20,8 @@ function(data.norm.perCondition, log.s){
 		}, 
 		rep(1:(nbindiv), times = c((nbindiv-1):0)),
 		unlist(lapply(2:nbindiv, function(x) seq(x,nbindiv))) )
-	return(sum(calc))
+	## AR (1/15/2013): use mean rather than sum in case of unbalanced experiments
+	return(mean(calc))
 }
 
 
@@ -32,14 +33,16 @@ function(data, conds, normalization) {
 		TMM <- N*f / mean(N*f)
 		norm.factor <- TMM
 		data.norm <- scale(data, center=FALSE, scale=TMM)
+
+
 	}
 	if(normalization == "DESeq") {
 		## Code taken from DESeq (v1.8.3)
 		## estimateSizeFactorsForMatrix() function:
-    		loggeomeans <- rowMeans(log(data))
-   		deseq <- apply(data, 2, function(cnts) exp(median((log(cnts) - 
-        		loggeomeans)[is.finite(loggeomeans)])))
-#		deseq <- estimateSizeFactorsForMatrix(data, locfunc = median)
+#    		loggeomeans <- rowMeans(log(data))
+#   		deseq <- apply(data, 2, function(cnts) exp(median((log(cnts) - 
+#        		loggeomeans)[is.finite(loggeomeans)])))
+		deseq <- estimateSizeFactorsForMatrix(data, locfunc = median)
 		norm.factor <- deseq
 		data.norm <- scale(data, center=FALSE, scale=deseq)
 	}

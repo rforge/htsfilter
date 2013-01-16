@@ -2,11 +2,11 @@
 \alias{HTSFilter-package}
 \docType{package}
 \title{
-Filter replicated high-throughput sequencing expression data
+Filter replicated transcriptome sequencing expression data
 }
 \description{
 This package implements a filtering procedure for replicated
-high-throughput sequencing data based on a global Jaccard similarity index in 
+transcriptome sequencing data based on a global Jaccard similarity index in 
 order to identify genes with low, constant levels of expression across one or 
 more experimental conditions.
 }
@@ -14,8 +14,8 @@ more experimental conditions.
 \tabular{ll}{
 Package: \tab HTSFilter\cr
 Type: \tab Package\cr
-Version: \tab 0.99.0\cr
-Date: \tab 2012-12-12\cr
+Version: \tab 0.99.1\cr
+Date: \tab 2013-01-15\cr
 License: \tab Artistic-2.0\cr
 }
 }
@@ -32,33 +32,45 @@ throughput experiments. \emph{PNAS} \bold{107}(21):9546-9551.
 P. Jaccard (1901). Etude comparative de la distribution orale dans une portion des Alpes et des Jura.
 \emph{Bulletin de la Societe Vaudoise des Sciences Naturelles}, \bold{37}:547-549.
 
-A. Rau, M. Gallopin, G. Celeux, F. Jaffrezic (2012). Independent data-based filtering 
-for replicated high-throughput sequencing experiments. (Manuscript in progress).
+A. Rau, M. Gallopin, G. Celeux, F. Jaffrezic (2013). Independent data-based filtering 
+for replicated transcriptome sequencing experiments. (In revision).
 
 }
 \keyword{ package }
-\seealso{
-\code{\link{HTSFilter}}
-}
 \examples{
 
-library(HTSFilter)
-library(Biobase)
 data("sultan")
-
-## Matrix
-dat <- exprs(sultan)
 conds <- pData(sultan)$cell.line
-\dontrun{Jacc <- HTSFilter(dat, conds)}
-\dontrun{dat <- Jacc$filteredData  ## Matrix}
 
-## DGEList (edgeR)
-dge <- DGEList(counts=dat, group=conds)
-\dontrun{Jacc <- HTSFilter(dge)}
-\dontrun{dge <- Jacc$filteredData  ## S3 class DGEList}
+########################################################################
+## Matrix or data.frame
+########################################################################
 
-## Count Data Set (DESeq)
-\dontrun{Jacc <- HTSFilter(dat, conds}
-\dontrun{cds <- newCountDataSet(Jacc$filteredData, conds)  ## S4 class CountDataSet}
+filter <- HTSFilter(exprs(sultan), conds, s.len=25, plot=FALSE)
+
+
+########################################################################
+## CountDataSet
+########################################################################
+
+cds <- newCountDataSet(exprs(sultan), conds)
+cds <- estimateSizeFactors(cds)
+cds <- estimateDispersions(cds)
+cds <- HTSFilter(cds, s.len=25, plot=FALSE)$filteredData
+class(cds)
+## res <- nbinomTest(cds, levels(conds)[1], levels(conds)[2])
+
+
+########################################################################
+## DGEExact
+########################################################################
+
+dge <- DGEList(counts=exprs(sultan), group=conds)
+dge <- calcNormFactors(dge)
+dge <- estimateCommonDisp(dge)
+dge <- estimateTagwiseDisp(dge)
+et <- exactTest(dge)
+et <- HTSFilter(et, DGEList=dge, s.len=25, plot=FALSE)$filteredData
+## topTags(et)
 
 }

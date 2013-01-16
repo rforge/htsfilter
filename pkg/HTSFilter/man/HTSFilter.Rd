@@ -5,11 +5,15 @@
 \alias{HTSFilter,matrix-method}
 \alias{HTSFilter,data.frame-method}
 \alias{HTSFilter,DGEList-method}
+\alias{HTSFilter,DGEExact-method}
+\alias{HTSFilter,DGEGLM-method}
+\alias{HTSFilter,DGELRT-method}
+\alias{HTSFilter,CountDataSet-method}
 \title{
-Calculate data-based filtering threshold for replicated high-throughput sequencing data.
+Calculate data-based filtering threshold for replicated transcriptome sequencing data.
 }
 \description{
-Calculate a data-based filtering threshold for replicated high-throughput
+Calculate a data-based filtering threshold for replicated transcriptome
 sequencing data through the pairwise Jaccard similarity index between pairs
 of replicates within each experimental condition.
 }
@@ -23,12 +27,25 @@ of replicates within each experimental condition.
      loess.span=0.3, normalization=c("TMM", "DESeq", "none"), 
      plot=TRUE, plot.name=NA)
 
+\S4method{HTSFilter}{CountDataSet}(x, conds=NA, s.min=1, s.max=200, s.len=100, 
+     loess.span=0.3, normalization=c("DESeq", "TMM", "none"), 
+     plot=TRUE, plot.name=NA)
+
 \S4method{HTSFilter}{DGEList}(x, s.min=1, s.max=200, s.len=100, 
+     loess.span=0.3, normalization=c("TMM", "DESeq", "pseudo.counts", "none"), 
+     plot=TRUE, plot.name=NA)
+
+\S4method{HTSFilter}{DGEExact}(x, DGEList, s.min=1, s.max=200, s.len=100, 
+     loess.span=0.3, normalization=c("TMM", "DESeq", "pseudo.counts", "none"), 
+     plot=TRUE, plot.name=NA)
+
+\S4method{HTSFilter}{DGEGLM}(x, s.min=1, s.max=200, s.len=100, 
      loess.span=0.3, normalization=c("TMM", "DESeq", "none"), 
      plot=TRUE, plot.name=NA)
-%\S4method{HTSFilter}{CountDataSet}(x, conds=NA, s.min=1, s.max=200, s.len=100, 
-%     loess.span=0.3, normalization=c("TMM", "DESeq", "none"), 
-%     plot=TRUE, plot.name=NA)
+
+\S4method{HTSFilter}{DGELRT}(x, DGEGLM, s.min=1, s.max=200, s.len=100, 
+     loess.span=0.3, normalization=c("TMM", "DESeq", "none"), 
+     plot=TRUE, plot.name=NA)
 }
 
 \arguments{
@@ -56,8 +73,10 @@ indices, with default value equal to 0.3
   \item{normalization}{
 Normalization method to be used to correct for differences in library sizes, with choices
 \dQuote{TMM} (Trimmed Mean of M-values), \dQuote{DESeq} (normalization method proposed in the
-DESeq package), and \dQuote{none} (to be used only if user is certain no normalization is required,
-or if data have already been pre-normalized by an alternative method)
+DESeq package), \dQuote{pseudo.counts} (pseudo-counts obtained via quantile-quantile normalization in the
+edgeR package, only available for objects of class \code{DGEList} and \code{DGEExact}), and \dQuote{none} 
+(to be used only if user is certain no normalization is required, or if data have already been pre-normalized 
+by an alternative method)
 }
   \item{plot}{
 If \dQuote{TRUE}, produce a plot of the calculated global similarity indices against the
@@ -66,6 +85,12 @@ filtering threshold with superimposed loess curve
   \item{plot.name}{
 If \code{plot} = \dQuote{TRUE}, the name of the PDF file to be saved to the current working directory.
 If \code{plot.name} = NA, the plot is drawn in the current window.
+}
+  \item{DGEList}{
+Object of class DGEList, to be used when filtering objects of class DGEExact
+}
+  \item{DGEGLM}{
+Object of class DGEGLM, to be used when filtering objects of class DGELRT
 }
 }
 
@@ -87,8 +112,7 @@ quantities, we may calculate the Jaccard similarity index between the two vector
 }
 
 \value{
-\item{filteredData }{An object of the same class as \code{x} containing the data that passed the filter.
-When code{x} is a \code{DGEList} object, the filtered data are contained in the \code{counts} slot.}
+\item{filteredData }{An object of the same class as \code{x} containing the data that passed the filter}
 %
 \item{on }{A binary vector of length \emph{g}, where 1 indicates a gene with normalized expression
 greater than the optimal filtering threshold \code{s.optimal} in at least one sample (irrespective of 
@@ -126,30 +150,42 @@ Andrea Rau, Melina Gallopin, Gilles Celeux, and Florence Jaffrezic
 \note{
 Filter should only be calculated on REPLICATED high-throughput sequencing data.
 }
-
-\seealso{
-\code{\link{HTSFilter}}
-}
 \examples{
 
-library(HTSFilter)
-library(Biobase)
 data("sultan")
-
-## Matrix
-dat <- exprs(sultan)
 conds <- pData(sultan)$cell.line
-\dontrun{Jacc <- HTSFilter(dat, conds)}
-\dontrun{dat <- Jacc$filteredData  ## Matrix}
 
-## DGEList (edgeR)
-dge <- DGEList(counts=dat, group=conds)
-\dontrun{Jacc <- HTSFilter(dge)}
-\dontrun{dge <- Jacc$filteredData  ## S3 class DGEList}
+########################################################################
+## Matrix or data.frame
+########################################################################
 
-## Count Data Set (DESeq)
-\dontrun{Jacc <- HTSFilter(dat, conds}
-\dontrun{cds <- newCountDataSet(Jacc$filteredData, conds)  ## S4 class CountDataSet}
+filter <- HTSFilter(exprs(sultan), conds, s.len=25, plot=FALSE)
+
+
+########################################################################
+## CountDataSet
+########################################################################
+
+cds <- newCountDataSet(exprs(sultan), conds)
+cds <- estimateSizeFactors(cds)
+cds <- estimateDispersions(cds)
+cds <- HTSFilter(cds, s.len=25, plot=FALSE)$filteredData
+class(cds)
+## res <- nbinomTest(cds, levels(conds)[1], levels(conds)[2])
+
+
+########################################################################
+## DGEExact
+########################################################################
+
+dge <- DGEList(counts=exprs(sultan), group=conds)
+dge <- calcNormFactors(dge)
+dge <- estimateCommonDisp(dge)
+dge <- estimateTagwiseDisp(dge)
+et <- exactTest(dge)
+et <- HTSFilter(et, DGEList=dge, s.len=25, plot=FALSE)$filteredData
+## topTags(et)
+
 
 }
 \keyword{ methods }

@@ -134,7 +134,7 @@ function(data, conds, s.min, s.max, s.len,
 		if(normalization != "TMM") message("Note that TC normalization is used for rpkm filter.")
 		dge <- DGEList(counts=x)
 		dge <- calcNormFactors(dge)
-		crit <- rpkm(dge, normalized.lib.sizes=FALSE)
+		crit <- .rpkm(dge, normalized.lib.sizes=FALSE)
 		if(method == "rpkm.mean") crit <- apply(crit, 1, mean)
 		if(method == "rpkm.sum") crit <- apply(crit, 1, sum)
 		if(method == "rpkm.variance") crit <- apply(crit, 1, var)
@@ -181,3 +181,13 @@ function(data, conds, s.min, s.max, s.len,
 	return(filter.results)
 } 
 
+## RPKM function taken from edgeR version 3.1.3
+.rpkm <- function (x, gene.length, normalized.lib.sizes = TRUE, log = FALSE, 
+    prior.count = 0.25) 
+{
+    y <- cpm(x, normalized.lib.sizes = normalized.lib.sizes, 
+        log = log, prior.count = prior.count)
+    if (log) 
+        y - log2(gene.length) + log2(1000)
+    else y/(gene.length/1000)
+}

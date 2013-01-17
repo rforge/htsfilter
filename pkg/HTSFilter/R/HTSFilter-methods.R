@@ -139,7 +139,7 @@ setMethod(
  			on = filter$on, s = filter$s.optimal,
 			indexValues = filter$index.values, 
 			normFactor = nf,
- 			removedData = data[which(filter$on == 0),])
+ 			removedData = x[-on.index,])
  	
 		return(filter.results)
  	}

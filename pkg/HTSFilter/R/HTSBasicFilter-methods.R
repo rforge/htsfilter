@@ -96,35 +96,35 @@ setMethod(
 			normalization=normalization)
 		on <- filter$on
 		on.index <- which(on == 1)
-		filteredData <- x
+		filteredData <- x[on.index,]
 
-		## Option 1: filter, lib size, disp
-		## Option 2: lib size, filter, disp
-		if(opt == 1 | opt == 2) {
-			filteredData <- assayDataElementReplace(filteredData, "counts", 
-				assayData(x)[["counts"]][on.index,])
-			featureData(filteredData)@data <- featureData(x)@data[on.index,]
-			## Sanity check
-			if(validObject(filteredData)!=TRUE) {
-				stop(paste(sQuote("filteredData"), 
-					"is not a valid CountDataSet object."))
-			}
-		}
-
-		## Option 3: lib size, disp, filter
-		if(opt == 3) {
-			filteredData <- assayDataElementReplace(filteredData, "counts", 
-				assayData(x)[["counts"]][on.index,])		
-			disp <- data.frame(featureData(x)@data[on.index,])
-			rownames(disp) <- rownames(featureData(x)@data)[on.index]
-			colnames(disp) <- colnames(featureData(x)@data)
-			featureData(filteredData)@data <- disp
-			## Sanity check
-			if(validObject(filteredData)!=TRUE) {
-				stop(paste(sQuote("filteredData"), 
-					"is not a valid CountDataSet object."))
-			}
-		}
+#		## Option 1: filter, lib size, disp
+#		## Option 2: lib size, filter, disp
+#		if(opt == 1 | opt == 2) {
+#			filteredData <- assayDataElementReplace(filteredData, "counts", 
+#				assayData(x)[["counts"]][on.index,])
+#			featureData(filteredData)@data <- featureData(x)@data[on.index,]
+#			## Sanity check
+#			if(validObject(filteredData)!=TRUE) {
+#				stop(paste(sQuote("filteredData"), 
+#					"is not a valid CountDataSet object."))
+#			}
+#		}
+#
+#		## Option 3: lib size, disp, filter
+#		if(opt == 3) {
+#			filteredData <- assayDataElementReplace(filteredData, "counts", 
+#				assayData(x)[["counts"]][on.index,])		
+#			disp <- data.frame(featureData(x)@data[on.index,])
+#			rownames(disp) <- rownames(featureData(x)@data)[on.index]
+#			colnames(disp) <- colnames(featureData(x)@data)
+#			featureData(filteredData)@data <- disp
+#			## Sanity check
+#			if(validObject(filteredData)!=TRUE) {
+#				stop(paste(sQuote("filteredData"), 
+#					"is not a valid CountDataSet object."))
+#			}
+#		}
 
 		nf <- filter$norm.factor
 		if(opt != 1 & norm == "DESeq") nf <- sizeFactors(x)
@@ -132,7 +132,7 @@ setMethod(
 		## Return various results
 		filter.results <- list(filteredData =  filteredData,
 			on = filter$on, normFactor = nf,
-			removedData = filter$removedData, filterCrit = filter$filterCrit)
+			removedData = x[-on.index,], filterCrit = filter$filterCrit)
 		return(filter.results)
  	}
 )

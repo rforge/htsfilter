@@ -64,7 +64,7 @@ function(data, conds, s.min, s.max, s.len,
 	if(plot == TRUE) {
 		if(is.na(plot.name) != TRUE) pdf(plot.name, width = 6, height = 6);
 		plot(exp(s.test), index, log = "x", xlab = "Threshold", 
-			ylab = "Similarity index")
+			ylab = "Global Jaccard index")
 		lines(seq(s.min, s.max, by = 0.001), p, col = "blue", lwd = 2)
 		points(s.optimal, max(p, na.rm = TRUE), col = "red", pch = "X", cex= 1.5)
 		abline(v = s.optimal, lty = 2, col= "red")

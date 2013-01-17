@@ -48,7 +48,8 @@ function(data, conds, s.min, s.max, s.len,
 
 	## Calculate index for each threshold value
 	s.test <- seq(log(s.min), log(s.max), length = s.len)
-	index <- rowSums(matrix(mapply(function(condition, s) {
+	## AR (1/17/2013): use mean rather than sum so max value is 1
+	index <- rowMeans(matrix(mapply(function(condition, s) {
 		.perConditionSimilarityIndex(data.norm.perCondition = data.norm[,which(conds == unique(conds)[condition])], 
 		log.s = s)}, 
 		rep(1:length(unique(conds)), times = length(s.test)), 

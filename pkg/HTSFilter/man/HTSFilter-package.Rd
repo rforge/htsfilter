@@ -15,7 +15,7 @@ more experimental conditions.
 Package: \tab HTSFilter\cr
 Type: \tab Package\cr
 Version: \tab 0.99.1\cr
-Date: \tab 2013-01-16\cr
+Date: \tab 2013-01-17\cr
 License: \tab Artistic-2.0\cr
 }
 }

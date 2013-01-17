@@ -4,8 +4,9 @@
 
 		CHANGES in HTSFilter VERSION 0.99.1
 
+-- Vignette updated
 -- New method HTSBasicFilter for all classes handled by HTSFilter
--- Made normalizeData a visible function.
+-- Made normalizeData a visible function
 -- Changes to dependencies (include classes and methods for DESeq, include
 additional classes for edgeR pipeline: DGEExact, DGEGLM, DGELRT)
 -- Slight changes/additions to man pages and citation info (paper in revision)

@@ -232,7 +232,7 @@ topTags(lrt)
 
 As a final example, we illustrate the use of the \Rpackage{HTSFilter} package with an alternative normalization strategy, namely the full quantile normalization method in the \Rpackage{EDASeq} package; such a step may be useful when the TMM or DESeq normalization methods are not appropriate for a given dataset. Once again, we create a new object of the appropriate class with the function \Rfunction{newSeqExpressionSet} and normalize data using the \Rfunction{betweenLaneNormalization} function (with \Rcode{which="full"}) in \Rpackage{EDASeq}.
 
-<<ses2>>=
+<<ses2, eval=FALSE>>=
 library(EDASeq)
 ses <- newSeqExpressionSet(exprs(sultan), 
        phenoData=pData(sultan))
@@ -241,7 +241,7 @@ ses.norm <- betweenLaneNormalization(ses, which="full")
 
 Subsequently, \Rfunction{HTSFilter} is applied to the normalized data (again using \Rcode{s.len=25}), and the normalization method is set to \Rcode{norm="none"}. We may then make use of the \Rcode{on} vector in the results, which identifies filtered and unfiltered genes (respectively) with 0 and 1, to identify rows in the original data matrix to be retained.
 
-<<ses3>>=
+<<ses3, eval=FALSE>>=
 filter <- HTSFilter(exprs(ses.norm), conds, s.len=25, norm="none", 
           plot=FALSE)
 head(filter$on)

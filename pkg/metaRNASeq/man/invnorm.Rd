@@ -7,7 +7,7 @@ P-value combination using the inverse normal method
 Combines one sided p-values using the inverse normal method.
 }
 \usage{
-invnorm(pvalonesided, nrep, BHth = 0.05)
+invnorm(indpval, nrep, BHth = 0.05)
 }
 \arguments{
   \item{indpval}{

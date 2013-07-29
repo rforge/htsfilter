@@ -35,3 +35,15 @@ function(param, dispFuncs, nrep=4, classes=NULL, inter.sd = 0.30) {
 	colnames(matsim)=paste("study",vecstudies,"cond",unlist(classes),sep="")
 	matsim
 }
+
+extractfromsim <- function(matsim,studyname)
+{
+  study <- matsim[,grep(studyname,colnames(matsim))]
+  study.conds <- gsub(studyname,"",colnames(study))
+  study.conds <- as.factor(study.conds)
+  levels(study.conds) <- c("untreated","treated")
+  colnames(study) <- paste("rep",1:dim(study)[2],sep="")
+  pheno <- data.frame(study=rep(studyname,dim(study)[2]),condition=study.conds,row.names=colnames(study))
+  simstudy <- list("study"=study,"pheno"=pheno)
+  simstudy
+}

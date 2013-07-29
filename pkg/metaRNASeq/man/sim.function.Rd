@@ -1,5 +1,6 @@
 \name{sim.function}
 \alias{sim.function}
+\alias{extractfromsim}
 \title{
 Simulation of multiple RNA-seq experiments
 }
@@ -59,5 +60,10 @@ data(dispFuncs)
 matsim <- sim.function(param = param, dispFuncs = dispFuncs)
 sim.conds <- colnames(matsim)
 rownames(matsim) <-paste("tag", 1:dim(matsim)[1],sep="")
+
+# extract simulated data from one study
+simstudy1 <- extractfromsim(matsim,"study1")
+head(simstudy1$study)
+simstudy1$pheno
 }
 \keyword{ methods }

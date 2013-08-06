@@ -13,7 +13,7 @@ This package implements two p-value combination techniques (inverse normal and F
 Package: \tab metaRNASeq\cr
 Type: \tab Package\cr
 Version: \tab 0.3\cr
-Date: \tab 2013-07-29\cr
+Date: \tab 2013-08-06\cr
 License: \tab GPL \cr
 }
 }
@@ -32,6 +32,6 @@ A. Rau, G. Marot and F. Jaffrezic (submitted 2012). Differential meta-analysis o
 \code{\link{fishercomb}}
 }
 \examples{
-## See example in User's Guide:
-## vignette("metaRNASeq")
+# See examples in User's Guide:
+vignette("metaRNASeq")
 }

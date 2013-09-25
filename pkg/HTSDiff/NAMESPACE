@@ -1,0 +1,9 @@
+import(plotrix)
+import(HTSCluster)
+
+## import methods
+importFrom(edgeR, calcNormFactors)
+
+export(HTSDiff)
+export(nullModelLogLike)
+export(syntheticData)

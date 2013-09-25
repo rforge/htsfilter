@@ -1,0 +1,23 @@
+            
+                RELEASE HISTORY OF HTSDiff PACKAGE
+             ========================================
+
+
+		CHANGES in HTSDiff VERSION 1.0.0
+
+This is the first release version (25 September 2013).
+
+
+		CHANGES in HTSDiff VERSION 0.1.1
+
+-- Added additional parameter control to HTSDiff function (e.g. number of iterations 
+in small-EM initializations as well as epsilon as user-supplied cutoff), improved
+output of HTSDiff function
+-- Added initialDataset as data in package, as well as syntheticSims function to generate
+synthetic data from initialDataset. Removed DEPoisMixSim function.
+-- Moved edgeR to imports, update dependency of HTSCluster to version 1.99.0
+
+
+		CHANGES in HTSDiff VERSION 0.1
+
+This is the first development version (12 December 2012).

@@ -1,0 +1,23 @@
+citHeader("To cite the R package 'HTSDiff' in publications use:")  
+
+citEntry(entry   = "Article",
+         title   = "HTSDiff: a sensitive analysis of differential gene expression by RNA-seq (submitted)",
+         year    = "2013",
+	 journal = "(submitted)",
+         author  = personList(
+           person(first="S.", last="Balzergue"),
+           person(first="G.", last="Rigaill"),
+           person(first="V.", last="Brunaud"),
+           person(first="E.", last="Blondet"),
+           person(first="A.", last="Rau"),
+           person(first="O.", last="Rogier"),
+           person(first="J.", last="Caius"),
+           person(first="C.", last="Maugis-Rabusseau"),
+           person(first="L.", last="Soubigou-Taconnat"),
+           person(first="S.", last="Aubourg"),
+           person(first="C.", last="Lurin"),
+           person(first="E.", last="Delannoy"),
+           person(first="M.-L.", last="Martin-Magniette")),
+         textVersion = "S. Balzergue, G. Rigaill, V. Brunaud, E. Blondet, A. Rau, O. Rogier, J. Caius, C. Maugis-Rabusseau,
+L. Soubigou-Taconnat, S. Aubourg, C. Lurin, E. Delannoy, and M.-L. Martin-Magniette. (2013) 
+HTSDiff: a sensitive analysis of differential gene expression by RNA-seq (submitted).")

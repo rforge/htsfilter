@@ -10,3 +10,4 @@ Imports: edgeR
 Description: This package implements a Poisson mixture model to identify differentially expressed genes from RNA-seq data.
 License: GPL (>=3)
 LazyLoad: yes
+LazyData: true

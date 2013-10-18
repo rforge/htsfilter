@@ -1,8 +1,8 @@
 Package: HTSCluster
 Type: Package
 Title: Clustering high throughput sequencing (HTS) data
-Version: 2.0.0
-Date: 2013-09-25
+Version: 2.0.1
+Date: 2013-10-18
 Author: Andrea Rau, Gilles Celeux, Marie-Laure Martin-Magniette, Cathy Maugis-Rabusseau
 Maintainer: Andrea Rau <andrea.rau@jouy.inra.fr>
 Depends: R (>= 2.10.0), plotrix, ggplot2, RColorBrewer

@@ -2,6 +2,11 @@
                 RELEASE HISTORY OF HTSDiff PACKAGE
              ========================================
 
+		CHANGES in HTSDiff VERSION 1.0.1
+
+-- Fixed small bug leading to repeated gene IDs in HTSDiff results (thanks to Denis
+Laloe for his sharp eye!).
+
 
 		CHANGES in HTSDiff VERSION 1.0.0
 

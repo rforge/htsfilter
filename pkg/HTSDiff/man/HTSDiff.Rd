@@ -14,7 +14,8 @@ HTSDiff(counts, conds, DEclusters=4, norm="TMM", epsilon=0.8, ...)
 
 \arguments{
   \item{counts}{
-(\emph{n} x \emph{q}) matrix of observed counts for \emph{n} genes and \emph{q} samples
+(\emph{n} x \emph{q}) matrix of observed counts for \emph{n} genes and \emph{q} samples, with row names corresponding
+to gene IDs
 }
   \item{conds}{
 Vector of length \emph{q} defining the condition (treatment group) for each variable (column) in \code{counts}

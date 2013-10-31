@@ -41,8 +41,13 @@ HTSDiff <- function(counts, conds, DEclusters=4, norm="TMM", epsilon=0.8,  ...)
   ###############
   ## SAVE RESULTS
   ###############
-  id <- ifelse(is.null(rownames(counts)) == TRUE, 1:nrow(counts),
-               rownames(counts))
+  ## Fixed error in ID names: October 31, 2013
+  if(is.null(rownames(counts)) == TRUE) {
+    id <- 1:nrow(counts)
+  }
+  else {
+    id <- rownames(counts)
+  }
   ## Normalized baseMean, baseMeanA, and baseMeanB
   normCounts <- t(t(counts) / (s*length(conds)))
   baseMean <- rowMeans(normCounts)

@@ -1,8 +1,8 @@
 Package: HTSDiff
 Type: Package
 Title: Differential analysis of RNA-seq data with Poisson mixture models
-Version: 1.0.0
-Date: 2013-09-25
+Version: 1.0.1
+Date: 2013-10-31
 Author: Andrea Rau, Marie-Laure Martin-Magniette, Cathy Maugis-Rabusseau
 Maintainer: Andrea Rau <andrea.rau@jouy.inra.fr>
 Depends: R (>= 2.10.0), plotrix, HTSCluster (>= 1.99.0)

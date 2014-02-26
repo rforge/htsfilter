@@ -12,8 +12,8 @@ This package implements two p-value combination techniques (inverse normal and F
 \tabular{ll}{
 Package: \tab metaRNASeq\cr
 Type: \tab Package\cr
-Version: \tab 0.3\cr
-Date: \tab 2013-08-06\cr
+Version: \tab 0.4\cr
+Date: \tab 2014-02-26\cr
 License: \tab GPL \cr
 }
 }
@@ -24,7 +24,7 @@ Maintainer: Guillemette Marot <guillemette.marot@inria.fr>
 
 }
 \references{
-A. Rau, G. Marot and F. Jaffrezic (submitted 2012). Differential meta-analysis of RNA-seq data.
+A. Rau, G. Marot and F. Jaffrezic (2013). Differential meta-analysis of RNA-seq data from multiple studies. arXiv:1306.3636
 }
 \keyword{ package }
 \seealso{

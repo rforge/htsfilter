@@ -4,7 +4,7 @@
 		.Platform$GUI=="Rgui") {
 
 		winMenuAddItem("Vignettes", "metaRNASeq",
-		"shell.exec(system.file(\"doc\",\"metaRNASeq_vignette.pdf\", package=\"metaRNASeq\"))")
+		"shell.exec(system.file(\"vignettes\",\"metaRNASeq.pdf\", package=\"metaRNASeq\"))")
 
 	}
 }

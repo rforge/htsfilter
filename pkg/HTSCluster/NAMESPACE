@@ -14,6 +14,7 @@ import(plotrix)
 
 ## import methods
 importFrom(edgeR, calcNormFactors)
+importFrom(poisson.glm.mix, mylogLikePoisMix)
 
 import(ggplot2)
 import(RColorBrewer)

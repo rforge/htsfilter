@@ -149,7 +149,7 @@ Andrea Rau <\url{andrea.rau@jouy.inra.fr}>
 \seealso{
 \code{\link{probaPost}} for the calculation of the conditional probability of belonging to a cluster;
 \code{\link{PoisMixMean}} for the calculation of the per-cluster conditional mean of each observation;
-\code{\link{logLikePoisMix}} for the calculation of the log likelihood of a Poisson mixture model;
+\code{\link{logLikePoisMixDiff}} for the calculation of the log likelihood of a Poisson mixture model;
 \code{\link{emInit}} and \code{\link{kmeanInit}} for the Small-EM parameter initialization strategy
 }
 \examples{

@@ -1,6 +1,5 @@
 export(emInit)
 export(kmeanInit)
-export(logLikePoisMix)
 export(logLikePoisMixDiff)
 export(PoisMixClus)
 export(PoisMixClusWrapper)

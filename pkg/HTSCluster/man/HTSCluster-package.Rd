@@ -17,7 +17,7 @@ clusters).
 Package: \tab HTSCluster\cr
 Type: \tab Package\cr
 Version: \tab 2.0.2\cr
-Date: \tab 2014-04-24\cr
+Date: \tab 2014-07-22\cr
 License: \tab GPL (>=3)\cr
 LazyLoad: \tab yes\cr
 }

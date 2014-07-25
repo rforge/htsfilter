@@ -7,6 +7,10 @@
 - Fixed typo in calculation of entropy for ICL (thanks to M. Gallopin)
 - Added mylogLikePoisMixObs function to calculate log-likelihood for each 
   observation.
+- Default number of init.runs now fixed at 1
+- Added EM.verbose option to include more informative output about the algorithm
+- Added iterations and logLikeDiff into the output of the PoisMixClus and
+  PoisMixClusWrapper functions.
   
 		CHANGES IN HTSCluster VERSION 2.0.2
 		

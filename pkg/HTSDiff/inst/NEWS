@@ -2,6 +2,16 @@
                 RELEASE HISTORY OF HTSDiff PACKAGE
              ========================================
 
+		CHANGES in HTSDiff VERSION 1.0.2
+
+-- Updated dependency of HTSCluster to most recent version (2.0.3)
+-- poisson.glm.mix added to imports for the use of the mylogLikePoisMix function
+-- Created vignette template
+-- Default normalization in nullModel is now "TMM" rather than "DESeq"
+-- More informative output following EM algorithm: number of iterations
+performed, the last value of the difference between successive log-likelihoods.
+
+
 		CHANGES in HTSDiff VERSION 1.0.1
 
 -- Fixed small bug leading to repeated gene IDs in HTSDiff results (thanks to Denis

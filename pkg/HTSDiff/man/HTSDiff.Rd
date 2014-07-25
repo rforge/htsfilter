@@ -9,7 +9,7 @@ where one cluster is fixed to represent genes with equal mean in each experiment
 a cluster of non-differentially expressed genes).
 }
 \usage{
-HTSDiff(counts, conds, DEclusters=4, norm="TMM", epsilon=0.8, ...)
+HTSDiff(counts, conds, DEclusters=4, norm="TMM", epsilon=0.8, EM.verbose=FALSE, ...)
 }
 
 \arguments{
@@ -33,9 +33,13 @@ DESeq package, and \dQuote{\code{TMM}} for the TMM normalization method (default
 Cutoff used to identify whether the log2-ratio of cluster parameters between conditions is sufficiently large to
 be declared as differentially expressed, with default value 0.8
 }
+  \item{EM.verbose}{
+If \code{TRUE}, more informative output is printed about the EM algorithm, including the number of iterations run and
+the difference between log-likelihoods at the last and penultimate iterations.
+}
   \item{...}{
 Additional parameters to be passed to the HTSCluster package, if desired. These include notably the following: 1) \code{init.runs}, the number of 
-small-EM algorithms to run in initialization of Poisson mixture model estimation, with default value of 10, and 2) \code{init.iter}, the 
+small-EM algorithms to run in initialization of Poisson mixture model estimation, with default value of 1, and 2) \code{init.iter}, the 
 number of iterations to run within each small-EM algorithm in initialization of Poisson mixture model estimation, with
 default value of 10
 }
@@ -67,6 +71,8 @@ of non-differential expression, \code{DE} = TRUE if gene is declared differentia
 probability of the non-differential cluster and FALSE otherwise}
 \item{PMM}{Object of class \code{HTSCluster} containing parameter estimates and other information from the Poisson mixture
 model estimation}
+\item{iterations }{Number of iterations run}
+\item{logLikeDiff }{Difference in log-likelihood between the last and penultimate iterations of the algorithm}
 }
 
 \references{

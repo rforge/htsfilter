@@ -8,7 +8,7 @@ This function calculates the loglikelihood, BIC, and ICL for the null model, i.e
 a single cluster of non-differentially expressed genes.
 }
 \usage{
-nullModelLogLike(counts, conds, norm="DESeq")
+nullModelLogLike(counts, conds, norm="TMM")
 }
 \arguments{
   \item{counts}{

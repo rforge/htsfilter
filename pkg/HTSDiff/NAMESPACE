@@ -3,6 +3,7 @@ import(HTSCluster)
 
 ## import methods
 importFrom(edgeR, calcNormFactors)
+importFrom(poisson.glm.mix, mylogLikePoisMix)
 
 export(HTSDiff)
 export(nullModelLogLike)

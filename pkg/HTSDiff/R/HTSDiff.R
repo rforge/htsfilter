@@ -1,4 +1,4 @@
-HTSDiff <- function(counts, conds, DEclusters=4, norm="TMM", epsilon=0.8,  ...)
+HTSDiff <- function(counts, conds, DEclusters=4, norm="TMM", epsilon=0.8, EM.verbose=FALSE, ...)
 {
   .x <-  as.list(substitute(list(...)))[-1L]
   counts <- as.matrix(counts)
@@ -13,6 +13,7 @@ HTSDiff <- function(counts, conds, DEclusters=4, norm="TMM", epsilon=0.8,  ...)
   }
 
   PMM.args <- c(list(y=counts, g=DEclusters, conds=conds, lib.size=TRUE, lib.type=norm,
+				   EM.verbose = EM.verbose,
                    fixed.lambda=list(rep(1,length(unique(conds))))), .x)
   DE.PMM <- do.call(PoisMixClus, PMM.args)
   
@@ -61,6 +62,7 @@ HTSDiff <- function(counts, conds, DEclusters=4, norm="TMM", epsilon=0.8,  ...)
                     log2FoldChange, tauDE = probaDE, tauNDE = probaNDE, DE = DE)
   rownames(res) <- NULL
   
-  return(list(res=res, PMM=DE.PMM))
+  return(list(res=res, PMM=DE.PMM, iterations=DE.PMM$iterations,
+			  logLikeDiff=DE.PMM$logLikeDiff))
 }
 

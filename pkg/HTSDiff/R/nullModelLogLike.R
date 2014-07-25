@@ -1,4 +1,4 @@
-nullModelLogLike <- function(counts, conds, norm="DESeq")
+nullModelLogLike <- function(counts, conds, norm="TMM")
 {
 	counts <- as.matrix(counts)
 	conds <- as.vector(conds)
@@ -26,7 +26,9 @@ nullModelLogLike <- function(counts, conds, norm="DESeq")
 	n <- nrow(counts)
 	mean.calc <- PoisMixMean(y=counts, g=1, conds=conds, s=s, 
 		lambda=matrix(1, ncol=1, nrow=2))
-      LL.tmp <- logLikePoisMix(y=counts, mean.calc, pi=1)
+	## CHANGE HERE to mylogLikePoisMix instead
+ #     LL.tmp <- logLikePoisMix(y=counts, mean.calc, pi=1)
+      LL.tmp <- mylogLikePoisMix(y=counts, mean.calc, pi=1)
       LL <- LL.tmp$ll
       t <- probaPost(y=counts, g=1, conds, pi=1, s=s, lambda=matrix(1,ncol=1,nrow=2))
       map <- unlist(apply(t, 1, function(x) which(x == max(x, 

@@ -1,13 +1,15 @@
 \name{logLikePoisMixDiff}
 \alias{logLikePoisMixDiff}
+\alias{mylogLikePoisMixObs}
 \title{
-Calculate the difference in log likelihood of two Poisson mixture models
+Calculate the difference in log likelihood of two Poisson mixture models or the log-likelihood for each observation
 }
 \description{
-Function to calculate the difference in log likelihoods for two different sets of parameters of a Poisson mixture model.
+Function to calculate the difference in log likelihoods for two different sets of parameters of a Poisson mixture model or the log-likelihood for each observation.
 }
 \usage{
 logLikePoisMixDiff(y, mean.new, pi.new, mean.old, pi.old)
+mylogLikePoisMixObs(y, conds, s, lambda, pi)
 }
 \arguments{
   \item{y}{
@@ -25,14 +27,27 @@ Vector of length \emph{g} containing one estimate for \eqn{\hat{\ensuremath\bold
   \item{pi.old}{
 Vector of length \emph{g} containing another estimate for \eqn{\hat{\ensuremath\boldsymbol{\pi}}}{\hat{\pi}}
 }
+  \item{pi}{
+Vector of length \emph{g} containing estimate for \eqn{\hat{\ensuremath\boldsymbol{\pi}}}{\hat{\pi}}
+}
+  \item{conds}{
+Vector of length \emph{q} defining the condition (treatment group) for each variable (column) in \code{y}
+}
+  \item{s}{
+Estimate of normalized per-variable library size
+}
+  \item{lambda}{
+(\emph{d} x \code{g}) matrix containing the current estimate of lambda, where \emph{d} is the number of conditions (treatment groups) and \code{g} is the number of clusters
+}
 }
 \details{
 The \code{logLikePoisMixDiff} function is used to calculate the difference in log likelihood for two different sets of parameters in a Poisson mixture model; it is used to determine convergence in the EM algorithm run by the \code{\link{PoisMixClus}} function.
 The \code{mylogLikePoisMix} function from the \code{poisson.glm.mix} R package calculates the log likelihood for a given set of parameters in a Poisson mixture model and is used in the \code{\link{PoisMixClus}} function for the calculation of the BIC and ICL. 
+The \code{mylogLikePoisMixObs} function calculates the log likelihood per observation for a given set of parameters in a Poisson mixture model. 
 }
 
 \value{
-\item{ll }{Difference in log likelihoods for two different sets of parameters}
+\item{ll }{Difference in log likelihoods for two different sets of parameters, or per-observation log-likelihood}
 }
 \note{
 In the \code{logLikePoisMixDiff} function, we make use of the alternative mass function for a Poisson density proposed by Loader (2000) to avoid computational difficulties. The \code{logLikePoisMixDiff} function returns a default value of 100 if one or both of the log likelihoods associated with the two parameter sets takes on a value of \eqn{-\infty}{-\infty}.

@@ -17,7 +17,7 @@ PoisMixClusWrapper <- function(y, gmin = 1, gmax, conds, lib.size = TRUE, lib.ty
 		prev.labels = NA, prev.probaPost = NA, verbose = verbose,
 		interpretation = interpretation)
 
-	## For g > gmin, run PoisMixClus with Panos init using previous results
+	## For g > gmin, run PoisMixClus with Panos-like init using previous results
 	index <- 2
 	if(gmax > gmin) {
 		if(split.init == TRUE) {

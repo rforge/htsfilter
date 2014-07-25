@@ -130,7 +130,7 @@ PoisMixClus <- function(y, g, conds, lib.size = TRUE, lib.type = "TMM",
 			fixed.lambda = fixed.lambda,
 			equal.proportions = equal.proportions, 
 			prev.labels = prev.labels, prev.probaPost = prev.probaPost,
-			init.runs = init.runs, init.iter = init.iter, verbose = verbose)
+			init.iter = init.iter, init.runs = init.runs, verbose = verbose)
 	}
 	param.init <- do.call(init.alg, init.args)
 
@@ -308,7 +308,9 @@ PoisMixClus <- function(y, g, conds, lib.size = TRUE, lib.type = "TMM",
 		BIC <- -LL + (np/2) * log(n)
 #		entropy <- -2*sum(z*log(t), na.rm = TRUE)
 		## CHANGE October 18, 2013: replace z with t in the entropy calculation for ICL
-		entropy <- -2*sum(t*log(t), na.rm = TRUE)
+#		entropy <- -2*sum(t*log(t), na.rm = TRUE)
+		## CHANGE July 25, 2014: typo in entropy (thanks, Melina Gallopin!)
+		entropy <- -sum(t*log(t), na.rm = TRUE)
 		ICL <- BIC + entropy
 	}
 	## Should cluster behavior (lambda) be interpretated wrt the gene means or sums?	

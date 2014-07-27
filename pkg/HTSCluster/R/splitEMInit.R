@@ -28,9 +28,9 @@ splitEMInit <- function(y, g, conds, lib.size,
 	perEntropy <- rep(NA, length(unique.labels))
 	names(perEntropy) <- unique.labels
 	for(k in 1:length(unique.labels)) {
-		perEntropy[k] <- -sum(log(prev.probaPost[which(prev.labels == unique.labels[k]),unique.labels[k]]))
+		perEntropy[k] <- -sum(log(prev.probaPost[which(prev.labels == as.numeric(unique.labels[k])),as.numeric(unique.labels[k])]))
 	}
-	cluster.choose <- unique.labels[which(perEntropy == max(perEntropy))]
+	cluster.choose <- as.numeric(unique.labels[which(perEntropy == max(perEntropy))])
 	index1 <- which(prev.labels == cluster.choose)
 	
 	## Random selection of observations within splitted component

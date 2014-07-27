@@ -10,10 +10,13 @@ splitEMInit <- function(y, g, conds, lib.size,
 	n <- dim(y)[1]
 	unique.labels <- unique(prev.labels)
 	## Check whether any of the clusters has one or zero observations & remove from consideration
-	tab <- table(prev.labels)
+	tab <- table(prev.labels) 
+	## Fix to make sure that we only consider clusters with at least 2 observations
+	unique.labels <- names(tab)
 	if(length(which(tab < 2)) > 0) {
-		unique.labels <- names(tab)
+		unique.labels <- names(tab)[-which(tab < 2)]
 	}
+
 	K <- g
 	if(class(fixed.lambda) == "list") {
 		K <- g + length(fixed.lambda);	

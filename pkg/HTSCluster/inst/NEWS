@@ -2,7 +2,14 @@
                 RELEASE HISTORY OF HTSCluster PACKAGE
              ========================================
 
-			 		CHANGES IN HTSCluster VERSION 2.0.3
+
+		CHANGES IN HTSCluster VERSION 2.0.4
+		
+- Minor changes to speed up code in logLikePoisMixDiff, PoisMixMean,
+  and probaPost, as well as compile time for Init Rd file.
+
+
+		CHANGES IN HTSCluster VERSION 2.0.3
 		
 - Fixed typo in calculation of entropy for ICL (thanks to M. Gallopin)
 - Added mylogLikePoisMixObs function to calculate log-likelihood for each 

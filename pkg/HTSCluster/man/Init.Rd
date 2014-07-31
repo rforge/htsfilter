@@ -134,13 +134,13 @@ conds <- simulate$conditions
 
 ## Calculate initial values for lambda and pi using the Small-EM
 ## initialization (4 classes, PMM-II model with "TC" library size)
-
-init.values <- emInit(y, g = 4, conds, lib.size = TRUE, 
-    lib.type = "TC", alg.type = "EM", 
-    init.runs = 50, init.iter = 10, fixed.lambda = NA,
-    equal.proportions = FALSE, verbose = FALSE)
-pi.init <- init.values$pi.init
-lambda.init <- init.values$lambda.init
+##
+## init.values <- emInit(y, g = 4, conds, lib.size = TRUE, 
+##   lib.type = "TC", alg.type = "EM", 
+##    init.runs = 50, init.iter = 10, fixed.lambda = NA,
+##    equal.proportions = FALSE, verbose = FALSE)
+## pi.init <- init.values$pi.init
+## lambda.init <- init.values$lambda.init
 
 
 }

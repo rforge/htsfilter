@@ -16,12 +16,10 @@ n <- dim(y)[1]; cols <- dim(y)[2]
 g <- length(pi.old)
 y <- matrix(y, nrow = n, ncol = cols)
 num <- den <- 0
-for(k in 1:g) {
-num.tmp <- do.call(.d0Func, list(y, mean.new[[k]]))
-den.tmp <- do.call(.d0Func, list(y, mean.old[[k]]))
-num <- num + pi.new[k]*exp(-rowSums(num.tmp))
-den <- den + pi.old[k]*exp(-rowSums(den.tmp))
-}
+num.tmp <- sapply(mean.new, .myfxn, var1=y)
+den.tmp <- sapply(mean.old, .myfxn, var1=y)
+num <- rowSums(t(pi.new * t(exp(-num.tmp))))
+den <- rowSums(t(pi.old * t(exp(-den.tmp))))
 num <- ifelse(num == 0, NA, num)
 den <- ifelse(den == 0, NA, den)
 ll.tmp <- ifelse(is.nan(log(num) - log(den)) == TRUE, NA, log(num) - log(den))

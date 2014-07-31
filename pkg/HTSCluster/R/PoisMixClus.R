@@ -132,7 +132,8 @@ PoisMixClus <- function(y, g, conds, lib.size = TRUE, lib.type = "TMM",
 			prev.labels = prev.labels, prev.probaPost = prev.probaPost,
 			init.iter = init.iter, init.runs = init.runs, verbose = verbose)
 	}
-	param.init <- do.call(init.alg, init.args)
+	## Adding quote = TRUE to speed up do.call
+	param.init <- do.call(init.alg, init.args, quote=TRUE)
 
 	if(equal.proportions == FALSE) {
 		pi <- pi.old <- param.init$pi.init

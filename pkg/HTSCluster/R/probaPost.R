@@ -22,10 +22,11 @@ if(is.matrix(lambda) == FALSE | ncol(lambda) != g | nrow(lambda) != length(uniqu
 n <- dim(y)[1]; cols <- dim(y)[2];
 t <- matrix(0, nrow = n, ncol = g)
 mean <- PoisMixMean(y, g, conds, s, lambda)
-
-for(k in 1:g) {
-t[,k] <- pi[k] * apply(dpois(y, mean[[k]]), 1, prod)
+myprobafxn <- function(k, y, pi, mean) {
+	pi[k] * exp(rowSums(dpois(y, mean[[k]], log=T)))
 }
+t <- sapply(1:g, myprobafxn, y=y, pi=pi, mean=mean)
+
 ## Fix problematic values of t (= 0 for all clusters)
 for(j in which(rowSums(t) == 0)) {
 mean.list <- do.call("rbind", lapply(mean, function(x) x[j,]))
@@ -35,8 +36,9 @@ distance <- distance[-1]
 cluster <- which(distance == min(distance))[1]
 t[j,cluster] <- 1
 }
-## Normalize t
-t <- apply(t, 2, function(x) x/rowSums(t))
+## Normalize t: I think this is an error here
+##t <- apply(t, 2, function(x) x/rowSums(t))
+t <- t / rowSums(t)
 ## Smoothing prior to M-Step (0's set to 1e-10, 1's set to 1-1e-10)
 epsilon <- 1e-10;maxcut <- 1-epsilon; mincut <- epsilon
 t <- apply(t, 2, pmax, mincut); t <- apply(t, 2, pmin, maxcut);

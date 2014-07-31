@@ -36,6 +36,6 @@ nullModelLogLike <- function(counts, conds, norm="TMM")
       z <- matrix(1, nrow = n, ncol = 1)
  	np <- n   ## Just the w's to be estimated    
    
-      BIC <- LL - (np/2) * log(n)
+      BIC <- -LL + (np/2) * log(n)
 	return(list(logLike=LL, BIC=BIC, ICL=BIC))
 }

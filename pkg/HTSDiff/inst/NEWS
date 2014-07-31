@@ -2,6 +2,10 @@
                 RELEASE HISTORY OF HTSDiff PACKAGE
              ========================================
 
+		CHANGES in HTSDiff VERSION 1.0.3
+		
+-- Corrected sign of BIC in nullLogLikeModel (thanks M.-L. Martin-Magniette!)
+			 
 		CHANGES in HTSDiff VERSION 1.0.2
 
 -- Updated dependency of HTSCluster to most recent version (2.0.3)

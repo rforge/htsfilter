@@ -2,12 +2,11 @@
                 RELEASE HISTORY OF HTSCluster PACKAGE
              ========================================
 
-
 		CHANGES IN HTSCluster VERSION 2.0.4
 		
 - Minor changes to speed up code in logLikePoisMixDiff, PoisMixMean,
-  and probaPost, as well as compile time for Init Rd file.
-
+  and probaPost and avoiding recalculating library sizes multiple times across
+  several functions, as well as improving compile time for Init Rd file.
 
 		CHANGES IN HTSCluster VERSION 2.0.3
 		

@@ -13,7 +13,7 @@ PoisMixClus(y, g, conds, lib.size = TRUE, lib.type = "TMM",
     alg.type = "EM", cutoff = 10e-6, iter = 1000, fixed.lambda = NA,
     equal.proportions = FALSE, prev.labels = NA, 
     prev.probaPost = NA, verbose = FALSE, interpretation = "sum",
-	EM.verbose = FALSE)
+	EM.verbose = FALSE, wrapper = FALSE, s = NA)
 
 PoisMixClusWrapper(y, gmin = 1, gmax, conds, lib.size = TRUE,
     lib.type = "TMM", gmin.init.type = "small-em",
@@ -102,6 +102,15 @@ otherwise for \code{"mean"}, cluster behavior is interpreted with respect to mea
   \item{EM.verbose}{
 If \code{TRUE}, more informative output is printed about the EM algorithm, including the number of iterations run and
 the difference between log-likelihoods at the last and penultimate iterations.
+}
+  \item{wrapper}{
+\code{TRUE} if the \code{PoisMixClus} function is run from within the \code{PoisMixClusWrapper} main function, and \code{FALSE}
+otherwise. This mainly helps to avoid recalculating parameters several times that are used throughout the algorithm (eg, library
+sizes, etc.)
+}
+  \item{s}{
+Estimate of normalized per-variable library size. If NA, these are re-estimated within the \code{PoisMixClus} function. When called
+as part of the \code{PoisMixClusWrapper} main function, these are estimated a single time and passed to the \code{PoisMixClus} function.
 }
 }
 \details{

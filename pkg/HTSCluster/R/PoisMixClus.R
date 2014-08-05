@@ -225,18 +225,18 @@ PoisMixClus <- function(y, g, conds, lib.size = TRUE, lib.type = "TMM",
 			}
 			denom <- colSums(t * w)
 			if(class(fixed.lambda) != "list") {
-				for(j in 1:d) {
-					denom.bis <- denom * s.dot[j]
-					num <- colSums(t * 
-						matrix(rep(rowSums(as.matrix(y[,which(conds == (unique(conds))[j])])),K), 
-					ncol = K))
-					lambda[j,] <- num / denom.bis
-				}
+				denom.bis <- matrix(rep(denom, length(s.dot)) * rep(s.dot, each=K), byrow=T, ncol=K)
+				num <- matrix(rowsum(matrix(y, ncol=n, nrow=length(conds), byrow=T), group=conds), 
+					nrow=n, ncol=d, byrow=T)
+				num <- matrix(unlist(lapply(lapply(1:d, function(x) t*num[,x]), colSums), recursive=FALSE,
+					use.names=FALSE), nrow=d, ncol=K, byrow=T)
+				lambda <- num/denom.bis
 			}
 			if(class(fixed.lambda) == "list") {
 				for(ll in 1:length(fixed.lambda)) {
 					lambda[,ll] <- fixed.lambda[[ll]]
 				}
+				## This loop could be improved for speed as above
 				for(j in 1:d) {
 					denom.bis <- denom * s.dot[j]
 					denom.bis <- denom.bis[-c(1:length(fixed.lambda))]

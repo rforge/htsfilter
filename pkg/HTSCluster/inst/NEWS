@@ -7,6 +7,9 @@
 - Minor changes to speed up code in logLikePoisMixDiff, PoisMixMean,
   probaPost, and PoisMixClus and avoiding recalculating library sizes multiple 
   times across several functions, as well as improving compile time for Init Rd file.
+- Import capushe package and added capushe results and plotting capabilities for
+  PoisMixClusWrapper, and removed ggplot2 and RColorBrewer dependencies.
+- Completed vignette.
 
 		CHANGES IN HTSCluster VERSION 2.0.3
 		

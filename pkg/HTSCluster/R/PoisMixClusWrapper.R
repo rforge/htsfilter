@@ -86,8 +86,8 @@ PoisMixClusWrapper <- function(y, gmin=1, gmax, conds, lib.size=TRUE, lib.type =
 		if(split.init == TRUE) {
 			for(K in seq((gmin+1),gmax,1)) {
 				cat("Running g =", K, "...\n")
-				prev.labels <- all.results[[K-1]]$labels
-				prev.probaPost <- all.results[[K-1]]$probaPost
+				prev.labels <- all.results[[index-1]]$labels
+				prev.probaPost <- all.results[[index-1]]$probaPost
 				all.results[[index]] <- PoisMixClus(y = y, g = K, lib.size = lib.size, 
 					lib.type = lib.type, conds = conds, 
 					init.type = "split.small-em", 
@@ -122,8 +122,23 @@ PoisMixClusWrapper <- function(y, gmin=1, gmax, conds, lib.size=TRUE, lib.type =
 	ICL.all <- unlist(lapply(all.results, function(x) x$ICL))
 	ICL.choose <- which(ICL.all == max(ICL.all, na.rm = TRUE))
 	select.results <- all.results[[ICL.choose]]
+	
+	# Apply capushe
+	Kchoice <- gmin:gmax
+	np <- (Kchoice-1) + (length(unique(conds))-1)*(Kchoice)
+	mat <- cbind(Kchoice, np/n, np/n, -logLike.all)
+	ResCapushe <- capushe(mat, n)
+	DDSE <- ResCapushe@DDSE@model
+	Djump <- ResCapushe@Djump@model
+	DDSE.results <- all.results[[paste("g=", DDSE, sep="")]]
+	Djump.results <- all.results[[paste("g=", Djump, sep="")]]
+		
 	RESULTS <- list(logLike.all = logLike.all, ICL.all = ICL.all,
-		select.results = select.results, all.results = all.results)
+		capushe = ResCapushe, 
+		all.results = all.results,
+		DDSE.results = DDSE.results,
+		Djump.results = Djump.results,
+		ICL.results = select.results)
 	class(RESULTS) <- "HTSClusterWrapper"
 	return(RESULTS)
 }

@@ -122,23 +122,41 @@ PoisMixClusWrapper <- function(y, gmin=1, gmax, conds, lib.size=TRUE, lib.type =
 	ICL.all <- unlist(lapply(all.results, function(x) x$ICL))
 	ICL.choose <- which(ICL.all == max(ICL.all, na.rm = TRUE))
 	select.results <- all.results[[ICL.choose]]
+	select.results$model.selection <- "ICL"
 	
-	# Apply capushe
-	Kchoice <- gmin:gmax
-	np <- (Kchoice-1) + (length(unique(conds))-1)*(Kchoice)
-	mat <- cbind(Kchoice, np/n, np/n, -logLike.all)
-	ResCapushe <- capushe(mat, n)
-	DDSE <- ResCapushe@DDSE@model
-	Djump <- ResCapushe@Djump@model
-	DDSE.results <- all.results[[paste("g=", DDSE, sep="")]]
-	Djump.results <- all.results[[paste("g=", Djump, sep="")]]
+	BIC.all <- unlist(lapply(all.results, function(x) x$BIC))
+	BIC.choose <- which(BIC.all == max(BIC.all, na.rm = TRUE))
+	select.results2 <- all.results[[BIC.choose]]
+	select.results2$model.selection <- "BIC"
+	
+	# Apply capushe: only if at least 10 models are considered
+	if(gmax-gmin+1 <= 10) {
+		message("Note: the slope heuristics approach for model selection may only be applied if more than 10 models are fit.")
+		DDSE.results <- NA
+		Djump.results <- NA
+		capushe <- NA
+	}
+	if(c(gmax-gmin+1) > 10) {
+		message("Note: diagnostic plots for results corresponding to model selection via slope heuristics (Djump and DDSE) should be examined to ensure that sufficiently complex models have been considered.")
+		Kchoice <- gmin:gmax
+		np <- (Kchoice-1) + (length(unique(conds))-1)*(Kchoice)
+		mat <- cbind(Kchoice, np/n, np/n, -logLike.all)
+		ResCapushe <- capushe(mat, n)
+		DDSE <- ResCapushe@DDSE@model
+		Djump <- ResCapushe@Djump@model
+		DDSE.results <- all.results[[paste("g=", DDSE, sep="")]]
+		Djump.results <- all.results[[paste("g=", Djump, sep="")]]
+		DDSE.results$model.selection <- "DDSE"
+		Djump.results$model.selection <- "Djump"
+	}
 		
 	RESULTS <- list(logLike.all = logLike.all, ICL.all = ICL.all,
 		capushe = ResCapushe, 
 		all.results = all.results,
 		DDSE.results = DDSE.results,
 		Djump.results = Djump.results,
-		ICL.results = select.results)
+		ICL.results = select.results,
+		BIC.results = select.results2)
 	class(RESULTS) <- "HTSClusterWrapper"
 	return(RESULTS)
 }

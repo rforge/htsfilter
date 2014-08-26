@@ -150,9 +150,12 @@ There are two approaches to estimating the parameters of a finite mixture model 
 \item{capushe }{Results of capushe model selection, an object of class \code{"Capushe"}}
 \item{ICL.all }{ICL values calculated for each of the fitted models for cluster sizes \code{gmin}, ..., \code{gmax}}
 \item{ICL.results }{Object of class \code{HTSCluster} giving the results from the model chosen via the ICL criterion}
+\item{BIC.results }{Object of class \code{HTSCluster} giving the results from the model chosen via the BIC}
 \item{DDSE.results }{Object of class \code{HTSCluster} giving the results from the model chosen via the DDSE slope heuristics criterion}
 \item{Djump.results }{Object of class \code{HTSCluster} giving the results from the model chosen via the Djump slope heuristics criterion}
 \item{all.results }{List of objects of class \code{HTSCluster} giving the results for all models for cluster sizes \code{gmin}, ..., \code{gmax}}
+\item{model.selection }{Type of criteria used for model selection, equal to \code{NA} for direct calls to \code{PoisMixClus} or
+\code{"DDSE"}, \code{"Djump"}, \code{"BIC"}, or \code{"ICL"} for the respective selected models for calls to \code{PoisMixClusWrapper}}
 }
 
 \references{

@@ -345,7 +345,7 @@ PoisMixClus <- function(y, g, conds, lib.size = TRUE, lib.type = "TMM",
 	results <- list(lambda = lambda.final, pi = pi.final, labels = labels, 
 		probaPost = probaPost, log.like = LL, BIC = -BIC, ICL = -ICL, 
 		alg.type = alg.type, lib.size = lib.size, lib.type = lib.type, s = s,
-		conds = conds, iterations = index, logLikeDiff = diff)
+		conds = conds, iterations = index, logLikeDiff = diff, model.selection = NA)
 
 	class(results) <- "HTSCluster"
 	return(results)

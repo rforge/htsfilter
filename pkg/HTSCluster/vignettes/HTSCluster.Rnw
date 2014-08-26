@@ -25,7 +25,7 @@ Marie-Laure Martin-Magniette, and Gilles Celeux\\[1em]
 
 The full User's Guide for {\it HTSCluster} may be found by installing the {\it HTSCluster} package and loading it into an R session via \texttt{library(HTSCluster)}.
 In R for Windows, the User's Guide is then available from the drop-down menu called ``Vignettes''. In other operating systems, type
-<<load>>=
+<<load, results=hide, eval=false>>=
 library(HTSCluster)
 HTSClusterUsersGuide()
 @

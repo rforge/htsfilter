@@ -6,9 +6,33 @@
 
 \documentclass[10pt,oneside]{article}
 \usepackage{natbib}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\newcommand\bfm[1]{\ensuremath\boldsymbol{#1}}
+\newcommand\code[1]{\texttt{#1}}
+\newcommand\x{\mathbf{x}}
+\newcommand\y{\mathbf{y}}
+\newcommand\z{\mathbf{z}}
+\newcommand\s{\mathbf{s}}
+\newcommand\w{\mathbf{w}}
+\newcommand\X{\mathbf{X}}
+\newcommand\Y{\mathbf{Y}}
+\newcommand\Z{\mathbf{Z}}
+\newcommand\Pois{\mathcal{P}}
+\newcommand\MVPois{\mathcal{MVP}}
+\newcommand\PSI{\bfm{\Psi}}
+\newcommand\LAMBDA{\bfm{\lambda}}
+\newcommand\THETA{\bfm{\theta}}
+\newcommand\MU{\bfm{\mu}}
+\newcommand\PI{\bfm{\pi}}
+\renewcommand{\b}{{(b)}}
+\newcommand{\bb}{{(b+1)}}
 
 \newcommand{\thetitle}{Differential expression analysis of RNA-seq data with the HTSDiff package}
 \usepackage{whbiocvignette}
+
+
 
 \title{\textsf{\textbf{\thetitle}}}
 \author{S. Balzergue, G. Rigaill, V. Brunaud, E. Blondet, A. Rau$^1$, O. Rogier, J. Caius, \\
@@ -24,37 +48,180 @@ and M.-L. Martin-Magniette.\\[1em]
 \SweaveOpts{keep.source=TRUE,eps=FALSE,pdf=FALSE,png=TRUE,include=FALSE,width=5.4,height=3.7,resolution=180}
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 <<options,results=hide,echo=FALSE>>=
 options(digits=3, width=100)
 @
 
 \maketitle
 
+
 \begin{abstract}
-This vignette explains the use of the \Rpackage{HTSDiff} package. 
-For a presentation of the statistical method, please see our paper.
+This vignette explains the use of the \Rpackage{HTSDiff} package for the differential
+analysis of RNA-seq data from two experimental conditions. A full presentation of the statistical method implemented in the \Rpackage{HTSDiff} package may be found in 
+\citep{Balzergue2014}.
 \end{abstract}
+
 
 \tableofcontents
 
+
 %--------------------------------------------------
-\section{Input data} \label{sec:prep}
+\section{Introduction to HTSDiff} \label{sec:intro}
 %--------------------------------------------------
+Numerous methods of differential analysis for RNA-seq data have been developed in recent years (e.g., \citep{Anders2010, Robinson2010a} among many others). Generally speaking, the majority of these methods rely on the same general principle as a typical microarray differential analysis: for each detected gene, a 
+statistical test is performed to identify whether or not the normalized expression level in each condition is compatible with the per-gene null hypothesis of no difference in 
+expression between the tested conditions (i.e., differences in expression may be attributed solely to technical and biological variability). As a small number of replicates are typically available in current RNA-seq experiments, a variety of approaches have been proposed to obtain appropriate estimates of this gene-specific variability by sharing information across the whole set of genes. In contrast to these test-based approaches, the \Rpackage{HTSDiff} package recasts the differential analysis as an unsupervised classification problem using a model-based clustering approach. In this way, the full gene population is jointly modeled to distinguish a limited number of gene groups, each behaving differently, and the resulting model is interpreted in terms of differential expression. 
 
-In this vignette, we will work with the gene level read counts from
-the \Rpackage{...} data package.
+\subsection{Citation}
+Please cite the appropriate articles when publishing results based on this software:
+\begin{itemize}
+\item Balzergue, D. {\it et al.} (2014) HTSDiff: a sensitive analysis of differential gene expression by RNA-seq (submitted).\\
+{\footnotesize Introduced the use of a Poisson mixture model for differential analyses.}
+\item Rau, A. {\it et al.} (2014) Co-expression analysis of high-throughput transcriptome sequencing data with Poisson mixture models (submitted).\\
+{\footnotesize Introduced the Poisson mixture model for RNA-seq data, described parameter initialization and estimation.}
+\end{itemize}
+
+\subsection{Quick start}
+A classic \Rpackage{HTSDiff} analysis might look like the following, where we assume there are four RNA-seq libraries in two conditions, and the counts are stored in tab-delimted text file:
+<<quickstart, eval=FALSE>>=
+y <- read.table("counts.txt")
+conds <- c(1,1,2,2)
+mod <- HTSDiff(y, conds)
+DEresults <- mod$res
+@
+For the time being, \Rpackage{HTSDiff} has been defined only for two-group comparisons.
+
+\subsection{Description of HTSDiff model}
+
+We model the joint distribution of digital gene expression over all samples by a finite mixture of Poisson distributions, where samples are assumed to be conditionally independent given the components. In particular, let $Y_{ijl}$ be the random variable corresponding to the digital gene expression measure (DGE) for gene $i$ ($i = 1,\ldots, n$) of condition $j$ ($j$ = 1,2) in biological replicate $l$ ($l = 1,\ldots,r_j$), with $y_{ijl}$ being the corresponding observed value of $Y_{ijl}$. We assume that the overall gene population is distributed under the following mixture:
+\begin{equation}
+f(\y;K,\PSI_K)
+= \prod_{i=1}^n \sum_{k=1}^K \pi_k \prod_{j=1}^d \prod_{l=1}^{r_j} \Pois(y_{ijl};\mu_{ijlk}),
+\label{eqn:mixmod}
+\end{equation}
+where $K$ is the number of clusters, $\PSI_K = ( \pi_1,\ldots,\pi_{K-1}, \bfm{\mu}^\prime )^\prime$, $\bfm{\mu}^\prime$ contains all of the parameters in $\{\bfm{\mu}_{ijlk}\}_{i,j,l,k}$,
+$\PI = (\pi_1,\ldots,\pi_K)^\prime$ are the mixing proportions, with $\pi_k \in (0,1)$ for all $k$ and $\sum_{k=1}^K \pi_k = 1$, and $\Pois(\cdot)$ denotes the standard Poisson probability mass function. 
+
+The expectations of the Poisson distributions in Equation~(\ref{eqn:mixmod}) are defined so that genes exhibiting similar expression patterns across samples are clustered together:
+\begin{equation}
+\mu_{ijlk} = w_i s_{jl} \lambda_{jk} \nonumber
+\end{equation}
+where $w_i = y_{i..}$ corresponds to the overall expression level of observation $i$ (e.g., weakly to strongly expressed), and $s_{jl}$ represents the normalized library size for replicate $l$ of condition $j$, such that $\sum_{j,l} s_{jl} = 1$. We note that, similarly to test-based differential analysis methods such as \Rpackage{edgeR} and \Rpackage{DESeq2}, the normalization factors $\{s_{jl}\}_{j,l}$ are estimated from the data prior to fitting the model (for example, using the Trimmed Means of M-values method \citep{Oshlack2009}) and are subsequently considered to be fixed. Finally, the unknown parameter vector $\LAMBDA_{k} = (\lambda_{1k},\ldots,\lambda_{dk})$ corresponds to the clustering parameters that define the profiles of the genes in cluster $k$ across all biological conditions (i.e., a measure of per-condition variability around the mean). The model parameters are estimated by an adapted Expectation-Maximization algorithm \citep{Rau2014}.
+
+
+Based on an extensive simulation study and analyses of real data, a mixture of $K$=5 clusters was found to provide a satisfactory fit for most RNA-seq datasets. In \Rpackage{HTSDiff}, the first cluster is fixed to represent a set of non-differentially expressed genes by setting the value of $\LAMBDA_1 = (\lambda_{11}, \lambda_{21}) = 1$. After fitting the model, the remaining clusters are reorganized into two groups according to the absolute value of $\log_2 (\lambda_{1k} / \lambda_{2k})$ for each cluster $k$; if this log-ratio is less than $\epsilon$ (fixed to 0.8 by default), the difference between the two conditions is judged to be sufficiently weak, and the cluster is considered to represent a group of non-differentially expressed genes. Finally, a gene is declared to be differentially expressed only if its conditional probability of non-differential expression is less than $10^{-8}$.
+
+
 
 %------------------------------------------------------------
-\section{Inference: Identifying differentially expressed genes} \label{sec:inference}
-%------------------------------------------------------------
-To be completed.
-
-%\clearpage
-%------------------------------------------------------------
-\section{Further reading}\label{sec:further}
+\section{Identifying differentially expressed genes with HTSDiff} 
 %------------------------------------------------------------
 
-For more information on the statistical method, see \citep{Rau2014} and \citep{Balzergue2014} .
+
+\subsection{Input data from Balzergue {\it et al.} (2014)} 
+
+To illustrate the use of \Rpackage{HTSDiff} for the differential analysis of RNA-seq data in this vignette, we will work with the gene-level read counts from Balzergue {\it et al.} (2014) \citep{Balzergue2014}. Briefly, in this study RNA-seq data were obtained from two biological replicates of both leaves and buds of wild-type Col0 {\it Arabidopsis thaliana}, which are known to have very different transcriptomic profiles. The same total RNA from each biological replicate was used, in parallel, for RNA-seq, microarray, and qRT-PCR analyses. The raw read counts and phenotypic labels for 28,094 genes are contained in a file called \texttt{counts.txt}.
+
+We begin by loading the software packages and data, and by removing genes with 0 counts in all samples, leaving a total of 25,216 genes for the subsequent differential analysis.
+
+<<setwd, echo=FALSE>>=
+setwd("W:/Documents/Papers/2013_HTSDiff/HTSDiff_files/")
+@
+
+<<loaddat>>=
+library(HTSDiff)
+y <- read.table("counts.txt", header=TRUE, row.names=1)
+head(y)
+conds <- c("BF","BF","F","F")
+y <- y[rowSums(y)>0,]
+dim(y)
+@
+
+<<setwd2, echo=FALSE>>=
+setwd("C:/Users/arau/Desktop/HTSDiff_dev/HTSDiff/vignettes")
+@
+
+\subsection{Inference}
+
+
+To perform a differential analysis using the \Rpackage{HTSDiff} package, we make use of the following code (which takes a few seconds to run):
+
+<<diffanalysis>>=
+set.seed(12345)
+DEtest <- HTSDiff(counts=y, conds=conds)
+@
+
+By default, normalization for differences in library size is performed using the Trimmed Mean of M-values (TMM) procedure described in \citep{Oshlack2009}, although a variety of other methods (total count, upper quantile, median, and DESeq) are available. 
+
+The output of primary interest to most users of \Rpackage{HTSDiff} is the results data 
+frame, contained in the object \code{res}:
+<<res>>=
+res <- DEtest$res
+head(res)
+@
+This object contains the gene IDs, base and condition-specific (normalized) means, fold-change, $\log_2$ fold-change, conditional probability of differential expression (\code{tauDE}), conditional probability of non-differential expression (\code{tauNDE}), and a binary vector (\code{DE}) indicating whether a gene is identified as differentially expressed (\code{TRUE}) or not. For these data, we find that a total of 8911 genes have been identified as differentially expressed using \Rpackage{HTSDiff}:
+<<DE>>=
+table(res$DE)
+@
+
+In addition, the output of \Rpackage{HTSDiff} includes a variety of information regarding the fit of the underlying Poisson mixture model contained in the object \code{PMM}, including the estimates for $\LAMBDA$ and $\PI$, the conditional probabilities of cluster membership for all genes and clusters (\code{probaPost}), the value of the log-likelihood and two penalized likelihood criteria (Bayesian Information Criterion (BIC) and Integrated Completed Likelihood (ICL) criterion), the type of algorithm used for parameter estimation, the number of iterations run in the EM algorithm, and the difference in log-likelihood values between the last and penultimate iterations of the algorithm:
+<<PMM>>=
+names(DEtest$PMM)
+@
+
+The functionalities of the related \Rpackage{HTSCluster} package may be used to explore the \code{PMM} object in greater detail, including the \code{summary} and \code{plot} functions for the S3 class \code{HTSCluster}:
+<<summary>>=
+summary(DEtest$PMM)
+@
+
+\subsection{Comparison to other test-based methods}
+
+As a comparison, we also conduct a differential analysis with the test-based 
+\Rpackage{edgeR} Bioconductor package \citep{Robinson2010}, which makes use of a
+negative binomial model to test the per-gene null hypothesis of non-differential expression between conditions. The primary novelty of the \Rpackage{edgeR} package is the use of empirical Bayes methods to improve estimates of gene-specific biological variation, even when a small number of biological replicates are available.
+
+The differential analysis with \Rpackage{edgeR} is run as follows:
+<<edgeR>>=
+library(edgeR)
+y <- DGEList(counts=y, group=conds)
+y <- calcNormFactors(y)
+y <- estimateCommonDisp(y)
+y <- estimateTagwiseDisp(y)
+et <- exactTest(y)
+de <- decideTestsDGE(et, p=0.05, adjust="BH")
+summary(de)
+@
+We note that a total of 10,212 genes (6340 underexpressed and 3872 overexpressed in buds with respect to leaves) are identified as significantly differentially expressed, after controlling the false discovery rate with the Benjamini-Hochberg method at 5\%. We note that most of the genes identified as DE by \Rpackage{HTSDiff} (8352 out of 8911) are also identifed by \Rpackage{edgeR}, as shown in the table below.
+
+<<venn>>=
+tab <- table(abs(de),res$DE)
+rownames(tab) <- c("NDE (edgeR)", "DE (edgeR)")
+colnames(tab) <- c("NDE (HTSDiff)", "DE (HTSDiff)")
+tab
+@
+
+We also include a plot of the tagwise dispersions against the $\log_2$ counts per million (CPM) values; from this plot, it may be observed that genes identified as differentially expressed uniquely by \Rpackage{edgeR} tend to have fairly low biological coefficients of variation and small average CPM values, whereas those uniquely identified by \Rpackage{HTSDiff} tend to have larger biological coefficients of variation and average CPM values.
+
+<<bcv, fig=TRUE, include=TRUE, height=6, width=7>>=
+
+A <- y$AveLogCPM
+disp <- getDispersion(y)
+colors <- ifelse(abs(de)==1 & res$DE==TRUE, "grey5", "grey70")
+colors <- ifelse(abs(de)==1 & res$DE==FALSE, "blue", colors)
+colors <- ifelse(abs(de)==0 & res$DE==TRUE, "red", colors)
+cex <- rep(0.4, length(abs(de)))
+cex <- ifelse(abs(de)==1 & res$DE==FALSE, 0.7, cex)
+cex <- ifelse(abs(de)==0 & res$DE==TRUE, 0.7, cex)
+plot(A, sqrt(disp), xlab="Average log CPM", ylab="Biological coef of variation", 
+     type="n")
+points(A, sqrt(y$tagwise.dispersion), pch = 16, cex=cex, col=colors)
+legend("topright", c("NDE", "DE (HTSDiff & edgeR)", "DE (edgeR)", "DE (HTSDiff"), 
+       col=c("grey70","grey5","blue", "red"), bty="n", pch=16, cex=0.7)
+
+@
+
+\clearpage
 
 \section{Session Info}
 <<sessi>>=

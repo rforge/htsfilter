@@ -33,9 +33,15 @@ HTSDiff <- function(counts, conds, DEclusters=4, norm="TMM", epsilon=0.8, EM.ver
   if(length(index)!=1) {
     probaNDE<-apply(matrix(probaPost[,index], nrow=nrow(counts)),1,sum)
     probaDE <- apply(matrix(probaPost[,-index], nrow=nrow(counts)), 1, sum)
-  } else {
+  }
+  if(length(index)==1) {
     probaNDE<-probaPost[,index];
     probaDE <- apply(matrix(probaPost[,-index], nrow=nrow(counts)), 1, sum)
+  }
+  ## Added September 11, 2014: all genes are NDE if all clusters have too small of a
+  ## ratio between lambdas
+  if(length(index) == DEclusters + 1) {
+	probaNDE <- rep(1, length(probaNDE))
   }
   DE <- ifelse(probaNDE<=1e-8, TRUE, FALSE)
   

@@ -12,8 +12,8 @@ genes from RNA-seq data.
 \tabular{ll}{
 Package: \tab HTSDiff\cr
 Type: \tab Package\cr
-Version: \tab 1.0.3\cr
-Date: \tab 2014-07-31\cr
+Version: \tab 1.0.4\cr
+Date: \tab 2014-09-22\cr
 License: \tab GPL (>=3)\cr
 LazyLoad: \tab yes\cr
 }

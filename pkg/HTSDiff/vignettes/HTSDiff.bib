@@ -1,28 +1,143 @@
 % This file was created with JabRef 2.9.2.
 % Encoding: Cp1252
 
+@ARTICLE{Anders2010,
+  author = {Anders, S. and Huber, W.},
+  title = {Differential expression analysis for sequence count data},
+  journal = {Genome Biology},
+  year = {2010},
+  volume = {11},
+  pages = {1-28},
+  number = {R106},
+  comment = {Read count is linearly related to transcript abundance. DESeq similar
+	to edgeR (Negative Binomial model), but the variance is assumed to
+	be the sum of a shot noise and raw variance term, which is a smooth
+	function (mean-dependent local regression) of the expected value
+	of the true concentration of fragments from a particular gene (=
+	pool data from genes with similar expression strength for variance
+	estimation). Propose a similar method for determining the size factor
+	(median of ratio of gene count to geometric mean across samples),
+	similar to Oshlack and Robinson. Variance-stabilizing transformation
+	for clustering.},
+  owner = {Andrea_2},
+  timestamp = {2010.11.03}
+}
+
 @ARTICLE{Balzergue2014,
-  author = {S. Balzergue and G. Rigaill and V. Brunaud and E. Blondet and A.
-	Rau and O. Rogier and J. Caius and C. Maugis-Rabusseau and
-	
-	L. Soubigou-Taconnat and S. Aubourg and C. Lurin and E. Delannoy and
-	M.-L. Martin-Magniette},
-  title = {HTSDiff: a sensitive analysis of differential gene expression by
-	RNA-seq},
+  author = {S. Balzergue and others},
+  title = {{HTSDiff: a sensitive analysis of differential gene expression by
+	RNA-seq}},
   journal = {(submitted)},
   year = {2014},
   owner = {arau},
   timestamp = {2014.07.25}
 }
 
+@ARTICLE{Di2011,
+  author = {Di, Yanming and Schafer, Daniel W. and Cumbie, Jason S. and Chang,
+	Jeff H.},
+  title = {{The NBP negative binomial model for assessing differential gene
+	expression from RNA-Seq}},
+  journal = {Statistical},
+  year = {2011},
+  volume = {10},
+  pages = {1-28},
+  number = {24},
+  abstract = {"Our main point in the further development of statistical tools for
+	differential expression from RNA-Seq, though, is that all three of
+	the methods above [edgeR with trend, DESeq, NBP] improve substantially
+	on the one that assumes constant dispersion parameter, that the differences
+	between them are slight, and that the rapid and efficient development
+	of RNA-Seq statistical tools will benefit from the competitive but
+	cooperative study of teams following these different approaches."},
+  comment = {NBP parameterization of the negative binomial distribution (over-parameterized:
+	extra parameter alpha to describe mean-variance relationship). Good
+	description of statistical challenges for RNA-seq data. Compare to
+	Poisson, t-tests, limma, DESeq, edgeR. Simulations + Arabidopsis
+	data.},
+  owner = {Andrea_2},
+  timestamp = {2011.07.05}
+}
+
+@ARTICLE{Frazee2011,
+  author = {Frazee, A. C. and others},
+  title = {{ReCount: a multi-experiment resource of analysis-ready RNA-seq gene
+	count datasets}},
+  journal = {BMC Bioinformatics},
+  year = {2011},
+  volume = {12},
+  number = {449},
+  owner = {arau},
+  timestamp = {2012.05.29}
+}
+
+@ARTICLE{Oshlack2009,
+  author = {Oshlack, A. and Wakefield, M.J.},
+  title = {{Transcript length bias in RNA-seq data confounds systems biology}},
+  journal = {Biology Direct},
+  year = {2009},
+  volume = {4},
+  number = {14},
+  comment = {Bias is due to increased variance for shorter transcripts and higher
+	sampling for long genes compared to short genes -- we need a statistical
+	framework that gives similar FDR for different transcript lengths.
+	# of reads is proportional to length x expression ( = more power
+	to detect differential expression for longer genes). Assessed effect
+	on three previous studies (Sultan et al 1008, Cloonan et al 2008,
+	Marioni et al 2008)
+	
+	Even normalizing by gene length does not alleviate the problem (as
+	gene length still affects the variance of the estimate!) -- one suggestion
+	is to use a fixed length window approach},
+  owner = {Andrea_2},
+  timestamp = {2010.10.13}
+}
+
 @ARTICLE{Rau2014,
-  author = {Rau, Andrea and Maugis-Rabusseau, Cathy and Martin-Magniette, Marie-Laure
-	and Celeux, Gilles},
+  author = {Rau, A. and others},
   title = {{Co-expression analysis of high-throughput transcriptome sequencing
 	data with Poisson mixture models}},
   journal = {(submitted)},
   year = {2014},
   owner = {Arau},
   timestamp = {2014.04.24}
+}
+
+@ARTICLE{Rau2013,
+  author = {Rau, A. and others},
+  title = {Data-based filtering for replicated high-throughput transcriptome
+	sequencing experiments},
+  journal = {Bioinf.},
+  year = {2013},
+  volume = {29},
+  pages = {2146--2152},
+  number = {17},
+  owner = {Arau},
+  timestamp = {2013.09.16}
+}
+
+@ARTICLE{Robinson2010a,
+  author = {Robinson, M. D. and others},
+  title = {{edgeR: a Bioconductor package for differential expression analysis
+	of digital gene expression data}},
+  journal = {Bioinf.},
+  year = {2010},
+  volume = {26},
+  pages = {139-140},
+  owner = {arau},
+  timestamp = {2012.08.30}
+}
+
+@ARTICLE{Sultan2008,
+  author = {Sultan, M. and others},
+  title = {A global view of gene activity and alternative splicing by deep sequencing
+	of the human transcriptome},
+  journal = {Science},
+  year = {2008},
+  volume = {15},
+  pages = {956-60},
+  number = {5891},
+  owner = {arau},
+  timestamp = {2012.07.16}
 }
 

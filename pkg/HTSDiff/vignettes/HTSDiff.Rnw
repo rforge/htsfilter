@@ -123,24 +123,21 @@ Based on an extensive simulation study and analyses of real data, a mixture of $
 
 To illustrate the use of \Rpackage{HTSDiff} for the differential analysis of RNA-seq data in this vignette, we will work with the gene-level read counts from Balzergue {\it et al.} (2014) \citep{Balzergue2014}. Briefly, in this study RNA-seq data were obtained from two biological replicates of both leaves and buds of wild-type Col0 {\it Arabidopsis thaliana}, which are known to have very different transcriptomic profiles. The same total RNA from each biological replicate was used, in parallel, for RNA-seq, microarray, and qRT-PCR analyses. The raw read counts and phenotypic labels for 28,094 genes are contained in a file called \texttt{counts.txt}.
 
-We begin by loading the software packages and data, and by removing genes with 0 counts in all samples, leaving a total of 25,216 genes for the subsequent differential analysis.
+We begin by loading the software packages and data, which are contained in the \texttt{initialDataset} object in the \Rpackage{HTSDiff} package (note that for this analysis, we will only make use of the original bud and leaf samples, contained in the columns labeled \texttt{BF1}, \texttt{BF2}, \texttt{F1}, and \texttt{F2}). In addition, we remove genes with 0 counts in all samples, leaving a total of 25,216 genes for the subsequent differential analysis.
 
-<<setwd, echo=FALSE>>=
-setwd("W:/Documents/Papers/2013_HTSDiff/HTSDiff_files/")
-@
 
 <<loaddat>>=
 library(HTSDiff)
-y <- read.table("counts.txt", header=TRUE, row.names=1)
+data(initialDataset)
+y <- initialDataset[,c("BF1", "BF2", "F1", "F2")]
+## Fix gene IDs as row names
+rownames(y) <- initialDataset[,1]
 head(y)
 conds <- c("BF","BF","F","F")
 y <- y[rowSums(y)>0,]
 dim(y)
 @
 
-<<setwd2, echo=FALSE>>=
-setwd("C:/Users/arau/Desktop/HTSDiff_dev/HTSDiff/vignettes")
-@
 
 \subsection{Inference}
 

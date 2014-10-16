@@ -58,8 +58,8 @@ HTSDiff <- function(counts, conds, DEclusters=4, norm="TMM", epsilon=0.8, EM.ver
   ## Normalized baseMean, baseMeanA, and baseMeanB
   normCounts <- t(t(counts) / (s*length(conds)))
   baseMean <- rowMeans(normCounts)
-  baseMeanA <- rowMeans(normCounts[,which(conds == unique(conds)[1])])
-  baseMeanB <- rowMeans(normCounts[,which(conds == unique(conds)[2])])
+  baseMeanA <- rowMeans(matrix(normCounts[,which(conds == unique(conds)[1])], nrow=nrow(normCounts)))
+  baseMeanB <- rowMeans(matrix(normCounts[,which(conds == unique(conds)[2])], nrow=nrow(normCounts)))
   foldChange <- baseMeanB/baseMeanA
   log2FoldChange <- log2(foldChange)
   probaPostNDE <- probaPost[,1]

@@ -3,11 +3,12 @@
              ========================================
 
 
-		CHANGES in HTSDiff VERSION 1.0.4
+		CHANGES in HTSDiff VERSION 1.0.4-1.0.5
 		
 -- All genes are declared NDE if all clusters have a sufficiently small ratio
 of lambda values (lambda_1 / lambda_2 < epsilon).
 -- Completed vignette, and added to Windows menu.
+-- Correction for baseMeanA and baseMeanB when a single replicate is available.
 
 
 		CHANGES in HTSDiff VERSION 1.0.3

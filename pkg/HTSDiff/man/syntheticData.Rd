@@ -39,7 +39,7 @@ leaves, as is the case for the remaining genes); these genes thus represent true
 }
 \value{
 A \code{data.frame} of dimension 28,094 genes x 4 columns (with gene IDs as row names): read counts for two replicates of flower buds (BF1 and BF2) and
-read counts for two replicates of leaves (F1 and F2). Note that the 332 genes validated as differentially expressed via qPCR have been marked in the data
+read counts for two replicates of leaves (F1 and F2). Note that the 251 genes validated as differentially expressed via qPCR have been marked in the data
 by the addition of ".DE" to the end of their gene ID, the 81 validated as non-differentially expressed via
 qPCR have been marked by an additional ".NDE" at the end of their gene ID, and the \code{H0number} (or \code{H0number} percent) genes
 generated under the null hypothesis have been marked by an addition ".Hnull" at the end of their gene ID. 

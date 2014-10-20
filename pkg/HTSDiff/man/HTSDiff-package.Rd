@@ -13,7 +13,7 @@ genes from RNA-seq data.
 Package: \tab HTSDiff\cr
 Type: \tab Package\cr
 Version: \tab 1.0.5\cr
-Date: \tab 2014-10-16\cr
+Date: \tab 2014-10-20\cr
 License: \tab GPL (>=3)\cr
 LazyLoad: \tab yes\cr
 }

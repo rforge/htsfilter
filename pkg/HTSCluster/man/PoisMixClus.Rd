@@ -5,7 +5,7 @@
 Poisson mixture model estimation and model selection
 }
 \description{
-These functions implement the EM and CEM algorithms for parameter estimation in a Poisson mixture model for clustering high throughput sequencing observations (e.g., genes) for a single number of clusters (\code{PoisMixClus}) or a sequence of cluster numbers (\code{PoisMixClusWrapper}). Parameters are initialized using a Small-EM strategy as described in Rau et al. (2011) or the splitting small-EM strategy described in Papastamoulis et al. (2012), and model selection is performed using the ICL criteria. Note that these functions implement the PMM-I and PMM-II models described in Rau et al. (2011). 
+These functions implement the EM and CEM algorithms for parameter estimation in a Poisson mixture model for clustering high throughput sequencing observations (e.g., genes) for a single number of clusters (\code{PoisMixClus}) or a sequence of cluster numbers (\code{PoisMixClusWrapper}). Parameters are initialized using a Small-EM strategy as described in Rau et al. (2011) or the splitting small-EM strategy described in Papastamoulis et al. (2014), and model selection is performed using the ICL criteria. Note that these functions implement the PMM-I and PMM-II models described in Rau et al. (2011). 
 }
 \usage{
 PoisMixClus(y, g, conds, lib.size = TRUE, lib.type = "TMM", 
@@ -32,18 +32,18 @@ Number of clusters (a single value). If \code{fixed.lambda} contains a list of l
 \code{g} corresponds to the number of clusters in addition to those fixed.
 }
   \item{gmin}{
-The minimum number of clusters in a sequence to be tested, where \code{gmin} corresponds to the 
-minimum number of clusters in addition to those fixed.
+The minimum number of clusters in a sequence to be tested. In cases where clusters are included with a fixed value 
+of lambda, \code{gmin} corresponds to the minimum number of clusters in addition to those that are fixed.
 }
   \item{gmax}{
-The maximum number of clusters in a sequence to be tested, where \code{gmax} corresponds to the 
-maximum number of clusters in addition to those fixed.
+The maximum number of clusters in a sequence to be tested. In cases where clusters are included with a fixed value 
+of lambda, \code{gmax} corresponds to the maximum number of clusters in addition to those that are fixed.
 }
   \item{conds}{
 Vector of length \emph{q} defining the condition (treatment group) for each variable (column) in \code{y}
 }
   \item{lib.size}{
-If \code{FALSE}, the library size parameter is not included in the model (i.e., the PMM-I model). If \code{TRUE}, the library size parameter is included in the Poisson mixture model (i.e., the PMM-II model)
+If \code{FALSE}, the library size parameter is not included in the model. If \code{TRUE}, the library size parameter is included in the Poisson mixture model.
 }
   \item{lib.type}{
 If \code{lib.size = TRUE}, the estimator to be used for the library size parameter: (\dQuote{\code{TC}} for total count, \dQuote{\code{UQ}} for upper quantile, \dQuote{\code{Med}} for median, 
@@ -57,13 +57,13 @@ Type of initialization strategy to be used for the minimum number of clusters in
 (\dQuote{\code{small-em}} for the Small-EM strategy described in Rau et al. (2011), and \dQuote{\code{kmeans}} for a simple \emph{K}-means initialization)
 }
   \item{init.runs}{
-Number of iterations to be used for the Small-EM strategy described in Rau et al. (2011), with a default value of 1
+Number of runs to be used for the Small-EM strategy described in Rau et al. (2011), with a default value of 1
 }
   \item{init.iter}{
 Number of iterations to be used within each run for the Small-EM strategry, with a default value of 10
 }
   \item{split.init}{
-If \code{TRUE}, the splitting initialization strategy of Papastamoulis et al. (2012) will be used for cluster sizes
+If \code{TRUE}, the splitting initialization strategy of Papastamoulis et al. (2014) will be used for cluster sizes
 (\code{gmin}+1, ..., \code{gmax}). If \code{FALSE}, the initialization strategy specified in \code{gmin.init.type}
 is used for all cluster sizes in the sequence.
 }
@@ -77,14 +77,15 @@ Cutoff to declare algorithm convergence (in terms of differences in log likeliho
 Maximum number of iterations to be run for the chosen algorithm
 }
   \item{fixed.lambda}{
-If one (or more) clusters with fixed values of lambda is desired, a list containing vectors of length \emph{d} (the number of conditions). Note that the values of lambda chosen must satisfy the constraint noted in the technical report.
+If one (or more) clusters with fixed values of lambda is desired, a list containing vectors of length \emph{d} (the number of conditions). 
+specifying the fixed values of lambda for each fixed cluster.
 }
   \item{equal.proportions}{
 If \code{TRUE}, the cluster proportions are set to be equal for all clusters. Default is \code{FALSE} (unequal cluster proportions).
 }
   \item{prev.labels}{
 A vector of length \emph{n} of cluster labels obtained from the previous run (g-1 clusters) to be used with the splitting
-small-EM strategy described in described in Papastamoulis et al. (2012). For other initialization strategies, this 
+small-EM strategy described in described in Papastamoulis et al. (2014). For other initialization strategies, this 
 parameter takes the value NA
 }
   \item{prev.probaPost}{
@@ -105,7 +106,7 @@ the difference between log-likelihoods at the last and penultimate iterations.
 }
   \item{wrapper}{
 \code{TRUE} if the \code{PoisMixClus} function is run from within the \code{PoisMixClusWrapper} main function, and \code{FALSE}
-otherwise. This mainly helps to avoid recalculating parameters several times that are used throughout the algorithm (eg, library
+otherwise. This mainly helps to avoid recalculating parameters several times that are used throughout the algorithm (e.g., library
 sizes, etc.)
 }
   \item{s}{
@@ -157,13 +158,21 @@ There are two approaches to estimating the parameters of a finite mixture model 
 \item{model.selection }{Type of criteria used for model selection, equal to \code{NA} for direct calls to \code{PoisMixClus} or
 \code{"DDSE"}, \code{"Djump"}, \code{"BIC"}, or \code{"ICL"} for the respective selected models for calls to \code{PoisMixClusWrapper}}
 }
-
 \references{
 Anders, S. and Huber, W. (2010) Differential expression analysis for sequence count data. \emph{Genome Biology}, \bold{11}(R106), 1-28.
 
-Papastamoulis, P., Martin-Magniette, M.-L., and Maugis-Rabusseau, C. (2012). Efficient estimation of high dimensional mixtures of Poisson generalized linear models via the EM algorithm (submitted).
+Papastamoulis, P., Martin-Magniette, M.-L., and Maugis-Rabusseau, C. (2014). On the estimation of mixtures of Poisson regression models with large number of components. \emph{Computational Statistics and Data Analysis}: 3rd special Issue on Advances in Mixture Models, DOI: 10.1016/j.csda.2014.07.005.
 
 Rau, A., Celeux, G., Martin-Magniette, M.-L., Maugis-Rabusseau, C (2011). Clustering high-throughput sequencing data with Poisson mixture models. Inria Research Report 7786. Available at \url{http://hal.inria.fr/inria-00638082}.
+}
+\note{
+Note that the \code{fixed.lambda} argument is primarily intended to be used in the case when a single cluster is fixed to 
+have equal clustering parameters lambda across all conditions (i.e., \eqn{\lambda_{j1}=\lambda_{1}=1}); this is particularly useful
+when identifying genes with non-differential expression across all conditions (see the \code{HTSDiff} R package for more details).
+Alternatively, this argument could be used to specify a cluster for which genes are only expressed in a single condition 
+(e.g., \eqn{\lambda_{11} = 1} and \eqn{\lambda_{j1} = 0} for all \eqn{j > 1}). Other possibilities could be considered,
+but note that the fixed values of lambda must satisfy the constraint \eqn{\sum_j \lambda_{jk}s_{j.} = 1} for all \eqn{k} 
+imposed in the model; if this is not the case, a warning message will be printed.
 }
 \author{
 Andrea Rau <\url{andrea.rau@jouy.inra.fr}>

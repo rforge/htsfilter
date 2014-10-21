@@ -2,6 +2,14 @@
                 RELEASE HISTORY OF HTSCluster PACKAGE
              ========================================
 
+		CHANGES IN HTSCluster VERSION 2.0.5
+		
+- Change contrast for capushe to -log.like/n for slope heuristics in
+PoisMixClusWrapper function (implies no change to model selection results
+in previous version of package).
+- Updated reference to Papastamoulis et al. (2014)
+- Minor changes to manual files and recompiled vignettes.
+  
 		CHANGES IN HTSCluster VERSION 2.0.4
 		
 - Minor changes to speed up code in logLikePoisMixDiff, PoisMixMean,

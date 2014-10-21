@@ -102,7 +102,7 @@ PoisMixClus <- function(y, g, conds, lib.size = TRUE, lib.type = "TMM",
 			if(is.vector(fixed.lambda[[ll]]) == FALSE |
 				length(fixed.lambda[[ll]]) != d)
 				stop(paste(sQuote("fixed.lambda"), "must be", dQuote("NA") , 
-					"or a list of length equal to the number of conditions."))
+					"or a list of vectors with length equal to the number of conditions."))
 			if(length(which(fixed.lambda[[ll]] == 0)) > 0) {
 				if(length(which(fixed.lambda[[ll]] == 1)) + 
 					length(which(fixed.lambda[[ll]] == 0)) == length(fixed.lambda[[ll]])) {

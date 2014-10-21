@@ -140,7 +140,7 @@ PoisMixClusWrapper <- function(y, gmin=1, gmax, conds, lib.size=TRUE, lib.type =
 		message("Note: diagnostic plots for results corresponding to model selection via slope heuristics (Djump and DDSE) should be examined to ensure that sufficiently complex models have been considered.")
 		Kchoice <- gmin:gmax
 		np <- (Kchoice-1) + (length(unique(conds))-1)*(Kchoice)
-		mat <- cbind(Kchoice, np/n, np/n, -logLike.all)
+		mat <- cbind(Kchoice, np/n, np/n, -logLike.all/n)
 		ResCapushe <- capushe(mat, n)
 		DDSE <- ResCapushe@DDSE@model
 		Djump <- ResCapushe@Djump@model

@@ -7,7 +7,7 @@
 Parameter initialization for a Poisson mixture model.
 }
 \description{
-These functions implement a variety of initialization methods for the parameters of a Poisson mixture model: the Small EM initialization strategy (\code{emInit}) described in Rau et al. (2011), a K-means initialization strategy (\code{kmeanInit}) that is itself used to initialize the small EM strategy, the splitting small-EM initialization strategy (\code{splitEMInit}) described in Papastamoulis et al. (2012), and a function to initialize a small-EM strategy using the posterior probabilities (\code{probaPostInit}) obtained from a previous run with one fewer cluster following the splitting strategy.
+These functions implement a variety of initialization methods for the parameters of a Poisson mixture model: the Small EM initialization strategy (\code{emInit}) described in Rau et al. (2011), a K-means initialization strategy (\code{kmeanInit}) that is itself used to initialize the small EM strategy, the splitting small-EM initialization strategy (\code{splitEMInit}) based on that described in Papastamoulis et al. (2014), and a function to initialize a small-EM strategy using the posterior probabilities (\code{probaPostInit}) obtained from a previous run with one fewer cluster following the splitting strategy.
 }
 \usage{
 
@@ -85,7 +85,7 @@ for a single number of clusters through the \code{PoisMixClus} function (via \co
 
 To initialize parameter values for the EM and CEM algorithms, for the Small-EM strategy (Biernacki et al., 2003) we use the \code{emInit} function as follows. For a given number of independent runs (given by \code{init.runs}), the following procedure is used to obtain parameter values: first, a K-means algorithm (MacQueen, 1967) is run to partition the data into \code{g} clusters (\eqn{\hat{\ensuremath\boldsymbol{z}}^{(0)}}{\hat{z}^(0)}). Second, initial parameter values \eqn{\ensuremath\boldsymbol{\pi}^{(0)}}{\pi^(0)} and \eqn{\ensuremath\boldsymbol{\lambda}^{(0)}}{\lambda^(0)} are calculated (see Rau et al. (2011) for details). Third, a given number of iterations of an EM algorithm are run (defined by \code{init.iter}), using \eqn{\ensuremath\boldsymbol{\pi}^{(0)}}{\pi^(0)} and \eqn{\ensuremath\boldsymbol{\lambda}^{(0)}}{\lambda^(0)} as initial values. Finally, among the \code{init.runs} sets of parameter values, we use \eqn{\hat{\ensuremath\boldsymbol{\lambda}}}{\hat{\lambda}} and \eqn{\hat{\ensuremath\boldsymbol{\pi}}}{\hat{\pi}} corresponding to the highest log likelihood or completed log likelihood to initialize the subsequent full EM or CEM algorithms, respectively.
 
-For the splitting small EM initialization strategy, we implement an approach similar to that described in Papastamoulis et al. (2012),
+For the splitting small EM initialization strategy, we implement an approach similar to that described in Papastamoulis et al. (2014),
 where the cluster from the previous run (with \emph{g}-1 clusters) with the largest entropy is chosen to be split into two new clusters,
 followed by a small EM run as described above.
 }
@@ -106,11 +106,11 @@ number of clusters.  }
 \references{
 Anders, S. and Huber, W. (2010) Differential expression analysis for sequence count data. \emph{Genome Biology}, \bold{11}(R106), 1-28.
 
-Biernacki, C., Celeux, G., Govaert, G. (2003) Choosing starting values for the EM algorithm for getting the highest likelhiood in multivariate Gaussian mixture models. \emph{Computational Statisitcs and Data Analysis}, \bold{41}(1), 561-575.
+Biernacki, C., Celeux, G., Govaert, G. (2003) Choosing starting values for the EM algorithm for getting the highest likelhiood in multivariate Gaussian mixture models. \emph{Computational Statistics and Data Analysis}, \bold{41}(1), 561-575.
 
 MacQueen, J. B. (1967) Some methods for classification and analysis of multivariate observations. In \emph{Proceedings of the 5th Berkeley Symposium on Mathematical Statistics and Probability}, number 1, pages 281-297. Berkeley, University of California Press.
 
-Papastamoulis, P., Martin-Magniette, M.-L., and Maugis-Rabusseau, C. (2012). Efficient estimation of high dimensional mixtures of Poisson generalized linear models via the EM algorithm (submitted).
+Papastamoulis, P., Martin-Magniette, M.-L., and Maugis-Rabusseau, C. (2014). On the estimation of mixtures of Poisson regression models with large number of components. \emph{Computational Statistics and Data Analysis}: 3rd special Issue on Advances in Mixture Models, DOI: 10.1016/j.csda.2014.07.005.
 
 Rau, A., Celeux, G., Martin-Magniette, M.-L., Maugis-Rabusseau, C. (2011). Clustering high-throughput sequencing data with Poisson mixture models. Inria Research Report 7786. Available at \url{http://hal.inria.fr/inria-00638082}.
 

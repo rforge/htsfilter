@@ -76,7 +76,7 @@ expression between the tested conditions (i.e., differences in expression may be
 \subsection{Citation}
 Please cite the appropriate articles when publishing results based on this software:
 \begin{itemize}
-\item Balzergue, D. {\it et al.} (2014) HTSDiff: a sensitive analysis of differential gene expression by RNA-seq (submitted).\\
+\item Balzergue, D. {\it et al.} (2014) HTSDiff: A model-based clustering alternative to test-based methods in differential gene expression analyses by RNA-seq benchmarked on real and synthetic datasets (submitted).\\
 {\footnotesize Introduced the use of a Poisson mixture model for differential analyses.}
 \item Rau, A. {\it et al.} (2014) Co-expression analysis of high-throughput transcriptome sequencing data with Poisson mixture models (submitted).\\
 {\footnotesize Introduced the Poisson mixture model for RNA-seq data, described parameter initialization and estimation.}

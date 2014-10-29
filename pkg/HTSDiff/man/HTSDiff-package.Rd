@@ -13,7 +13,7 @@ genes from RNA-seq data.
 Package: \tab HTSDiff\cr
 Type: \tab Package\cr
 Version: \tab 1.0.5\cr
-Date: \tab 2014-10-20\cr
+Date: \tab 2014-10-29\cr
 License: \tab GPL (>=3)\cr
 LazyLoad: \tab yes\cr
 }
@@ -25,8 +25,9 @@ Maintainer: Andrea Rau <\url{andrea.rau@jouy.inra.fr}>
 }
 \references{
 S. Balzergue, G. Rigaill, V. Brunaud, E. Blondet, A. Rau, O. Rogier, J. Caius, C. Maugis-Rabusseau,
-L. Soubigou-Taconnat, S. Aubourg, C. Lurin, E. Delannoy, and M.-L. Martin-Magniette. (2013) 
-HTSDiff: a sensitive analysis of differential gene expression by RNA-seq (submitted).
+L. Soubigou-Taconnat, S. Aubourg, C. Lurin, E. Delannoy, and M.-L. Martin-Magniette. (2014) 
+HTSDiff: A Model-Based Clustering Alternative to Test-Based Methods in Differential Gene Expression 
+Analyses by RNA-Seq Benchmarked on Real and Synthetic Datasets (submitted).
 }
 \keyword{ models }
 \examples{

@@ -1,6 +1,6 @@
 Package: HTSDiff
 Type: Package
-Title: Differential analysis of RNA-seq data with Poisson mixture models
+Title: Differential Analysis of RNA-Seq Data with Poisson Mixture Models
 Version: 1.0.5
 Date: 2014-10-29
 Author: Andrea Rau, Marie-Laure Martin-Magniette, Cathy Maugis-Rabusseau

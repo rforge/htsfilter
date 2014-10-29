@@ -1,7 +1,7 @@
 syntheticData <- function(H0number, plot = FALSE, plot.name = NA) {
 #  dat <- data(initialDataset, package = "HTSDiff")
 #  dat <- get(dat)
-  dat <- initialDataset
+  dat <- HTSDiff::initialDataset
   fix <- grep(".DE", dat[,1])
   modify <- dat[-fix, 1]
   synth <- dat[,1:5] ## BF/F data

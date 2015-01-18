@@ -2,6 +2,11 @@
                 RELEASE HISTORY OF HTSCluster PACKAGE
              ========================================
 
+		CHANGES IN HTSCluster VERSION 2.0.6
+		
+- Updated citation information throughout (paper published in Bioinformatics).
+- Fixed bug in PoisMixClusWrapper function when the number of clusters run is < 10.
+
 		CHANGES IN HTSCluster VERSION 2.0.5
 		
 - Change contrast for capushe to -log.like/n for slope heuristics in

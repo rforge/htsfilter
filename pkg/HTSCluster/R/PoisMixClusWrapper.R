@@ -135,6 +135,7 @@ PoisMixClusWrapper <- function(y, gmin=1, gmax, conds, lib.size=TRUE, lib.type =
 		DDSE.results <- NA
 		Djump.results <- NA
 		capushe <- NA
+		ResCapushe <- NA
 	}
 	if(c(gmax-gmin+1) > 10) {
 		message("Note: diagnostic plots for results corresponding to model selection via slope heuristics (Djump and DDSE) should be examined to ensure that sufficiently complex models have been considered.")

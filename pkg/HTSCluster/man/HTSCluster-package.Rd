@@ -6,18 +6,17 @@
 Clustering high throughput sequencing (HTS) data
 }
 \description{
-This package implements estimation of a Poisson mixture model to 
-cluster observations (e.g., genes) in high throughput sequencing data. 
-Parameter estimation is performed using either the EM or CEM algorithm, and the 
-slope heuristics are used for model selection (i.e., to choose the number of 
-clusters).
+A Poisson mixture model is implemented to cluster genes from high-throughput 
+transcriptome sequencing (RNA-seq) data. Parameter estimation is performed using 
+either the EM or CEM algorithm, and the slope heuristics are used for model 
+selection (i.e., to choose the number of clusters).
 }
 \details{
 \tabular{ll}{
 Package: \tab HTSCluster\cr
 Type: \tab Package\cr
-Version: \tab 2.0.5\cr
-Date: \tab 2014-10-21\cr
+Version: \tab 2.0.6\cr
+Date: \tab 2015-01-18\cr
 License: \tab GPL (>=3)\cr
 LazyLoad: \tab yes\cr
 }
@@ -28,7 +27,9 @@ Andrea Rau, Gilles Celeux, Marie-Laure Martin-Magniette, Cathy Maugis-Rabusseau
 Maintainer: Andrea Rau <\url{andrea.rau@jouy.inra.fr}>
 }
 \references{
-Rau, A., Celeux, G., Martin-Magniette, M.-L., Maugis-Rabusseau, C (2011). Clustering high-throughput sequencing data with Poisson mixture models. Inria Research Report 7786. Available at \url{http://hal.inria.fr/inria-00638082}.
+Rau, A., Maugis-Rabusseau, C., Martin-Magniette, M.-L., Celeux, G. (2015) Co-expression analysis of high-throughput transcriptome sequencing data with Poisson mixture models. Bioinformatics, doi: 10.1093/bioinformatics/btu845.
+
+Rau, A., Celeux, G., Martin-Magniette, M.-L., Maugis-Rabusseau, C. (2011) Clustering high-throughput sequencing data with Poisson mixture models. Inria Research Report 7786. Available at \url{http://hal.inria.fr/inria-00638082}.
 }
 \keyword{ models }
 \keyword{ cluster }

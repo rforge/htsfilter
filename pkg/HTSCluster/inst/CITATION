@@ -1,13 +1,13 @@
 citHeader("To cite the R package 'HTSCluster' in publications use:")  
 
-citEntry(entry   = "TechReport",
-         title   = "Clustering high-throughput sequencing data with Poisson mixture models",
-	 institution = "Inria Saclay -- Ile-de-France",
-         number  = "RR-7786",
-         year    = "2011",
+citEntry(entry   = "article",
+         title   = "Co-expression analysis of high-throughput transcriptome sequencing data with Poisson mixture models",
+		 journal = "Bioinformatics",
+         number  = "doi: 10.1093/bioinformatics/btu845",
+         year    = "2015",
          author  = personList(
            person(first="Andrea", last="Rau"),
-           person(first="Gilles", last="Celeux"),
-           person(first="Marie-Laure", last="Martin-Magniette"),
-           person(first="Cathy", last="Maugis-Rabusseau")),
-         textVersion = "A. Rau, G. Celeux, M.-L. Martin-Magniette, C. Maugis-Rabusseau (2011). Clustering high-throughput sequencing data with Poisson mixture models. Technical report RR-7786, Inria Saclay -- Ile-de-France.")
+		   person(first="Cathy", last="Maugis-Rabusseau"),
+		   person(first="Marie-Laure", last="Martin-Magniette"),
+           person(first="Gilles", last="Celeux")),
+         textVersion = "A. Rau, C. Maugis-Rabusseau, M.-L. Martin-Magniette, G. Celeux (2015). Co-expression analysis of high-throughput transcriptome sequencing data with Poisson mixture models. Bioinformatics, doi: 10.1093/bioinformatics/btu845.")

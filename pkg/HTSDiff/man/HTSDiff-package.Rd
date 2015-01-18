@@ -2,18 +2,18 @@
 \alias{HTSDiff-package}
 \docType{package}
 \title{
-Differential analysis of RNA-seq data with Poisson mixture models
+Differential Analysis of RNA-Seq Data with Poisson Mixture Models
 }
 \description{
-This package implements a Poisson mixture model to identify differentially expressed 
+A Poisson mixture model is implemented to identify differentially expressed 
 genes from RNA-seq data.
 }
 \details{
 \tabular{ll}{
 Package: \tab HTSDiff\cr
 Type: \tab Package\cr
-Version: \tab 1.0.5\cr
-Date: \tab 2014-10-29\cr
+Version: \tab 1.0.6\cr
+Date: \tab 2015-01-18\cr
 License: \tab GPL (>=3)\cr
 LazyLoad: \tab yes\cr
 }

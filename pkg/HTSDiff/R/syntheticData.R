@@ -13,7 +13,11 @@ syntheticData <- function(H0number, plot = FALSE, plot.name = NA) {
     subset <- sample(modify, H0number)
   }
   tochange <- is.element(synth[,1], subset)
-  synth[tochange, -1] <- dat[tochange, 4:7]
+  ## Change from M-L M-M on 2015-01-08
+  ## Reflects fact that leaf samples arise from two different tech
+  ## In new fcn, one Hiseq and one GA are both included in a single condition
+  synth[tochange, -1] <- dat[tochange, c(4,6,5,7)]
+#  synth[tochange, -1] <- dat[tochange, 4:7]
   synth[,1] <- as.character(synth[,1])
   synth[tochange, 1] <- paste(synth[tochange, 1], ".Hnull", sep="")
   if(plot == TRUE) {

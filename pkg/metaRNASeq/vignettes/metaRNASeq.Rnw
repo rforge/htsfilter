@@ -42,7 +42,7 @@
 \title{metaRNASeq: Differential meta-analysis of \\ RNA-seq data
 }
 \author{Guillemette Marot, Florence Jaffr{\'e}zic, Andrea Rau}
-\date{Modified: February 26, 2013.   Compiled: \today}
+\date{Modified: July 24, 2014.   Compiled: \today}
 \maketitle
 
 <<echo=FALSE>>=
@@ -299,13 +299,69 @@ dim(conflictDE)
 head(keepDE)
 @
 
-Note that out of all the conflicts, 147 represented genes were simulated to be truly differentially expressed. 
+<<filtercheckcache,eval=TRUE,echo=FALSE>>=
+table(conflictDE$DE)
+nbtrueconflicts=as.vector(table(conflictDE$DE)[2])
+@
+
+Note that out of all the conflicts, \Sexpr{nbtrueconflicts} represented genes were simulated to be truly differentially expressed. 
 
 <<filtercheck>>=
 table(conflictDE$DE)
 @
 
-% faut il rajouter IDD, IDR, venn diagram?
+%--------------------------------------------------
+\section{IDD, IRR and Venn Diagram}
+%--------------------------------------------------
+Normal combination and Fisher methods make differents assumptions on the model used. After using the two techniques, it can be seen which genes are identified by each single study or each combinaison method. The following script computes various indicators to assess the differences between each case.
+<<IDDIRR>>=
+IDDIRR<-function(finalde,deindst)
+{
+  DE=length(finalde)
+  gains=finalde[which(!(finalde %in% deindst))]
+  IDD=length(gains)
+  IDR=IDD/DE*100
+  perte=which(!(deindst %in% finalde))
+  Loss=length(perte)
+  IRR=Loss/length(deindst)*100
+  res=c(DE,IDD,Loss,IDR,IRR)
+  names(res)=c("DE","IDD","Loss","IDR","IRR")
+  res
+}
+@
+<<calcul>>=
+res=list()
+res$study1=which(DEresults[["DE.study1"]]==1)
+res$study2=which(DEresults[["DE.study2"]]==1)
+res$fisher=which(DEresults[["DE.fishercomb"]]==1)
+res$norm=which(DEresults[["DE.invnorm"]]==1)
+res$AllStudies=which(DEresults[["DE.study1"]]==1 | DEresults[["DE.study2"]]==1)
+IDDIRR(res$fisher,res$AllStudies)
+IDDIRR(res$norm,res$AllStudies)
+@
+<<calcul2,eval=TRUE,echo=FALSE>>=
+x=IDDIRR(res$fisher,res$AllStudies)
+@
+Thanks to Fisher method, meta-analysis gives $\Sexpr{x[["IDD"]]}$ ($\Sexpr{x[["IDR"]]}\%$) new genes and $\Sexpr{x[["Loss"]]}$ ($\Sexpr{x[["IRR"]]}\%$), are sidetracked.
+\\
+Venn diagram is also a more graphical to show this differences.
+<<venndiagram,results=hide,echo=TRUE,eval=TRUE>>=
+library(VennDiagram)
+venn.plot<-venn.diagram(x = list(study1=res$study1,study2=res$study2,fisher=res$fisher,norm=res$norm),
+                        filename = NULL, col = "black",
+                        fill = c("blue", "red", "purple","green"),
+                        margin=0.05, alpha = 0.6)
+jpeg("venn_jpeg.jpg");
+grid.draw(venn.plot);
+dev.off();
+@
+\begin{figure}[t!]
+\begin{center}
+\includegraphics[width = .85\textwidth]{venn_jpeg.jpg}
+\caption{Venn Diagram comparing the list of DE genes at a 5\% BH thereshold obtained by each individual study and the meta-analyse}
+\end{center}
+\end{figure}
+Because of the use of simulated data, identified genes are spread over two studies.Moreover, it can be seen that there is similarities and exclusivities between the two methods.
 
 %--------------------------------------------------
 \section{Session Info}

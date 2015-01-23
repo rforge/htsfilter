@@ -21,6 +21,6 @@ A. Rau, G. Marot and F. Jaffrezic (2014). Differential meta-analysis of RNA-seq 
 }
 \examples{
 data(rawpval)
-## Maybe str(rawpval) ; plot(rawpval) ...
+## Maybe str(rawpval)
 }
 \keyword{datasets}

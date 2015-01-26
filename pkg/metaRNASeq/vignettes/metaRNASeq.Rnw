@@ -307,7 +307,7 @@ table(conflictDE$DE)
 \section{IDD, IRR and Venn Diagram}
 %--------------------------------------------------
 
-Different indicators can be used to evaluate the performance of the meta-analysis, some of them are described in \cite{Marot2009} and returned by the function \Rcode{IDDIRR}. DE corresponds to the number of differentially expressed genes. IDD (Integration Driven discoveries) returns the number of genes that are declared DE in the meta-analysis that were not identified in any of the individual studies alone, Loss the number of genes that are identified DE in individual studies but not in meta-analysis. The Integration-driven Discovery Rate (IDR) and Integration-driven Revision Rate (IRR) are the corresponding proportions of IDD and Loss. 
+Different indicators can be used to evaluate the performance of the meta-analysis, some of them are described in \cite{Marot2009} and returned by the function \Rcode{IDD.IRR}. DE corresponds to the number of differentially expressed genes. IDD (Integration Driven discoveries) returns the number of genes that are declared DE in the meta-analysis that were not identified in any of the individual studies alone, Loss the number of genes that are identified DE in individual studies but not in meta-analysis. The Integration-driven Discovery Rate (IDR) and Integration-driven Revision Rate (IRR) are the corresponding proportions of IDD and Loss. 
 
 <<calcul>>=
 fishcomb_de <- rownames(keepDE)[which(keepDE[,"DE.fishercomb"]==1)] 
@@ -315,12 +315,12 @@ invnorm_de <- rownames(keepDE)[which(keepDE[,"DE.invnorm"]==1)]
 indstudy_de <- list(rownames(keepDE)[which(keepDE[,"DE.study1"]==1)], 
                     rownames(keepDE)[which(keepDE[,"DE.study2"]==1)])
 
-IDDIRR(fishcomb_de,indstudy_de)
-IDDIRR(invnorm_de ,indstudy_de)
+IDD.IRR(fishcomb_de,indstudy_de)
+IDD.IRR(invnorm_de ,indstudy_de)
 @
 <<calcul2,eval=TRUE,echo=FALSE>>=
-x=IDDIRR(fishcomb_de,indstudy_de)
-y=IDDIRR(invnorm_de ,indstudy_de)
+x=IDD.IRR(fishcomb_de,indstudy_de)
+y=IDD.IRR(invnorm_de ,indstudy_de)
 @
 
 In this example, the p-value combination technique with Fisher's method gives $\Sexpr{x[["IDD"]]}$ ($\Sexpr{x[["IDR"]]}\%$) new genes and $\Sexpr{x[["Loss"]]}$ ($\Sexpr{x[["IRR"]]}\%$), are sidetracked. The inverse normal combination technique gives $\Sexpr{y[["IDD"]]}$ ($\Sexpr{y[["IDR"]]}\%$) new genes and $\Sexpr{y[["Loss"]]}$ ($\Sexpr{y[["IRR"]]}\%$), are sidetracked \\

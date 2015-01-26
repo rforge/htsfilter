@@ -1,4 +1,4 @@
-IDDIRR<-function(meta_de,ind_de)
+IDD.IRR<-function(meta_de,ind_de)
 {
   if(class(ind_de)!="list")
   {stop("ind_de should be a list")}

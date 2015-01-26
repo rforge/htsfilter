@@ -1,5 +1,5 @@
-\name{IDDIRR}
-\alias{IDDIRR}
+\name{IDD.IRR}
+\alias{IDD.IRR}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{ Integration-driven Discovery and Integration-driven Revision Rates }
 \description{
@@ -7,7 +7,7 @@
 compared to individual studies.
 }
 \usage{
-IDDIRR(meta_de, ind_de)
+IDD.IRR(meta_de, ind_de)
 }
 \arguments{
   \item{meta_de}{ Vector of differentially expressed tags (or indices of these tags) with the meta-analysis}
@@ -32,10 +32,10 @@ adjpval<-lapply(rawpval, FUN=function(x) p.adjust(x, method="BH"))
 ind_smalladjp<-lapply(adjpval, FUN=function(x) which(x <= 0.05))
 #indicators corresponding to the inverse normal p-value combination
 invnormcomb <- invnorm(rawpval,nrep=c(8,8), BHth = 0.05) 
-IDDIRR(invnormcomb$DEindices,ind_smalladjp)
+IDD.IRR(invnormcomb$DEindices,ind_smalladjp)
 #indicators corresponding to the p-value combination with Fisher's method
 fishcomb <- fishercomb(rawpval, BHth = 0.05)
-IDDIRR(fishcomb$DEindices,ind_smalladjp)
+IDD.IRR(fishcomb$DEindices,ind_smalladjp)
 }
 \keyword{ methods }
 \keyword{ models }% __ONLY ONE__ keyword per line

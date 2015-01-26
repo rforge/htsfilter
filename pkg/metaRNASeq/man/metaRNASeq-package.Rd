@@ -12,8 +12,8 @@ Implementation of two p-value combination techniques (inverse normal and Fisher 
 \tabular{ll}{
 Package: \tab metaRNASeq\cr
 Type: \tab Package\cr
-Version: \tab 1.0.1\cr
-Date: \tab 2015-01-23\cr
+Version: \tab 1.0.2\cr
+Date: \tab 2015-01-26\cr
 License: \tab GPL \cr
 }
 }
@@ -32,9 +32,8 @@ A. Rau, G. Marot and F. Jaffrezic (2014). Differential meta-analysis of RNA-seq 
 \code{\link{fishercomb}}
 }
 \examples{
-## Only run the following in interactive R sessions
+#An User's guide with detailed examples can be downloaded in interactive R sessions
 if(interactive()){
-# See examples in User's Guide:
-vignette("metaRNASeq")
-}
+	vignette("metaRNASeq")
+	}
 }

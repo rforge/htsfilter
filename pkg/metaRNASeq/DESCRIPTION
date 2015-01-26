@@ -1,8 +1,8 @@
 Package: metaRNASeq
 Type: Package
 Title: Meta-analysis of RNA-seq data
-Version: 1.0.1
-Date: 2015-01-23
+Version: 1.0.2
+Date: 2015-01-26
 Author: Guillemette Marot, Florence Jaffrezic, Andrea Rau
 Maintainer: Guillemette Marot <guillemette.marot@inria.fr>
 Depends: R (>= 2.15.0)

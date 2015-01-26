@@ -32,7 +32,7 @@ A. Rau, G. Marot and F. Jaffrezic (2014). Differential meta-analysis of RNA-seq 
 \code{\link{fishercomb}}
 }
 \examples{
-\donttest{
+if(interactive()){
 # See examples in User's Guide:
 vignette("metaRNASeq")
 }

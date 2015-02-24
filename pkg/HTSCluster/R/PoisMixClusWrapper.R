@@ -6,7 +6,7 @@ PoisMixClusWrapper <- function(y, gmin=1, gmax, conds, lib.size=TRUE, lib.type =
 {
 	if(is.matrix(y) == FALSE & is.data.frame(y) == FALSE) 
 		stop(paste(sQuote("y"), "must be a matrix"))
-	if(min(y) < 0 | sum(round(y)) != sum(y)) 
+	if(min(y) < 0 | sum(as.numeric(round(y))) != sum(as.numeric(y))) 
 		stop(paste(sQuote("y"), "must be a matrix made up of nonnegative counts"))
 	if(min(rowSums(y)) == 0)
 		stop(paste("at least one observation in", sQuote("y"), 

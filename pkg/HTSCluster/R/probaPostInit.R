@@ -9,13 +9,6 @@ probaPostInit <- function(y, g, conds, lib.size, lib.type,
 	## 	specified by fixed.lambda
 	## equal.proportions should be TRUE or FALSE
 
-	if(is.matrix(y) == FALSE & is.data.frame(y) == FALSE) 
-		stop(paste(sQuote("y"), "must be a matrix"))
-	if(min(y) < 0 | sum(round(y)) != sum(y)) 
-		stop(paste(sQuote("y"), "must be a matrix made up of nonnegative counts"))
-	if(min(rowSums(y)) == 0)
-		stop(paste("at least one observation in", sQuote("y"), 
-		"contains all 0's and must be removed from the data"))
 	if(is.vector(conds) == FALSE | length(conds) != ncol(y))
 		stop(paste(sQuote("conds"), "must be a vector the same length as the number of columns in", sQuote("y")))
 	if(is.logical(lib.size) == FALSE)

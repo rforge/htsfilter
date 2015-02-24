@@ -2,10 +2,12 @@
                 RELEASE HISTORY OF HTSCluster PACKAGE
              ========================================
 
-		CHANGES IN HTSCluster VERSION 2.0.6
+		CHANGES IN HTSCluster VERSION 2.0.6-2.0.7
 		
 - Updated citation information throughout (paper published in Bioinformatics).
 - Fixed bug in PoisMixClusWrapper function when the number of clusters run is < 10.
+- Fixed bug for check that the data matrix is made up of integers, i.e., changed
+sum(y) to sum(as.numeric(y)) to avoid integer overflow.
 
 		CHANGES IN HTSCluster VERSION 2.0.5
 		

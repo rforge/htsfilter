@@ -15,8 +15,8 @@ selection (i.e., to choose the number of clusters).
 \tabular{ll}{
 Package: \tab HTSCluster\cr
 Type: \tab Package\cr
-Version: \tab 2.0.6\cr
-Date: \tab 2015-01-18\cr
+Version: \tab 2.0.7\cr
+Date: \tab 2015-02-24\cr
 License: \tab GPL (>=3)\cr
 LazyLoad: \tab yes\cr
 }

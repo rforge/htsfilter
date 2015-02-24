@@ -2,24 +2,6 @@
 emInit <- function(y, g, conds, lib.size, lib.type, alg.type = "EM", 
 	init.runs, init.iter, fixed.lambda, equal.proportions, 
 	verbose, s=NA) {
-
-	if(is.matrix(y) == FALSE & is.data.frame(y) == FALSE) 
-		stop(paste(sQuote("y"), "must be a matrix"))
-	if(min(y) < 0)
-		stop(paste(sQuote("y"), "must be a matrix made up of nonnegative counts"))
-	if(sum(round(y)) != sum(y)) 
-		stop(paste(sQuote("y"), "must be a matrix made up of nonnegative counts"))
-	if(min(rowSums(y)) == 0)
-		stop(paste("at least one observation in", sQuote("y"), "contains all 0's and must be removed from the data"))
-	if(length(g) != 1)
-		stop(paste(sQuote("g"), "(the number of clusters) must be a nonnegative integer"))
-	if(g <= 0 | round(g) != g) 
-		stop(paste(sQuote("g"), "(the number of clusters) must be a nonnegative integer"))
-	if(is.vector(conds) == FALSE | length(conds) != ncol(y))
-		stop(paste(sQuote("conds"), "must be a vector the same length as the number of columns in", sQuote ("y")))
-	if(is.logical(lib.size) == FALSE)
-		stop(paste(sQuote("libsize"), "must be", dQuote("TRUE"), "(PMM-II) or", 
-			dQuote("FALSE"), "(PMM-I)"))
 	if(alg.type != "EM" & alg.type != "CEM")
 		stop(paste(sQuote("alg.type"), "must be one of", dQuote("EM"), "or", dQuote("CEM")))
 	if(length(alg.type) > 1)

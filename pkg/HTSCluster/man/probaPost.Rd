@@ -67,7 +67,7 @@ s <- colSums(y) / sum(y)     ## TC estimate of lib size
 ## Run the PMM-II model for g = 3
 ## "TC" library size estimate, EM algorithm
 
-run <- PoisMixClus(y, g = 3, lib.size = TRUE, lib.type = "TC",
+run <- PoisMixClus(y, g = 3, norm = "TC",
  	conds = conds) 
 pi.est <- run$pi
 lambda.est <- run$lambda

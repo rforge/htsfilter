@@ -1,7 +1,7 @@
 
-probaPostInit <- function(y, g, conds, lib.size, lib.type, 
+probaPostInit <- function(y, g, conds, norm,
 	alg.type = "EM", fixed.lambda, equal.proportions,
-	probaPost.init, init.iter, verbose, s=NA) 
+	probaPost.init, init.iter, verbose) 
 {
 
 	## fixed.lambda should be a list of length (number of fixed clusters)
@@ -11,9 +11,6 @@ probaPostInit <- function(y, g, conds, lib.size, lib.type,
 
 	if(is.vector(conds) == FALSE | length(conds) != ncol(y))
 		stop(paste(sQuote("conds"), "must be a vector the same length as the number of columns in", sQuote("y")))
-	if(is.logical(lib.size) == FALSE)
-		stop(paste(sQuote("libsize"), "must be", dQuote("TRUE"), "(PMM-II) or", 
-			dQuote("FALSE"), "(PMM-I)"))
 	if(alg.type != "EM" & alg.type != "CEM")
 		stop(paste(sQuote("alg.type"), "must be one of", dQuote("EM"), "or", dQuote("CEM")))
 	if(length(alg.type) > 1)
@@ -25,11 +22,6 @@ probaPostInit <- function(y, g, conds, lib.size, lib.type,
 	if(is.matrix(probaPost.init) == FALSE)
 		stop(paste(sQuote("z.init"), "must be a matrix of posterior probabilities."))
 
-#	Already done in PoisMixClus and PoisMixClusWrapper
-#	## Grouping columns of y in order of condition (all replicates put together)
-#	o.ycols <- order(conds)
-#	y <- y[,o.ycols]
-#	conds <- conds[o.ycols]
 	conds.names <- unique(conds)
 
 	d <- length(unique(conds))
@@ -42,27 +34,25 @@ probaPostInit <- function(y, g, conds, lib.size, lib.type,
 	n <- dim(y)[1];cols <- dim(y)[2]
 
 	w <- rowSums(y)
-	if(is.na(s[1]) == FALSE) {
-		s <- rep(NA, cols)
-		if(lib.size == FALSE) {
-			s <- rep(1, cols)
+	## Only calculate s values if they are not provided
+	if(length(norm) == 1) {
+		if(norm == "none") 	s <- rep(1, cols);
+		if(norm == "TC") s <- colSums(y) / sum(as.numeric(y));
+		if(norm == "UQ") s <- apply(y, 2, quantile, 0.75) / sum(apply(y, 2, quantile, 0.75));
+		if(norm == "Med") s <- apply(y, 2, median) / sum(apply(y, 2, median));
+		if(norm == "DESeq") {
+			## Code from DESeq, v1.8.3
+			loggeomeans <- rowMeans(log(y))
+			s <- apply(y, 2, function(x) exp(median((log(x)-loggeomeans)[is.finite(loggeomeans)])))
+			s <- s / sum(s)
 		}
-		if(lib.size == TRUE) {
-			if(lib.type == "TC") s <- colSums(y) / sum(y);
-			if(lib.type == "UQ") s <- apply(y, 2, quantile, 0.75) / sum(apply(y, 2, quantile, 0.75));
-			if(lib.type == "Med") s <- apply(y, 2, median) / sum(apply(y, 2, median));
-			if(lib.type == "DESeq") {
-				## Code from DESeq, v1.8.3
-				loggeomeans <- rowMeans(log(y))
-				s <- apply(y, 2, function(x) 
-					exp(median((log(x)-loggeomeans)[is.finite(loggeomeans)])))
-				s <- s / sum(s)
-			}
-			if(lib.type == "TMM") {
-				f <- calcNormFactors(as.matrix(y), method = "TMM")
-				s <- colSums(y)*f / sum(colSums(y)*f)
-			} 
-		}
+		if(norm == "TMM") {
+			f <- calcNormFactors(as.matrix(y), method = "TMM")
+			s <- colSums(y)*f / sum(colSums(y)*f)
+		} 
+	}
+	if(length(norm) == length(conds)) {
+		s <- norm / sum(norm)
 	}
 	s.dot <- rep(NA, d) 
 	for(j in 1:d) {
@@ -187,7 +177,7 @@ probaPostInit <- function(y, g, conds, lib.size, lib.type,
 
 	if(min(pi) > 0 | is.nan(sum(lambda)) == FALSE) {
 		mean.calc <- PoisMixMean(y, g = K, conds, s, lambda)
-		LL.tmp <- mylogLikePoisMix(y, mean.calc, pi)
+		LL.tmp <- logLikePoisMix(y, mean.calc, pi)
 		LL <- LL.tmp$ll
 	}
 	results <- list(lambda = lambda.final, pi = pi.final, log.like = LL)

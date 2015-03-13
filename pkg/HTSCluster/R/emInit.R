@@ -1,7 +1,7 @@
 
-emInit <- function(y, g, conds, lib.size, lib.type, alg.type = "EM", 
+emInit <- function(y, g, conds, norm, alg.type = "EM", 
 	init.runs, init.iter, fixed.lambda, equal.proportions, 
-	verbose, s=NA) {
+	verbose) {
 	if(alg.type != "EM" & alg.type != "CEM")
 		stop(paste(sQuote("alg.type"), "must be one of", dQuote("EM"), "or", dQuote("CEM")))
 	if(length(alg.type) > 1)
@@ -15,14 +15,13 @@ emInit <- function(y, g, conds, lib.size, lib.type, alg.type = "EM",
 	pi.init.all <- vector("list", init.runs)
 	criterion.all <- rep(NA, init.runs)
 	for(start in 1:init.runs) {
-		em.init <- PoisMixClus(y = y, g = g, lib.size = lib.size, 
-			lib.type = lib.type, conds = conds, 
+		em.init <- PoisMixClus(y = y, g = g, norm=norm, conds = conds, 
 			init.type = init.type1, alg.type = alg.type, iter = init.iter,
-			fixed.lambda = fixed.lambda, equal.proportions = equal.proportions, s = s,
+			fixed.lambda = fixed.lambda, equal.proportions = equal.proportions,
 			wrapper=FALSE)
-			lambda.init.all[[start]] <- em.init$lambda
-			pi.init.all[[start]] <- em.init$pi
-			criterion.all[start] <- em.init$log.like
+		lambda.init.all[[start]] <- em.init$lambda
+		pi.init.all[[start]] <- em.init$pi
+		criterion.all[start] <- em.init$log.like
 		if(verbose == TRUE) print(paste("Initialization:", start))
 	}
 	## If all criterion values are equal to NaN, then arbitrarily choose the first one

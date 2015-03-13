@@ -75,8 +75,8 @@ conds <- simulate$conditions
 
 ## Run the PMM-II model for g = 3
 ## "TC" library size estimate, EM algorithm
-run <- PoisMixClus(y, g = 3, lib.size = TRUE,
-    lib.type = "TC", conds = conds, init.type = "small-em")
+run <- PoisMixClus(y, g = 3, 
+    norm = "TC", conds = conds, init.type = "small-em")
 
 ## Visualization of results (not run):
 ## plot(run)

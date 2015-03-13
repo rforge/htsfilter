@@ -8,19 +8,19 @@ Poisson mixture model estimation and model selection
 These functions implement the EM and CEM algorithms for parameter estimation in a Poisson mixture model for clustering high throughput sequencing observations (e.g., genes) for a single number of clusters (\code{PoisMixClus}) or a sequence of cluster numbers (\code{PoisMixClusWrapper}). Parameters are initialized using a Small-EM strategy as described in Rau et al. (2011) or the splitting small-EM strategy described in Papastamoulis et al. (2014), and model selection is performed using the ICL criteria. Note that these functions implement the PMM-I and PMM-II models described in Rau et al. (2011). 
 }
 \usage{
-PoisMixClus(y, g, conds, lib.size = TRUE, lib.type = "TMM", 
+PoisMixClus(y, g, conds, norm = "TMM", 
     init.type = "small-em", init.runs = 1, init.iter = 10,
     alg.type = "EM", cutoff = 10e-6, iter = 1000, fixed.lambda = NA,
     equal.proportions = FALSE, prev.labels = NA, 
     prev.probaPost = NA, verbose = FALSE, interpretation = "sum",
-	EM.verbose = FALSE, wrapper = FALSE, s = NA)
+	EM.verbose = FALSE, wrapper = FALSE, subset.index = NA)
 
-PoisMixClusWrapper(y, gmin = 1, gmax, conds, lib.size = TRUE,
-    lib.type = "TMM", gmin.init.type = "small-em",
+PoisMixClusWrapper(y, gmin = 1, gmax, conds, 
+    norm = "TMM", gmin.init.type = "small-em",
     init.runs = 1, init.iter = 10, split.init = TRUE, alg.type = "EM", 
     cutoff = 10e-6, iter = 1000, fixed.lambda = NA, 
     equal.proportions = FALSE, verbose = FALSE, interpretation = "sum",
-	EM.verbose = FALSE)
+	EM.verbose = FALSE, subset.index = NA)
 }
 
 \arguments{
@@ -42,12 +42,11 @@ of lambda, \code{gmax} corresponds to the maximum number of clusters in addition
   \item{conds}{
 Vector of length \emph{q} defining the condition (treatment group) for each variable (column) in \code{y}
 }
-  \item{lib.size}{
-If \code{FALSE}, the library size parameter is not included in the model. If \code{TRUE}, the library size parameter is included in the Poisson mixture model.
-}
-  \item{lib.type}{
-If \code{lib.size = TRUE}, the estimator to be used for the library size parameter: (\dQuote{\code{TC}} for total count, \dQuote{\code{UQ}} for upper quantile, \dQuote{\code{Med}} for median, 
-\dQuote{\code{DESeq}} for the normalization method in the DESeq package, and \dQuote{\code{TMM}} for the TMM normalization method.
+  \item{norm}{
+The type of estimator to be used to normalize for differences in library size: (\dQuote{\code{TC}} for total count, \dQuote{\code{UQ}} for upper quantile, \dQuote{\code{Med}} for median, 
+\dQuote{\code{DESeq}} for the normalization method in the DESeq package, and \dQuote{\code{TMM}} for the TMM normalization method (Robinson and Oshlack, 2010). Can also
+be a vector (of length \emph{q}) containing pre-estimated library size estimates for each sample. Note that if the user provides
+pre-calculated normalization factors, the package will make use of \code{norm/sum(norm)} as normalization factors.
 }
   \item{init.type}{
 Type of initialization strategy to be used (\dQuote{\code{small-em}} for the Small-EM strategy described in Rau et al. (2011), and \dQuote{\code{kmeans}} for a simple \emph{K}-means initialization)
@@ -104,14 +103,14 @@ otherwise for \code{"mean"}, cluster behavior is interpreted with respect to mea
 If \code{TRUE}, more informative output is printed about the EM algorithm, including the number of iterations run and
 the difference between log-likelihoods at the last and penultimate iterations.
 }
+  \item{subset.index}{
+Optional vector providing the indices of a subset of genes that should be used for the co-expression analysis (i.e., row indices
+of the data matrix \code{y}.
+}
   \item{wrapper}{
 \code{TRUE} if the \code{PoisMixClus} function is run from within the \code{PoisMixClusWrapper} main function, and \code{FALSE}
 otherwise. This mainly helps to avoid recalculating parameters several times that are used throughout the algorithm (e.g., library
 sizes, etc.)
-}
-  \item{s}{
-Estimate of normalized per-variable library size. If NA, these are re-estimated within the \code{PoisMixClus} function. When called
-as part of the \code{PoisMixClusWrapper} main function, these are estimated a single time and passed to the \code{PoisMixClus} function.
 }
 }
 \details{
@@ -124,13 +123,13 @@ In a Poisson mixture model, the data \eqn{\mathbf{y}}{y} are assumed to come fro
 
 for \eqn{i = 1, \ldots, n} observations in \eqn{l = 1, \ldots, r_j} replicates of \eqn{j = 1, \ldots, d} conditions (treatment groups), where \eqn{P(\cdot)} is the standard Poisson density, \eqn{\ensuremath\boldsymbol{\Psi}_g = (\pi_1,\ldots,\pi_{g-1}, \ensuremath\boldsymbol{\theta}^\prime)}{\psi_g = (\pi_1,\ldots,\pi_{g-1}, \theta^\prime)}, \eqn{\ensuremath\boldsymbol{\theta}^\prime}{\theta^\prime} contains all of the parameters in \eqn{\ensuremath\boldsymbol{\theta}_1,\ldots,\ensuremath\boldsymbol{\theta}_g}{\theta_1,\ldots,\theta_g} assumed to be distinct, and \eqn{\ensuremath\boldsymbol{\pi} = (\pi_1,\ldots,\pi_g)^\prime}{\pi = (\pi_1,\ldots,\pi_g)^\prime} are the mixing proportions such that \eqn{\pi_k} is in (0,1) for all \emph{k} and \eqn{\sum_k \pi_k = 1}.
 
-We consider two possible parameterizations for the mean \eqn{\ensuremath\boldsymbol{\theta}_k = (\mu_{ijlk})}{\theta = (mu_{ijlk})}. In the first, called the PMM-I, we consider
-\deqn{\mu_{ijlk} = w_i \lambda_{jk}}
-where \eqn{w_i} corresponds to the expression level of observation \emph{i} and \eqn{\ensuremath\boldsymbol{\lambda}_k = (\lambda_{1k},\ldots,\lambda_{dk})}{\lambda_k = (\lambda_{1k},\ldots,\lambda_{dk})} corresponds to the clustering parameters that define the profiles of the genes in cluster \emph{k} across all variables. In the second parameterization, called the PMM-II, we consider
+We consider the following parameterization for the mean \eqn{\ensuremath\boldsymbol{\theta}_k = (\mu_{ijlk})}{\theta = (mu_{ijlk})}. We consider
 \deqn{\mu_{ijlk} = w_i s_{jl} \lambda_{jk}}
-where \eqn{w_i} and \eqn{\ensuremath\boldsymbol{\lambda}_k}{\lambda_k} are as before and \eqn{s_{jl}} is the normalized library size (a fixed constant) for replicate \emph{l} of condition \emph{j}. See Rau et al. (2011) for more details on the PMM-I and PMM-II.
+where \eqn{w_i} corresponds to the expression level of observation \emph{i}, \eqn{\ensuremath\boldsymbol{\lambda}_k = (\lambda_{1k},\ldots,\lambda_{dk})}{\lambda_k = (\lambda_{1k},\ldots,\lambda_{dk})} 
+corresponds to the clustering parameters that define the profiles of the genes in cluster \emph{k} across all variables, and  
+\eqn{s_{jl}} is the normalized library size (a fixed constant) for replicate \emph{l} of condition \emph{j}.
 
-There are two approaches to estimating the parameters of a finite mixture model and obtaining a clustering of the data: the estimation approach (via the EM algorithm) and the clustering approach (via the CEM algorithm). Parameter initialization is done using a Small-EM strategy as described in Rau et al. (2011) via the \code{\link{emInit}} function. Model selection may be performed using the BIC or ICL criteria.
+There are two approaches to estimating the parameters of a finite mixture model and obtaining a clustering of the data: the estimation approach (via the EM algorithm) and the clustering approach (via the CEM algorithm). Parameter initialization is done using a Small-EM strategy as described in Rau et al. (2011) via the \code{\link{emInit}} function. Model selection may be performed using the BIC or ICL criteria, or the slope heuristics.
 }
 \value{
 \item{lambda }{(\emph{d} x \emph{g}) matrix containing the estimate of \eqn{\hat{\ensuremath\boldsymbol{\lambda}}}{\hat{\lambda}}}
@@ -141,12 +140,11 @@ There are two approaches to estimating the parameters of a finite mixture model 
 \item{BIC }{Value of BIC criterion}
 \item{ICL }{Value of ICL criterion}
 \item{alg.type }{Estimation algorithm used; matches the argument \code{alg.type} above)}
-\item{lib.size }{TRUE if library size included in the model (matches the argument \code{alg.type} above)}
-\item{lib.type }{Type of library size normalization used (if \code{lib.size = TRUE}; matches the argument \code{lib.type} above)}
-\item{s }{Library size normalization factors used (if \code{lib.size = TRUE})}
+\item{norm }{Library size normalization factors used}
 \item{conds }{Conditions specified by user}
 \item{iterations }{Number of iterations run}
 \item{logLikeDiff }{Difference in log-likelihood between the last and penultimate iterations of the algorithm}
+\item{subset.index }{If provided by the user, the indices of subset of genes used for co-expression analyses}
 \item{loglike.all }{Log likelihoods calculated for each of the fitted models for cluster sizes \code{gmin}, ..., \code{gmax}}
 \item{capushe }{Results of capushe model selection, an object of class \code{"Capushe"}}
 \item{ICL.all }{ICL values calculated for each of the fitted models for cluster sizes \code{gmin}, ..., \code{gmax}}
@@ -201,7 +199,7 @@ conds <- simulate$conditions
 ## Run the PMM model for g = 3
 ## "TC" library size estimate, EM algorithm
 
-run <- PoisMixClus(y, g = 3, conds = conds, lib.type = "TC") 
+run <- PoisMixClus(y, g = 3, conds = conds, norm = "TC") 
 
 ## Estimates of pi and lambda for the selected model
 
@@ -212,33 +210,33 @@ lambda.est <- run$lambda
 ## Not run: PMM for 4 total clusters, with one fixed class
 ## "TC" library size estimate, EM algorithm
 ##
-## run <- PoisMixClus(y, g = 3, lib.type = "TC", conds = conds, 
+## run <- PoisMixClus(y, g = 3, norm = "TC", conds = conds, 
 ##    fixed.lambda = list(c(1,1,1))) 
 ##
 ##
 ## Not run: PMM model for 4 clusters, with equal proportions
 ## "TC" library size estimate, EM algorithm
 ##
-## run <- PoisMixClus(y, g = 4, lib.type = "TC", conds = conds, 
+## run <- PoisMixClus(y, g = 4, norm = "TC", conds = conds, 
 ##     equal.proportions = TRUE) 
 ##
 ##
 ## Not run: PMM model for g = 1, ..., 10 clusters, Split Small-EM init
 ##
 ## run1.10 <- PoisMixClusWrapper(y, gmin = 1, gmax = 10, conds = conds, 
-##	lib.type = "TC")
+##	norm = "TC")
 ##
 ##
 ## Not run: PMM model for g = 1, ..., 10 clusters, Small-EM init
 ##
 ## run1.10bis <-  <- PoisMixClusWrapper(y, gmin = 1, gmax = 10, conds = conds, 
-##	lib.type = "TC", split.init = FALSE)
+##	norm = "TC", split.init = FALSE)
 ##
 ##
 ## Not run: previous model equivalent to the following
 ##
 ## for(K in 1:10) {
-##	run <- PoisMixClus(y, g = K, conds = conds, lib.type = "TC")
+##	run <- PoisMixClus(y, g = K, conds = conds, norm = "TC")
 ## } 
 
 }

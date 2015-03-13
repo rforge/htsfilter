@@ -11,20 +11,19 @@ These functions implement a variety of initialization methods for the parameters
 }
 \usage{
 
-emInit(y, g, conds, lib.size, lib.type, alg.type = "EM", 
-    init.runs, init.iter, fixed.lambda, equal.proportions, verbose,
-	s=NA)
+emInit(y, g, conds, norm, alg.type = "EM", 
+    init.runs, init.iter, fixed.lambda, equal.proportions, verbose)
 
-kmeanInit(y, g, conds, lib.size, lib.type, fixed.lambda,
-    equal.proportions, s=NA)
+kmeanInit(y, g, conds, norm, fixed.lambda,
+    equal.proportions)
 
-splitEMInit(y, g, conds, lib.size, lib.type, alg.type, fixed.lambda,
+splitEMInit(y, g, conds, norm, alg.type, fixed.lambda,
     equal.proportions, prev.labels, prev.probaPost, init.runs, 
-    init.iter, verbose, s=NA)
+    init.iter, verbose)
 
-probaPostInit(y, g, conds, lib.size, lib.type, alg.type = "EM", 
+probaPostInit(y, g, conds, norm, alg.type = "EM", 
     fixed.lambda, equal.proportions, probaPost.init, init.iter,
-    verbose, s=NA)
+    verbose)
 
 }
 \arguments{
@@ -37,12 +36,10 @@ Number of clusters. If \code{fixed.lambda} contains a list of lambda values to b
   \item{conds}{
 Vector of length \emph{q} defining the condition (treatment group) for each variable (column) in \code{y}
 }
-  \item{lib.size}{
-If \code{FALSE}, the library size parameter is not included in the model (i.e., the PMM-I model). If \code{TRUE}, the library size parameter is included in the Poisson mixture model (i.e., the PMM-II model)
-}
-  \item{lib.type}{
-If \code{lib.size = TRUE}, the estimator to be used for the library size parameter: (\dQuote{\code{TC}} for total count, \dQuote{\code{UQ}} for upper quantile, \dQuote{\code{Med}} for median, 
-\dQuote{\code{DESeq}} for the normalization method in the DESeq package, and \dQuote{\code{TMM}} for the TMM normalization method (Robinson and Oshlack, 2010)
+  \item{norm}{
+The type of estimator to be used to normalize for differences in library size: (\dQuote{\code{TC}} for total count, \dQuote{\code{UQ}} for upper quantile, \dQuote{\code{Med}} for median, 
+\dQuote{\code{DESeq}} for the normalization method in the DESeq package, and \dQuote{\code{TMM}} for the TMM normalization method (Robinson and Oshlack, 2010). Can also
+be a vector (of length \emph{q}) containing pre-estimated library size estimates for each sample.
 }
   \item{alg.type}{
 Algorithm to be used for parameter estimation (\dQuote{\code{EM}} or \dQuote{\code{CEM}} for the EM or CEM algorithms, respectively)
@@ -73,9 +70,6 @@ An \emph{n} x (\emph{g}) matrix of the conditional probabilities of each observa
 }
   \item{verbose}{
 If \code{TRUE}, include verbose output
-}
-  \item{s}{
-Estimate of normalized per-variable library size. If NA, these are restimated within the function.
 }
 }
 \details{
@@ -141,8 +135,8 @@ conds <- simulate$conditions
 ## Calculate initial values for lambda and pi using the Small-EM
 ## initialization (4 classes, PMM-II model with "TC" library size)
 ##
-## init.values <- emInit(y, g = 4, conds, lib.size = TRUE, 
-##   lib.type = "TC", alg.type = "EM", 
+## init.values <- emInit(y, g = 4, conds, 
+##    norm = "TC", alg.type = "EM", 
 ##    init.runs = 50, init.iter = 10, fixed.lambda = NA,
 ##    equal.proportions = FALSE, verbose = FALSE)
 ## pi.init <- init.values$pi.init

@@ -1,6 +1,7 @@
 export(emInit)
 export(kmeanInit)
 export(logLikePoisMixDiff)
+export(logLikePoisMix)
 export(PoisMixClus)
 export(PoisMixClusWrapper)
 export(PoisMixMean)
@@ -14,10 +15,11 @@ import(capushe)
 
 ## import methods
 importFrom(edgeR, calcNormFactors)
-importFrom(poisson.glm.mix, mylogLikePoisMix)
 importFrom(plotrix, weighted.hist)
 
 S3method(plot, HTSCluster)
 S3method(summary, HTSCluster)
+
 S3method(summary, HTSClusterWrapper)
+
 S3method(plot, HTSClusterWrapper)

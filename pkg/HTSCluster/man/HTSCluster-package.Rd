@@ -15,8 +15,8 @@ selection (i.e., to choose the number of clusters).
 \tabular{ll}{
 Package: \tab HTSCluster\cr
 Type: \tab Package\cr
-Version: \tab 2.0.7\cr
-Date: \tab 2015-02-24\cr
+Version: \tab 2.0.8\cr
+Date: \tab 2015-03-13\cr
 License: \tab GPL (>=3)\cr
 LazyLoad: \tab yes\cr
 }
@@ -48,7 +48,7 @@ conds <- simulate$conditions
 ## Run the PMM model for g = 3
 ## "TC" library size estimate, EM algorithm
 
-run <- PoisMixClus(y, g = 3, conds = conds, lib.type = "TC") 
+run <- PoisMixClus(y, g=3, conds=conds, norm="TC") 
 
 ## Estimates of pi and lambda for the selected model
 
@@ -59,33 +59,33 @@ lambda.est <- run$lambda
 ## Not run: PMM for 4 total clusters, with one fixed class
 ## "TC" library size estimate, EM algorithm
 ##
-## run <- PoisMixClus(y, g = 3, lib.type = "TC", conds = conds, 
+## run <- PoisMixClus(y, g = 3, norm = "TC", conds = conds, 
 ##    fixed.lambda = list(c(1,1,1))) 
 ##
 ##
 ## Not run: PMM model for 4 clusters, with equal proportions
 ## "TC" library size estimate, EM algorithm
 ##
-## run <- PoisMixClus(y, g = 4, lib.type = "TC", conds = conds, 
+## run <- PoisMixClus(y, g = 4, norm = "TC", conds = conds, 
 ##     equal.proportions = TRUE) 
 ##
 ##
 ## Not run: PMM model for g = 1, ..., 10 clusters, Split Small-EM init
 ##
 ## run1.10 <- PoisMixClusWrapper(y, gmin = 1, gmax = 10, conds = conds, 
-##	lib.type = "TC")
+##	norm = "TC")
 ##
 ##
 ## Not run: PMM model for g = 1, ..., 10 clusters, Small-EM init
 ##
 ## run1.10bis <-  <- PoisMixClusWrapper(y, gmin = 1, gmax = 10, conds = conds, 
-##	lib.type = "TC", split.init = FALSE)
+##	norm = "TC", split.init = FALSE)
 ##
 ##
 ## Not run: previous model equivalent to the following
 ##
 ## for(K in 1:10) {
-##	run <- PoisMixClus(y, g = K, conds = conds, lib.type = "TC")
+##	run <- PoisMixClus(y, g = K, conds = conds, norm = "TC")
 ## }
 
 

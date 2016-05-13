@@ -7,7 +7,7 @@
 \method{summary}{PoisMixClus_K}(object, ...)
 }
 \arguments{
-\item{object}{An object of class \code{"PoisMixClus"}}
+\item{object}{An object of class \code{"PoisMixClus_K"}}
 
 \item{...}{Additional arguments}
 }
@@ -16,7 +16,7 @@ A function to summarize the clustering results obtained from a Poisson
 mixture model.
 }
 \details{
-The summary function for an object of class \code{"PoisMixClus"} provides the
+The summary function for an object of class \code{"PoisMixClus_K"} provides the
 following summary of results:
 
 1) Number of clusters and model selection criterion used, if applicable.

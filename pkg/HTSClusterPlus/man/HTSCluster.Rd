@@ -62,9 +62,9 @@ will be used.}
 \code{\link{PoisMixClus}}.}
 }
 \value{
-Object of class \code{HTSCluster} containing the full results (itself an object
-of class \code{PoisMixClus} or \code{NormMixClus}), the model used, and if
-applicable, the data transformation used.
+Object of class \code{HTSCluster} containing the full \code{results} (itself an object
+of class \code{PoisMixClus} or \code{NormMixClus}), the \code{model} used, and if
+applicable, the data \code{transformation} used.
 }
 \description{
 Title

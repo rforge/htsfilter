@@ -2,23 +2,37 @@
 % Please edit documentation in R/summary.NormMixClus_K.R
 \name{summary.NormMixClus_K}
 \alias{summary.NormMixClus_K}
-\title{Summarize results from clustering using a Poisson mixture model}
+\title{Summarize results from clustering using a Normal mixture model}
 \usage{
 \method{summary}{NormMixClus_K}(object, ...)
 }
 \arguments{
-\item{object}{An object of class \code{"PoisMixClus"}}
+\item{object}{An object of class \code{"NormMixClus"}}
 
 \item{...}{Additional arguments}
 }
 \description{
-A function to summarize the clustering results obtained from a Poisson
+A function to summarize the clustering results obtained from a Normal
 mixture model.
 }
 \details{
-The summary function for an object of class \code{"PoisMixClus"}
-provides the number of clusters selected for the BIC, ICL, DDSE, and Djump
-model selection approaches.
+The summary function for an object of class \code{"NormMixClus_K"} provides the
+following summary of results:
+
+1) Number of clusters and model selection criterion used, if applicable.
+
+2) Number of observations across all clusters with a maximum conditional
+probability greater than 90% (and corresponding percentage of total
+observations) for the selected model.
+
+3) Number of observations per cluster with a maximum conditional probability
+greater than 90% (and corresponding percentage of total observations per
+cluster) for the selected model.
+
+4) \eqn{\ensuremath\boldsymbol{\mu}}{\mu} values for the selected
+model.
+
+5) \eqn{\ensuremath\boldsymbol{\pi}}{\pi} values for the selected model.
 }
 \examples{
 ## Simulate data as shown in Rau et al. (2011)
@@ -43,25 +57,14 @@ proba <- probaPost(y, K = 3, conds = conds, pi = pi.est, s = norm,
                    lambda = lambda.est)
 
 ## Run the PMM model for K = 3 and 4
-run <- PoisMixClus(y, K = 3:4, conds = conds, norm="TC")
+run <- NormMixClus(log(y+1), K = 3:4)
 summary(run)
 }
 \author{
 Andrea Rau
 }
-\references{
-Rau, A., Maugis-Rabusseau, C., Martin-Magniette, M.-L., Celeux,
-G. (2015) Co-expression analysis of high-throughput transcriptome sequencing
-data with Poisson mixture models. Bioinformatics, doi:
-10.1093/bioinformatics/btu845.
-
-Rau, A., Celeux, G., Martin-Magniette, M.-L., Maugis-Rabusseau, C. (2011).
-Clustering high-throughput sequencing data with Poisson mixture models.
-Inria Research Report 7786. Available at
-\url{http://hal.inria.fr/inria-00638082}.
-}
 \seealso{
-\code{\link{PoisMixClus}}, \code{\link{PoisMixClus_K}}
+\code{\link{NormMixClus}}, \code{\link{NormMixClus_K}}
 }
 \keyword{methods}
 

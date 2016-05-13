@@ -7,7 +7,7 @@
 #' criterion. 
 #' 
 #' \tabular{ll}{ Package: \tab HTSCluster\cr Type: \tab Package\cr Version:
-#' \tab 0.99.1\cr Date: \tab 2016-05-06\cr License: \tab GPL (>=3)\cr LazyLoad:
+#' \tab 0.99.2\cr Date: \tab 2016-05-13\cr License: \tab GPL (>=3)\cr LazyLoad:
 #' \tab yes\cr }
 #' 
 #' @name HTSClusterPlus-package
@@ -28,7 +28,6 @@
 #' \url{http://hal.inria.fr/inria-00638082}.
 #' @keywords models cluster
 #' @example /inst/examples/HTSClusterPlus-package.R
-#' @importFrom utils winMenuAddItem
 NULL
 
 

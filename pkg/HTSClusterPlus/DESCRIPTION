@@ -1,8 +1,8 @@
 Package: HTSClusterPlus
 Type: Package
 Title: Clustering High-Throughput Transcriptome Sequencing (HTS) Data
-Version: 0.99.1
-Date: 2016-05-06
+Version: 0.99.2
+Date: 2016-05-13
 Author: Andrea Rau, Gilles Celeux, Marie-Laure Martin-Magniette, Cathy Maugis-
     Rabusseau
 Maintainer: Andrea Rau <andrea.rau@jouy.inra.fr>

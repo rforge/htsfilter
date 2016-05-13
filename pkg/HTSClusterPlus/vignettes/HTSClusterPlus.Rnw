@@ -1,0 +1,34 @@
+%\VignetteIndexEntry{Co-expression analysis of RNA-seq data with the "HTSCluster" package}
+%\VignettePackage{HTSCluster}
+
+% To compile this document
+% library('cacheSweave');rm(list=ls());Sweave('HTSCluster.Rnw',driver=cacheSweaveDriver());system("pdflatex HTSCluster")
+
+\documentclass[10pt,oneside]{article}
+
+\title{\textsf{\textbf{{\it HTSCluster} package instructions}}}
+\author{Andrea Rau$^1$, Cathy Maugis-Rabusseau, \\
+Marie-Laure Martin-Magniette, and Gilles Celeux\\[1em]
+\texttt{$^1$andrea.rau@jouy.inra.fr}}
+
+% The following command makes use of SVN's 'Date' keyword substitution
+% To activate this, I used: svn propset svn:keywords Date HTSCluster.Rnw
+\date{{\it HTSCluster} version \Sexpr{packageDescription("HTSCluster")$Version}}
+
+\SweaveOpts{keep.source=TRUE,eps=FALSE,pdf=FALSE,png=TRUE,include=FALSE,width=5.4,height=3.7,resolution=180}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+\maketitle
+
+{\it HTSCluster} is a package to perform co-expression analyses of RNA-seq data. The package implements a novel statistical method based on a Poisson mixture model, performs parameter estimation using an expectation-maximization algorithm, and performs model selection using the slope heuristics approach.
+
+The full User's Guide for {\it HTSCluster} may be found by installing the {\it HTSCluster} package and loading it into an R session via \texttt{library(HTSCluster)}.
+In R for Windows, the User's Guide is then available from the drop-down menu called ``Vignettes''. In other operating systems, type
+<<load, results=hide, eval=false>>=
+library(HTSCluster)
+HTSClusterUsersGuide()
+@
+at the R prompt to open the User's Guide in a pdf viewer.
+
+\end{document}

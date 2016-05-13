@@ -1,0 +1,27 @@
+Package: HTSClusterPlus
+Type: Package
+Title: Clustering High-Throughput Transcriptome Sequencing (HTS) Data
+Version: 0.99.1
+Date: 2016-05-06
+Author: Andrea Rau, Gilles Celeux, Marie-Laure Martin-Magniette, Cathy Maugis-
+    Rabusseau
+Maintainer: Andrea Rau <andrea.rau@jouy.inra.fr>
+Depends:
+    R (>= 2.14.0)
+Imports:
+    edgeR,
+    DESeq2,
+    capushe,
+    Rmixmod,
+    e1071,
+    BiocParallel,
+    HTSFilter
+Suggests:
+    Biobase
+Description: Gaussian and Poisson mixture models are implemented to cluster genes from high-
+    throughput transcriptome sequencing (RNA-seq) data. Parameter estimation is
+    performed using either the EM or CEM algorithm, and the slope heuristics or ICL 
+    criterion are used for model selection (i.e., to choose the number of clusters).
+License: GPL (>=3)
+LazyLoad: yes
+RoxygenNote: 5.0.1

@@ -58,7 +58,6 @@ proba <- probaPost(y, K = 3, conds = conds, pi = pi.est, s = norm,
 
 ## Run the PMM model for K = 3 and 4
 run <- NormMixClus(log(y+1), K = 3:4)
-summary(run)
 }
 \author{
 Andrea Rau

@@ -137,7 +137,8 @@ HTSCluster <- function(y, K, conds=NULL, norm="TMM", model="Normal", transformat
   ####################################
   
   
-  RESULTS <- list(results = run, model=model, transformation=transformation)
+  RESULTS <- list(results = run, model=model, transformation=transformation, 
+                  tcounts=tcounts$tcounts)
   class(RESULTS) <- "HTSCluster"
   return(RESULTS)
 }

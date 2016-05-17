@@ -2,32 +2,75 @@
 #' 
 #' Corresponds to pK_Lk_Ck model
 #'
+#' @param x Object of class \code{HTSCluster}, \code{NormMixClus}, or \code{NormMixClus_K}
 #' @param y_profiles y (\emph{n} x \emph{q}) matrix of observed profiles for \emph{n}
-#' observations and \emph{q} variables
-#' @param probaPost Matrix containing the conditional
-#' probabilities of belonging to each cluster for all observations
+#' observations and \emph{q} variables, required for \code{x} of class \code{NormMixClus}
+#' or \code{NormMixClus_K}
+#' @param modelChoice The model used for parameter estimation for objects \code{x} of
+#' class \code{HTSCluster} or \code{NormMixClus}. When \code{NULL}, the model selected
+#' by the ICL criterion is used; otherwise, \code{modelChoice} should designate the number
+#' of clusters in the desired model
 #'
 #' @return
-#' \item{pi }{ ...}
-#' \item{mu }{ ...}
-#' \item{Sigma }{ ...}
+#' \item{pi }{ Vector of dimension \emph{K} with the estimated cluster proportions from
+#' the Gaussian mixture model, where \emph{K} is the number of clusters}
+#' \item{mu }{ Matrix of dimension \emph{K} x \emph{d} containing the estimated mean
+#' vector from the Gaussian mixture model, where \emph{d} is the
+#' number of samples in the data \code{y_profiles} and \emph{K} is the number of clusters}
+#' \item{Sigma }{ Array of dimension \emph{d} x \emph{d} x \emph{K} containing the
+#' estimated covariance matrices from the Gaussian mixture model, where \emph{d} is the
+#' number of samples in the data \code{y_profiles} and \emph{K} is the number of clusters}
 #' 
 #' @export
 #'
 
-##   il faut supprimer les boucles for, à améliorer
-NormMixParam <- function(y_profiles, probaPost){
-  pi <- apply(probaPost,2,sum)/nrow(y_profiles)
-  mu <- matrix(0,nrow=ncol(probaPost),ncol=ncol(y_profiles))
-  Sigma <- array(0,dim=c(ncol(y_profiles),ncol(y_profiles),ncol(probaPost)))
+NormMixParam <- function(x, y_profiles=NULL, modelChoice=NULL) {
+  
+  if (class(x) != "HTSCluster" & class(x) != "NormMixClus" & class(x) != "NormMixClus_K") {
+    stop(paste(sQuote("x"), sep = ""), " must be of class ", 
+         paste(dQuote("HTSCluster"), sep = ""), " or ", paste(dQuote("NormMixClus"), sep = ""),
+         " or ", paste(dQuote("NormMixClus_K"), sep = ""), sep = "")
+  }
+  if(class(x) == "HTSCluster") {
+    y_profiles <- x$tcounts
+    if(is.character(modelChoice) == TRUE) {
+      if(modelChoice == "ICL") {
+        mod <- x$results$ICL.results;
+      }
+    }
+    if(is.null(modelChoice) == TRUE) mod <- x$results$ICL.results;
+    if(is.numeric(modelChoice) == TRUE) {
+      mod <- x$results$all.results[[paste("K=", modelChoice,sep="")]]
+    }
+    probaPost <- mod$probaPost
+  }
+  if(class(x) == "NormMixClus") {
+    if(is.null(y_profiles) == TRUE) stop(paste(dQuote("y_profiles"), sep = ""), " must
+                                           be included for class ", 
+                                         paste(dQuote("NormMixClus"), sep = ""))
+    if(modelChoice == "ICL" | is.null(modelChoice)==TRUE) mod <- x$ICL.results;
+    if(is.numeric(modelChoice) == TRUE) {
+      mod <- x$all.results[[paste("K=", modelChoice,sep="")]]
+    }
+    probaPost <- mod$probaPost
+  }
+  if(class(x) == "NormMixClus_K") {
+    if(is.null(y_profiles) == TRUE) stop(paste(dQuote("y_profiles"), sep = ""), " must
+                                         be included for class ", 
+                                         paste(dQuote("NormMixClus_K"), sep = ""))
+    mod <- x
+    probaPost <- mod$probaPost
+  }
+    
+  pi <- apply(probaPost,2,sum) / nrow(y_profiles)
+  mu <- matrix(0, nrow=ncol(probaPost), ncol=ncol(y_profiles))
+  Sigma <- array(0, dim=c(ncol(y_profiles), ncol(y_profiles), ncol(probaPost)))
   for (k in 1:ncol(probaPost)){
     mu[k,]<-apply(probaPost[,k] * y_profiles,2,sum) / sum(probaPost[,k])
-    for (i in 1:nrow(y_profiles)){        # a ameliorer ici
-      Sigma[,,k]<-Sigma[,,k] + (probaPost[i,k]*(t(as.matrix(y_profiles[i,]-mu[k,])) %*% 
-                                                  as.matrix(y_profiles[i,]-mu[k,])))
-    }
-    Sigma[,,k]<-Sigma[,,k] / sum(probaPost[,k])
+    Sigma[,,k] <- (t(y_profiles) - mu[k,]) %*% ( t(t(y_profiles) - mu[k,]) * probaPost[,k])
+    Sigma[,,k] <- Sigma[,,k] / sum(probaPost[,k])
   }
-  param<-list(pi=pi, mu=mu, Sigma=Sigma)
+  
+  param <- list(pi=pi, mu=mu, Sigma=Sigma)
   return(param)           
 }

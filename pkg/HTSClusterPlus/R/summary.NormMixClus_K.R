@@ -22,6 +22,8 @@
 #' 5) \eqn{\ensuremath\boldsymbol{\pi}}{\pi} values for the selected model.
 #' 
 #' @param object An object of class \code{"NormMixClus"}
+#' @param y_profiles y (\emph{n} x \emph{q}) matrix of observed profiles for \emph{n}
+#' observations and \emph{q} variables
 #' @param ... Additional arguments
 #' @author Andrea Rau
 #' @seealso \code{\link{NormMixClus}}, \code{\link{NormMixClus_K}}
@@ -29,19 +31,20 @@
 #' @example /inst/examples/NormMixClus.R
 #' @export
 `summary.NormMixClus_K` <-
-  function (object, ...) 
+  function (object, y_profiles, ...) 
   {
     x <- object
     if (class(x) != "NormMixClus_K") {
-      stop(paste(sQuote("x"), sep = ""), " must be of class ", 
+      stop(paste(sQuote("object"), sep = ""), " must be of class ", 
            paste(dQuote("NormMixClus_K"), sep = ""), sep = "")
     }
     
     probaPost <- x$probaPost
     labels <- apply(probaPost, 1, which.max)
-    #### !!!! NEED TO RE-ESTIMATE MEAN AND PI
-#    lambda <- x$lambda
-#    pi <- x$pi
+    
+    param <- NormMixParam(x, y_profiles) 
+    mu <- param$mu
+    pi <- param$pi
     g <- x$K
     
     map <- apply(probaPost, 1, max)
@@ -49,9 +52,6 @@
     
     cat("*************************************************\n")
     cat("Number of clusters = ", g, "\n", sep = "")
-    # if(is.null(x$model.selection) == FALSE) {
-    #   cat("Model selection via ", x$model.selection, "\n", sep = "")
-    # }
     cat("*************************************************\n")
     tab <- table(labels)
     names(tab) <- paste("Cluster", names(tab))
@@ -83,6 +83,9 @@
     }
     print(tab2, quote = FALSE); cat("\n")
     
-#    cat("Lambda:\n"); print(round(lambda,2)); cat("\n")
-#    cat("Pi:\n"); print(round(pi,2)); cat("\n")
+    rownames(mu) <- names(pi) <- names(tab)
+    
+    
+    cat("Mu:\n"); print(round(mu,2)); cat("\n")
+    cat("Pi:\n"); print(round(pi,2)); cat("\n")
   }

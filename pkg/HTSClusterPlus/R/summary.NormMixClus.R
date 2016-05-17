@@ -1,4 +1,4 @@
-#' Summarize results from clustering using a Poisson mixture model
+#' Summarize results from clustering using a Normal mixture model
 #' 
 #' A function to summarize the clustering results obtained from a Poisson
 #' mixture model.
@@ -7,7 +7,9 @@
 #' provides the number of clusters selected for the BIC, ICL, DDSE, and Djump
 #' model selection approaches.
 #' 
-#' @param object An object of class \code{"PoisMixClus"} 
+#' @param object An object of class \code{"NormClus"} 
+#' @param y_profiles y (\emph{n} x \emph{q}) matrix of observed profiles for \emph{n}
+#' observations and \emph{q} variables
 #' @param ... Additional arguments
 #' @author Andrea Rau
 #' @seealso \code{\link{PoisMixClus}}, \code{\link{PoisMixClus_K}}
@@ -24,29 +26,69 @@
 #' @example /inst/examples/PoisMixClus.R
 #' @export
 summary.NormMixClus <-
-  function (object, ...) 
+  function (object, y_profiles, ...) 
   {
     x <- object
-    if (class(x) != "PoisMixClus") {
-      stop(paste(sQuote("x"), sep = ""), " must be of class ", 
-           paste(dQuote("PoisMixClus"), sep = ""), sep = "")
+    if (class(x) != "NormMixClus") {
+      stop(paste(sQuote("object"), sep = ""), " must be of class ", 
+           paste(dQuote("NormMixClus"), sep = ""), sep = "")
     }
     cat("*************************************************\n")
-    cat("Selected number of clusters via ICL = ", ncol(x$ICL.results$lambda), "\n", sep = "")
-    cat("Selected number of clusters via BIC = ", ncol(x$BIC.results$lambda), "\n", sep = "")
-    if(is.na(x$Djump.results) == FALSE) {
-      cat("Selected number of clusters via Djump = ", ncol(x$Djump.results$lambda), "\n", sep = "")
-    }
-    if(is.na(x$DDSE.results) == FALSE) {
-      cat("Selected number of clusters via DDSE = ", ncol(x$DDSE.results$lambda), "\n", sep = "")
-    }
-    if(is.na(x$Djump.results) == TRUE) {
-      cat("Djump results not available \n", sep = "")
-    }
-    if(is.na(x$DDSE.results) == TRUE) {
-      cat("DDSE results not available \n", sep = "")
-    }
+    clustNum <-  paste(x$nbClust.all, collapse=",")
+    cat("Clusters fit: ", clustNum , "\n", sep = "")
+    cat("Selected number of clusters via ICL: ", x$ICL.results$K, "\n", sep = "")
     cat("*************************************************\n")
+    
+    x <- object$ICL.results
+    
+    probaPost <- x$probaPost
+    labels <- apply(probaPost, 1, which.max)
+    
+
+    
+    map <- apply(probaPost, 1, max)
+    length(which(map > 0.9))/length(map)
+    
+    tab <- table(labels)
+    names(tab) <- paste("Cluster", names(tab))
+    param <- NormMixParam(x, y_profiles) 
+    mu <- param$mu
+    pi <- param$pi
+    rownames(mu) <- names(pi) <- names(tab)
+    g <- x$K
+    
+    cat("Cluster sizes:\n"); print(tab); cat("\n")
+    cat("Number of observations with MAP > 0.90 (% of total):\n")
+    cat(length(which(map > 0.9)), " (", round(length(which(map > 0.9))/length(map)*100,2),
+        "%)\n\n", sep = "")
+    cat("Number of observations with MAP > 0.90 per cluster (% of total per cluster):\n"); 
+    
+    tab2 <- matrix(NA, nrow = 2, ncol = g)
+    colnames(tab2) <- paste("Cluster", 1:g); rownames(tab2) <- rep("", 2)
+    for(i in 1:g) {
+      if(sum(labels == i) > 1) {
+        map.clust <- apply(matrix(probaPost[labels == i,], ncol=g), 1, max)
+        tab2[1,i] <- length(which(map.clust > 0.9))
+        tab2[2,i] <- paste("(", round(100*length(which(map.clust > 0.9))/length(map.clust),2),
+                           "%)", sep = "")
+      }
+      if(sum(labels == i) == 1) {
+        map.clust <- max(probaPost[labels == i,])
+        tab2[1,i] <- length(which(map.clust > 0.9))
+        tab2[2,i] <- paste("(", round(100*length(which(map.clust > 0.9))/length(map.clust),2),
+                           "%)", sep = "")
+      }
+      if(sum(labels == i) == 0) {
+        tab2[1,i] <- "---"
+        tab2[2,i] <- "---"
+      }
+    }
+    print(tab2, quote = FALSE); cat("\n")
+    
+    cat("Mu:\n"); print(round(mu,2)); cat("\n")
+    cat("Pi:\n"); print(round(pi,2)); cat("\n")
+    
+    
   }
 
 

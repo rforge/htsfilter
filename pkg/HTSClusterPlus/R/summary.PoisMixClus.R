@@ -25,7 +25,7 @@
 #' @example /inst/examples/PoisMixClus.R
 #' @export
 summary.PoisMixClus <-
-  function (object, ...) 
+  function (object, modelChoice=NULL, ...) 
   {
     x <- object
     if (class(x) != "PoisMixClus") {
@@ -35,20 +35,26 @@ summary.PoisMixClus <-
     cat("*************************************************\n")
     cat("Selected number of clusters via ICL = ", ncol(x$ICL.results$lambda), "\n", sep = "")
     cat("Selected number of clusters via BIC = ", ncol(x$BIC.results$lambda), "\n", sep = "")
-    if(is.na(x$Djump.results) == FALSE) {
+    if(is.na(x$Djump.results)[1] == FALSE) {
       cat("Selected number of clusters via Djump = ", ncol(x$Djump.results$lambda), "\n", sep = "")
     }
-    if(is.na(x$DDSE.results) == FALSE) {
+    if(is.na(x$DDSE.results)[1] == FALSE) {
       cat("Selected number of clusters via DDSE = ", ncol(x$DDSE.results$lambda), "\n", sep = "")
     }
-    if(is.na(x$Djump.results) == TRUE) {
+    if(is.na(x$Djump.results)[1] == TRUE) {
       cat("Djump results not available \n", sep = "")
     }
-    if(is.na(x$DDSE.results) == TRUE) {
+    if(is.na(x$DDSE.results)[1] == TRUE) {
       cat("DDSE results not available \n", sep = "")
     }
-    cat("*************************************************\n")
-  }
+    if(is.null(modelChoice) == FALSE) {
+      if(modelChoice == "ICL") summary(x$ICL.results) 
+      if(modelChoice == "BIC") summary(x$BIC.results) 
+      if(modelChoice == "DDSE") summary(x$DDSE.results) 
+      if(modelChoice == "Djump") summary(x$Djump.results)
+   
+    }
+}
 
 
 

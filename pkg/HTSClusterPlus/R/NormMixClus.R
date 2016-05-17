@@ -86,8 +86,6 @@ NormMixClus <- function(y_profiles, K, subset.index=NA, parallel=TRUE, BPPARAM=b
     }
   }
   
-
-  
   nbClust.all<-unlist(lapply(all.results, function(x) x$K))
   logLike.all <- unlist(lapply(all.results, function(x) x$log.like))
   ICL.all <- unlist(lapply(all.results, function(x) x$ICL))

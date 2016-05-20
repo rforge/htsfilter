@@ -1,0 +1,31 @@
+%\VignetteIndexEntry{Co-expression analysis of sequencing data with the "coseq" package}
+%\VignettePackage{coseq}
+
+% To compile this document
+% library('cacheSweave');rm(list=ls());Sweave('coseq.Rnw',driver=cacheSweaveDriver());system("pdflatex coseq")
+
+\documentclass[10pt,oneside]{article}
+
+\title{\textsf{\textbf{{\it coseq} package instructions}}}
+\author{Andrea Rau$^1$ and Cathy Maugis-Rabusseau}}
+
+% The following command makes use of SVN's 'Date' keyword substitution
+% To activate this, I used: svn propset svn:keywords Date coseq.Rnw
+\date{{\it coseq} version \Sexpr{packageDescription("coseq")$Version}}
+
+\SweaveOpts{keep.source=TRUE,eps=FALSE,pdf=FALSE,png=TRUE,include=FALSE,width=5.4,height=3.7,resolution=180}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+\maketitle
+
+{\it coseq} is a package to perform clustering analysis of sequencing data (e.g., co-expression analysis of RNA-seq data). The package implements both Gaussian and Poisson mixtures model, performs parameter estimation using an expectation-maximization algorithm, and performs model selection using either the Integrated Completed Likelihood (ICL) criterion or the slope heuristics approach.
+
+The full User's Guide for {\it coseq} may be found by installing the {\it coseq} package, loading it into an R session via \texttt{library(coseq)}, and typing:
+<<load, results=hide, eval=false>>=
+library(coseq)
+coseqUsersGuide()
+@
+at the R prompt to open the User's Guide in a pdf viewer.
+
+\end{document}

@@ -14,8 +14,7 @@ Imports:
     capushe,
     grDevices,
     graphics,
-    stats,
-    utils
+    stats
 Suggests:
     HTSFilter,
     Biobase

@@ -21,7 +21,6 @@ importFrom("graphics", "abline", "axis", "barplot", "boxplot", "hist",
      "lines", "mtext", "par", "points", "text", "plot")
 importFrom("stats", "dist", "dpois", "kmeans", "median", "quantile",
      "rexp", "rmultinom", "runif")
-importFrom("utils", "winMenuAddItem")
 
 
 S3method(plot, HTSCluster)

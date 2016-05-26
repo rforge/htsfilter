@@ -11,11 +11,18 @@ export(probaPostInit)
 export(splitEMInit)
 export(highDimensionARI)
 export(HTSClusterUsersGuide)
-import(capushe)
 
 ## import methods
 importFrom(edgeR, calcNormFactors)
 importFrom(plotrix, weighted.hist)
+importFrom("capushe", "capushe", "validation")
+importFrom("grDevices", "dev.off", "pdf")
+importFrom("graphics", "abline", "axis", "barplot", "boxplot", "hist",
+     "lines", "mtext", "par", "points", "text", "plot")
+importFrom("stats", "dist", "dpois", "kmeans", "median", "quantile",
+     "rexp", "rmultinom", "runif")
+importFrom("utils", "winMenuAddItem")
+
 
 S3method(plot, HTSCluster)
 S3method(summary, HTSCluster)

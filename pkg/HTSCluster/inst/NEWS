@@ -3,7 +3,8 @@
              ========================================
 
 		CHANGES IN HTSCluster VERSION 2.0.8
-		
+
+- Updated all imports to function calls outside of base		
 - Added possibility to input pre-calculated normalization factors (optional)
 and to choose a subset of genes for co-expression analysis in the PoisMixClus
 and PoisMixClusWrapper functions (thanks to S. Thevenon for the suggestions!).

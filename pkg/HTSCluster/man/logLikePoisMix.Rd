@@ -61,7 +61,7 @@ In the \code{logLikePoisMixDiff} function, we make use of the alternative mass f
 
 Loader, C. (2000) Fast and accurate computation of binomial probabilities. Available at \url{https://lists.gnu.org/archive/html/octave-maintainers/2011-09/pdfK0uKOST642.pdf}.
 
-Rau, A., Maugis-Rabusseau, C., Martin-Magniette, M.-L., Celeux, G. (2015) Co-expression analysis of high-throughput transcriptome sequencing data with Poisson mixture models. Bioinformatics, doi: 10.1093/bioinformatics/btu845.
+Rau, A., Maugis-Rabusseau, C., Martin-Magniette, M.-L., Celeux G. (2015). Co-expression analysis of high-throughput transcriptome sequencing data with Poisson mixture models. Bioinformatics, 31(9):1420-1427.
 
 Rau, A., Celeux, G., Martin-Magniette, M.-L., Maugis-Rabusseau, C. (2011) Clustering high-throughput sequencing data with Poisson mixture models. Inria Research Report 7786. Available at \url{http://hal.inria.fr/inria-00638082}.
 }

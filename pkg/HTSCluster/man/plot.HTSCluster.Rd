@@ -53,7 +53,7 @@ For objects of class \code{"HTSClusterWrapper"}, the plotting function provides 
 
 \references{
 
-Rau, A., Maugis-Rabusseau, C., Martin-Magniette, M.-L., Celeux, G. (2015) Co-expression analysis of high-throughput transcriptome sequencing data with Poisson mixture models. Bioinformatics, doi: 10.1093/bioinformatics/btu845.
+Rau, A., Maugis-Rabusseau, C., Martin-Magniette, M.-L., Celeux G. (2015). Co-expression analysis of high-throughput transcriptome sequencing data with Poisson mixture models. Bioinformatics, 31(9):1420-1427.
 
 Andrea Rau, Gilles Celeux, Marie-Laure Martin-Magniette, and Cathy Maugis-Rabusseau (2011). 
 Clustering high-throughput sequencing data with Poisson mixture models. \emph{Technical report}

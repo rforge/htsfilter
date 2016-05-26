@@ -16,7 +16,7 @@ selection (i.e., to choose the number of clusters).
 Package: \tab HTSCluster\cr
 Type: \tab Package\cr
 Version: \tab 2.0.8\cr
-Date: \tab 2015-03-13\cr
+Date: \tab 2016-05-26\cr
 License: \tab GPL (>=3)\cr
 LazyLoad: \tab yes\cr
 }
@@ -27,7 +27,7 @@ Andrea Rau, Gilles Celeux, Marie-Laure Martin-Magniette, Cathy Maugis-Rabusseau
 Maintainer: Andrea Rau <\url{andrea.rau@jouy.inra.fr}>
 }
 \references{
-Rau, A., Maugis-Rabusseau, C., Martin-Magniette, M.-L., Celeux, G. (2015) Co-expression analysis of high-throughput transcriptome sequencing data with Poisson mixture models. Bioinformatics, doi: 10.1093/bioinformatics/btu845.
+Rau, A., Maugis-Rabusseau, C., Martin-Magniette, M.-L., Celeux G. (2015). Co-expression analysis of high-throughput transcriptome sequencing data with Poisson mixture models. Bioinformatics, 31(9):1420-1427.
 
 Rau, A., Celeux, G., Martin-Magniette, M.-L., Maugis-Rabusseau, C. (2011) Clustering high-throughput sequencing data with Poisson mixture models. Inria Research Report 7786. Available at \url{http://hal.inria.fr/inria-00638082}.
 }

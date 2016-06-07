@@ -24,6 +24,8 @@
 #' @param object An object of class \code{"NormMixClus"}
 #' @param y_profiles y (\emph{n} x \emph{q}) matrix of observed profiles for \emph{n}
 #' observations and \emph{q} variables
+#' @param digits Integer indicating the number of decimal places to be used
+#' for mixture model parameters
 #' @param ... Additional arguments
 #' @author Andrea Rau
 #' @seealso \code{\link{NormMixClus}}, \code{\link{NormMixClus_K}}
@@ -31,7 +33,7 @@
 #' @example /inst/examples/NormMixClus.R
 #' @export
 `summary.NormMixClus_K` <-
-  function (object, y_profiles, ...) 
+  function (object, y_profiles, digits=3, ...) 
   {
     x <- object
     if (class(x) != "NormMixClus_K") {
@@ -85,8 +87,9 @@
     print(tab2, quote = FALSE); cat("\n")
     
     rownames(mu) <- names(pi) <- names(tab)
+    colnames(mu) <- colnames(y_profiles)
     
     
-    cat("Mu:\n"); print(round(mu,2)); cat("\n")
-    cat("Pi:\n"); print(round(pi,2)); cat("\n")
+    cat("Mu:\n"); print(round(mu,digits=digits)); cat("\n")
+    cat("Pi:\n"); print(round(pi,digits=digits)); cat("\n")
   }

@@ -14,8 +14,10 @@ Imports:
     Rmixmod,
     e1071,
     BiocParallel,
+    ggplot2,
+    scales,
     HTSFilter,
-	HTSCluster (>= 2.0.8)
+    HTSCluster (>= 2.0.8)
 Suggests:
     Biobase
 Description: Gaussian and Poisson mixture models are implemented to cluster biological

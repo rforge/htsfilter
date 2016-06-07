@@ -34,6 +34,14 @@ Small-EM strategry, with a default value of 20}
 
 \item{cutoff}{Cutoff to declare algorithm convergence}
 }
+\value{
+\item{probaPost }{Matrix containing the conditional
+probabilities of belonging to each cluster for all observations}
+\item{log.like }{Value of log likelihood} 
+\item{ICL }{Value of ICL criterion} 
+\item{nbCluster }{Number of clusters (equivalent to \code{K})}
+\item{GaussianModel }{Gaussian model form fit in the mixture model}
+}
 \description{
 Output of \code{NormMixClus_K} is an S3 object of class \code{NormMixClus_K}.
 }

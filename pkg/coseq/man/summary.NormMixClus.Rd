@@ -12,7 +12,7 @@
 \item{y_profiles}{y (\emph{n} x \emph{q}) matrix of observed profiles for \emph{n}
 observations and \emph{q} variables}
 
-\item{digits}{integer indicating the number of decimal places to be used
+\item{digits}{Integer indicating the number of decimal places to be used
 for mixture model parameters}
 
 \item{...}{Additional arguments}

@@ -4,13 +4,16 @@
 \alias{summary.NormMixClus_K}
 \title{Summarize results from clustering using a Normal mixture model}
 \usage{
-\method{summary}{NormMixClus_K}(object, y_profiles, ...)
+\method{summary}{NormMixClus_K}(object, y_profiles, digits = 3, ...)
 }
 \arguments{
 \item{object}{An object of class \code{"NormMixClus"}}
 
 \item{y_profiles}{y (\emph{n} x \emph{q}) matrix of observed profiles for \emph{n}
 observations and \emph{q} variables}
+
+\item{digits}{Integer indicating the number of decimal places to be used
+for mixture model parameters}
 
 \item{...}{Additional arguments}
 }

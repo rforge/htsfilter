@@ -10,7 +10,7 @@
 #' @param object An object of class \code{"NormClus"} 
 #' @param y_profiles y (\emph{n} x \emph{q}) matrix of observed profiles for \emph{n}
 #' observations and \emph{q} variables
-#' @param digits integer indicating the number of decimal places to be used
+#' @param digits Integer indicating the number of decimal places to be used
 #' for mixture model parameters
 #' @param ... Additional arguments
 #' @author Andrea Rau
@@ -62,6 +62,7 @@ summary.NormMixClus <-
     mu <- param$mu
     pi <- param$pi
     rownames(mu) <- names(pi) <- names(tab)
+    colnames(mu) <- colnames(y_profiles)
     g <- x$nbCluster
     
     cat("Cluster sizes:\n"); print(tab); cat("\n")
@@ -91,6 +92,8 @@ summary.NormMixClus <-
       }
     }
     print(tab2, quote = FALSE); cat("\n")
+    
+    
     
     cat("Mu:\n"); print(round(mu,digits=digits)); cat("\n")
     cat("Pi:\n"); print(round(pi,digits=digits)); cat("\n")

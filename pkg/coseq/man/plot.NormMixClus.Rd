@@ -20,7 +20,7 @@
 \item{...}{Additional arguments}
 }
 \description{
-Visualize results from clustering using a Normal mixture model
+Blah blah blah.
 }
 \author{
 Cathy Maugis-Rabusseau

@@ -13,7 +13,7 @@ criterion.
 }
 \details{
 \tabular{ll}{ Package: \tab coseq\cr Type: \tab Package\cr Version:
-\tab 0.1.2\cr Date: \tab 2016-05-21\cr License: \tab GPL (>=3)\cr LazyLoad:
+\tab 0.1.2\cr Date: \tab 2016-09-06\cr License: \tab GPL (>=3)\cr LazyLoad:
 \tab yes\cr }
 }
 \examples{

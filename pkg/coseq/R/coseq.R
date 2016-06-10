@@ -236,12 +236,14 @@ coseq <- function(y, K, conds=NULL, norm="TMM", model="Normal", transformation="
     tcounts <- transform_RNAseq(y, norm=norm, transformation=transformation, 
                                 geneLength=arg.user$geneLength,
                                 meanFilterCutoff=meanFilterCutoff)
+    if(parallel == TRUE) arg.user$verbose <- FALSE;
     run <- NormMixClus(y_profiles=tcounts$tcounts, K=K, subset.index=subset.index, 
                        parallel=parallel,
                        BPPARAM=BPPARAM, alg.type=arg.user$alg.type, 
                        init.runs=arg.user$init.runs,
                        init.type=arg.user$init.type, init.iter=arg.user$init.iter, 
-                       iter=arg.user$iter, cutoff=arg.user$cutoff)
+                       iter=arg.user$iter, cutoff=arg.user$cutoff,
+                       verbose=arg.user$verbose)
   }
 
   ####################################

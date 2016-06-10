@@ -18,6 +18,7 @@
 #' \dQuote{\code{EM}}, \dQuote{\code{CEM}}, \dQuote{\code{SEM}}
 #' @param cutoff Cutoff to declare algorithm convergence
 #' @param iter Maximum number of iterations to be run for the chosen algorithm
+#' @param verbose If \code{TRUE}, verbose output is created
 #'
 #' @return
 #' \item{probaPost }{Matrix containing the conditional
@@ -36,7 +37,7 @@
 
 NormMixClus_K <- function(y_profiles, K, alg.type="EM", init.runs=50, 
                           init.type="small-em", GaussianModel="Gaussian_pk_Lk_Ck",
-                          init.iter=20, iter=1000, cutoff=0.001) {
+                          init.iter=20, iter=1000, cutoff=0.001, verbose=TRUE) {
      
   if(!is.data.frame(y_profiles)) y_profiles <- as.data.frame(y_profiles)
   
@@ -50,8 +51,6 @@ NormMixClus_K <- function(y_profiles, K, alg.type="EM", init.runs=50,
                          seed = NULL)
   xem <- mixmodCluster(y_profiles, nbCluster=K, models=models, strategy=strats, 
                                       criterion="ICL")
-  ##   ici j'ai mis de garder les param mais ça risque d'être trop lourd. 
-  ##   Peut-être le supprimer et faire une fonction auxilaire qui à partir de Dcounts et probapost
   #param<-list(pi=xem["bestResult"]@parameters@proportions,
   #            mu=xem["bestResult"]@parameters@mean,
   #            variance=xem["bestResult"]@parameters@variance)

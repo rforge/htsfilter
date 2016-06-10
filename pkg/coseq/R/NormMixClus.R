@@ -27,7 +27,7 @@
 #' criterion} 
 #' \item{all.results }{List of objects of class \code{NormMixClus} giving the results for all models}
 #' 
-#' @author Cathy Maugis-Rabusseau, Andrea Rau
+#' @author Andrea Rau, Cathy Maugis-Rabusseau
 #' 
 #' @importFrom BiocParallel bplapply
 #' @importFrom BiocParallel bpparam
@@ -45,6 +45,7 @@ NormMixClus <- function(y_profiles, K, subset.index=NA, parallel=TRUE, BPPARAM=b
   if(is.null(arg.user$iter)) arg.user$iter<-1000;
   if(is.null(arg.user$cutoff)) arg.user$cutoff<-0.001;
   if(is.null(arg.user$GaussianModel)) arg.user$GaussianModel<-"Gaussian_pk_Lk_Ck";
+  if(is.null(arg.user$verbose)) arg.user$verbose<-TRUE;
   
   y_profiles <- as.data.frame(y_profiles)
   
@@ -55,7 +56,9 @@ NormMixClus <- function(y_profiles, K, subset.index=NA, parallel=TRUE, BPPARAM=b
                               
   all.results <- vector("list", length = length(K))
   names(all.results) <- paste("K=", K, sep = "")
-  cat("Running K =", min(K), "...\n")
+  if(arg.user$verbose == TRUE) {
+    cat("Running K =", min(K), "...\n")
+  }
   all.results[[1]] <- suppressWarnings(NormMixClus_K(y_profiles, K=min(K), ...))
   index <- 2
   remainingK <- K[-which(K == min(K))]
@@ -63,14 +66,18 @@ NormMixClus <- function(y_profiles, K, subset.index=NA, parallel=TRUE, BPPARAM=b
     ## In the case where parallelization is NOT used
     if(!parallel) {
       for (k in remainingK) {
-        cat("Running K =", k, "...\n")
+        if(arg.user$verbose == TRUE) {
+          cat("Running K =", k, "...\n")
+        }
         all.results[[index]] <- suppressWarnings(NormMixClus_K(y_profiles, K=k, ...))
         index <- index + 1
       }
       ## In the case where parallelization IS used
     } else if(parallel) {
       tmp <- bplapply(remainingK, function(ii) {
-        cat("Running K =", ii, "...\n")
+        if(arg.user$verbose == TRUE) {
+          cat("Running K =", ii, "...\n")
+        }
         res <- suppressWarnings(NormMixClus_K(y_profiles=y_profiles, K=as.numeric(ii),
                              alg.type=arg.user$alg.type, init.runs=arg.user$init.runs,
                              init.type=arg.user$init.type, init.iter=arg.user$init.iter,

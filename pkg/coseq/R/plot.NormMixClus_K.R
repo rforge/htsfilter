@@ -1,11 +1,11 @@
 #' Plot NormMixClus_K object
 #' 
-#' Blah blah blah
+#' Plot a NormMixClus_K object.
 #' 
 #' @param x An object of class \code{"NormMixClus_K"}
 #' @param y_profiles y (\emph{n} x \emph{q}) matrix of observed profiles for \emph{n}
 #' observations and \emph{q} variables to be used for graphing
-#' @param K If desired, the specific cluster number to use for plotting. If \code{NULL},
+#' @param K If desired, the specific cluster number(s) to use for plotting. If \code{NULL},
 #' all clusters will be visualized
 #' @param threshold Threshold used for maximum conditional probability; only observations
 #' with maximum conditional probability greater than this threshold are visualized 
@@ -13,21 +13,31 @@
 #' @param average_over_conds If \code{TRUE}, average values of \code{y_profiles} within
 #' each condition identified by \code{conds}
 #' @param graphs Graphs to be produced, one (or more) of the following: 
-#' \code{"profiles_K"}, ...
+#' \code{"profiles"} (line plots of profiles in each cluster), \code{"boxplots"} 
+#' (boxplots of profiles in each cluster), \code{"probapost_boxplots"} (boxplots of
+#' maximum conditional probabilities per cluster), \code{"probapost_barplots"} 
+#' (number of observations with a maximum conditional probability greater than 
+#' \code{threshold} per cluster), \code{"probapost_histogram"} (histogram of maximum
+#' conditional probabilities over all clusters) ...
+#' @param order If \code{TRUE}, order clusters in \code{probapost_boxplot} by median and
+#' \code{probapost_barplot} by number of observations with maximum conditional probability
+#' greater than \code{threshold}
 #' @param ...  Additional optional plotting arguments
 #'
-#' @importFrom graphics matplot
+#' @importFrom graphics matplot boxplot
 #' @importFrom grDevices heat.colors
 #' @importFrom scales alpha
 #' @import ggplot2
  
-### TODO: average over conditions option
-### TODO: save files 
 plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
-                                average_over_conds=TRUE,
-                                graphs=c("profiles", "boxplots"), ...) {
+                                average_over_conds=FALSE,
+                                graphs=c("profiles", "boxplots",
+                                         "probapost_boxplots",
+                                         "probapost_barplots",
+                                         "probapost_histogram"), 
+                               order = FALSE, ...) {
   
-  
+  if(is.null(x$probaPost) == TRUE) stop("Selected model is empty.")
   labels <- apply(x$probaPost, 1, which.max)
   proba <- apply(x$probaPost, 1, max)
   
@@ -44,6 +54,9 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
   if(is.null(arg.user$alpha)) arg.user$alpha<-0.3;
   
   
+  #####################################################
+  ## SET UP PLOTTING DATA.FRAME
+  #####################################################
   if(average_over_conds == FALSE) {
     pl_data <- data.frame(ID=ifelse(rep(length(rownames(y_profiles))==0, nrow(y_profiles)), 
                                     rep(1:nrow(y_profiles), times=ncol(y_profiles)),
@@ -71,11 +84,13 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
                           proba=rep(proba, times=ncol(y_profiles_c)))
   }
   
-  
+  #####################################################
+  ## PROFILE PLOTS
+  #####################################################
   if("profiles" %in% graphs) {
     if(average_over_conds == FALSE) {
       ## For one specific value of K
-      if(is.null(K) == FALSE) {
+      if(is.null(K) == FALSE & length(K) == 1) {
         pl_data_tmp <- pl_data[which(pl_data$labels == K),]
         g1 <- ggplot(pl_data_tmp[which(pl_data_tmp$proba > threshold),]) +
           geom_line(colour=alpha("black", arg.user$alpha), 
@@ -102,10 +117,24 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
         
         print(g2)
       }
+      ## For a subset of values of K
+      if(is.null(K) == FALSE & length(K) > 1) {
+        pl_data_tmp <- pl_data[which(pl_data$labels %in% K),]
+        g2bb <- ggplot(pl_data_tmp[which(pl_data_tmp$proba > threshold),]) +
+          geom_line(colour=alpha("black", arg.user$alpha), 
+                    aes_string(x="col_num", y="y_prof", group="ID")) +
+          geom_line(data=pl_data_tmp[which(pl_data_tmp$proba < threshold),],
+                    colour=alpha("red", arg.user$alpha), 
+                    aes_string(x="col_num", y="y_prof", group="ID")) +
+          theme_bw() +
+          scale_y_continuous(name="y") + scale_x_continuous(name="Sample number") +
+          facet_wrap(~labels)
+        print(g2bb)
+      }
     }
     if(average_over_conds == TRUE) {
       ## For one specific value of K
-      if(is.null(K) == FALSE) {
+      if(is.null(K) == FALSE & length(K) == 1) {
         pl_data_tmp <- pl_data[which(pl_data$labels == K),]
         g1b <- ggplot(pl_data_tmp[which(pl_data_tmp$proba > threshold),]) +
           geom_line(colour=alpha("black", arg.user$alpha), 
@@ -132,18 +161,36 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
         
         print(g2b)
       }
+      ## For a subset of values of K
+      if(is.null(K) == FALSE & length(K) > 1) {
+        pl_data_tmp <- pl_data[which(pl_data$labels %in% K),]
+        g2bb <- ggplot(pl_data_tmp[which(pl_data_tmp$proba > threshold),]) +
+          geom_line(colour=alpha("black", arg.user$alpha), 
+                    aes_string(x="conds", y="y_prof", group="ID")) +
+          geom_line(data=pl_data_tmp[which(pl_data_tmp$proba < threshold),],
+                    colour=alpha("red", arg.user$alpha), 
+                    aes_string(x="conds", y="y_prof", group="ID")) +
+          theme_bw() +
+          scale_y_continuous(name="Average y") + scale_x_discrete(name="Conditions") +
+          facet_wrap(~labels)
+        print(g2bb)
+      }
     }
-  
   }
   
-  
+  #####################################################
+  ## PROFILE BOXPLOTS
+  #####################################################
   if("boxplots" %in% graphs) {
     ## For one specific value of K
-    pl_data_tmp <- pl_data[which(pl_data$labels == K),]
+    pl_data_tmp <- pl_data[which(pl_data$labels %in% K),]
     pl_data_tmp$col_num <- factor(pl_data_tmp$col_num)
     pl_data_tmp$conds <- factor(pl_data_tmp$conds)
+    pl_data$col_num <- factor(pl_data$col_num)
+    
     if(average_over_conds == FALSE) {
-      if(is.null(K) == FALSE) {
+      ## Single value of K
+      if(is.null(K) == FALSE & length(K) == 1) {
         if(length(conds)==0) {
           g3 <- ggplot(pl_data_tmp, 
                        aes_string(x="col_num", y="y_prof")) +
@@ -166,6 +213,7 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
           print(g4)
         }
       }
+      ## All values of K
       if(is.null(K) == TRUE) {
         if(length(conds)==0) {
           g5 <- ggplot(pl_data, aes_string(x="col_num", y="y_prof")) +
@@ -187,9 +235,33 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
           print(g6)
         }
       }
+      ## A subset of values of K
+      if(is.null(K) == FALSE & length(K) > 1) {
+        if(length(conds)==0) {
+          g5b <- ggplot(pl_data_tmp, aes_string(x="col_num", y="y_prof")) +
+            geom_boxplot() +
+            stat_summary(fun.y=mean, geom="line", aes(group=1), colour="red")  + 
+            stat_summary(fun.y=mean, geom="point", colour="red") +
+            scale_y_continuous(name="y") + scale_x_discrete(name="Sample number") +
+            facet_wrap(~labels)
+          print(g5b)
+        }
+        if(length(conds)>0) {
+          g6b <- ggplot(pl_data_tmp, aes_string(x="col_num", y="y_prof")) +
+            geom_boxplot(aes_string(fill="conds")) +
+            stat_summary(fun.y=mean, geom="line", aes(group=1), colour="red")  + 
+            stat_summary(fun.y=mean, geom="point", colour="red") +
+            facet_wrap(~labels) + 
+            scale_y_continuous(name="y") + scale_x_discrete(name="Sample number") +
+            scale_fill_discrete(name="Conditions")
+          print(g6b)
+        }
+      }
     }
+    
     if(average_over_conds == TRUE) {
-      if(is.null(K) == FALSE) {
+      ## Single value of K
+      if(is.null(K) == FALSE & length(K) == 1) {
         g7 <- ggplot(pl_data_tmp, aes_string(x="conds", y="y_prof")) +
           geom_boxplot(aes_string(fill="conds")) +
           stat_summary(fun.y=mean, geom="line", aes(group=1), colour="red")  + 
@@ -199,9 +271,9 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
           scale_fill_discrete(name="Conditions")
         print(g7)
       }
-      
+      ## All values of K
       if(is.null(K) == TRUE) {
-        g8 <- ggplot(pl_data, aes_string(x="cibds", y="y_prof")) +
+        g8 <- ggplot(pl_data, aes_string(x="conds", y="y_prof")) +
           geom_boxplot(aes_string(fill="conds")) +
           stat_summary(fun.y=mean, geom="line", aes(group=1), colour="red")  + 
           stat_summary(fun.y=mean, geom="point", colour="red") +
@@ -210,77 +282,124 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
           scale_fill_discrete(name="Conditions")
         print(g8)
       }
+      ## A subset of values of K
+      if(is.null(K) == FALSE & length(K) > 1) {
+        g9 <- ggplot(pl_data_tmp, aes_string(x="conds", y="y_prof")) +
+          geom_boxplot(aes_string(fill="conds")) +
+          stat_summary(fun.y=mean, geom="line", aes(group=1), colour="red")  + 
+          stat_summary(fun.y=mean, geom="point", colour="red") +
+          facet_wrap(~labels) + 
+          scale_y_continuous(name="Average y") + scale_x_discrete(name="Conditions") +
+          scale_fill_discrete(name="Conditions")
+        print(g9)
+      }
     }
   }
+  
+  #####################################################
+  ## PROBAPOST BOXPLOTS
+  #####################################################
+  if("probapost_boxplots" %in% graphs) {
+    pl_data <- data.frame(ID=ifelse(rep(length(rownames(y_profiles))==0, nrow(y_profiles)), 
+                                    rep(1:nrow(y_profiles), times=ncol(y_profiles)),
+                                    rownames(y_profiles)),
+                          y_prof=as.vector(y_profiles), 
+                          col_num=rep(1:ncol(y_profiles), each=nrow(y_profiles)),
+                          col_nam=rep(colnames(y_profiles), each=nrow(y_profiles)),
+                          conds=conds_vec,
+                          labels=rep(labels, times=ncol(y_profiles)),
+                          proba=rep(proba, times=ncol(y_profiles)))
+    pl_data$labels <- factor(pl_data$labels)
+    ## Single value of K or subset of values
+    if(is.null(K) == FALSE) {
+      pl_data_tmp <- pl_data[which(pl_data$labels %in% K),]
+      gg <- ggplot(pl_data_tmp, aes_string(x="labels", y="proba")) +
+          geom_boxplot() +  scale_x_discrete(name="Cluster") +
+          scale_y_continuous(name="Max conditional probability")
+      print(gg)
+    }
+    ## All K
+    if(is.null(K) == TRUE) {
+      if(order == TRUE) {
+        A <- boxplot(pl_data$proba~pl_data$label, plot=F)
+        J <- sort.int(A$stat[3,],index.return=T,decreasing=T)$ix 
+        pl_data$labels <- factor(pl_data$labels, levels=J)
+      }
+      gg <- ggplot(pl_data, aes_string(x="labels", y="proba")) +
+        geom_boxplot() +  scale_x_discrete(name="Cluster") +
+        scale_y_continuous(name="Max conditional probability")
+      print(gg)
+    }
+  }
+
+  #####################################################
+  ## PROBAPOST BARPLOTS
+  #####################################################
+  if("probapost_barplots" %in% graphs) {
+    pl_data <- data.frame(ID=ifelse(rep(length(rownames(y_profiles))==0, nrow(y_profiles)), 
+                                    rep(1:nrow(y_profiles), times=ncol(y_profiles)),
+                                    rownames(y_profiles)),
+                          y_prof=as.vector(y_profiles), 
+                          col_num=rep(1:ncol(y_profiles), each=nrow(y_profiles)),
+                          col_nam=rep(colnames(y_profiles), each=nrow(y_profiles)),
+                          conds=conds_vec,
+                          labels=rep(labels, times=ncol(y_profiles)),
+                          proba=rep(proba, times=ncol(y_profiles)))
+    pl_data$goodproba <- factor(ifelse(pl_data$proba > threshold, 
+                                paste(">", threshold), paste("<", threshold)),
+                                levels=c(paste(">", threshold),
+                                         paste("<", threshold)))
+    pl_data$labels <- factor(pl_data$labels)
+    ## Single value of K or subset of values
+    if(is.null(K) == FALSE) {
+      pl_data_tmp <- pl_data[which(pl_data$labels %in% K),]
+      gg <- ggplot(pl_data_tmp, aes_string(x="labels", fill="goodproba")) +
+        geom_bar() +
+        scale_fill_brewer(direction=-1, palette="Accent",
+                          name="Max\nconditional\nprobability") +
+        scale_x_discrete(name="Cluster") +
+        scale_y_continuous(name="Number of observations")
+      print(gg)
+    }
+    ## All K
+    if(is.null(K) == TRUE) {
+      if(order == TRUE) {
+        pl_data$labels <- factor(pl_data$labels, 
+                levels=names(sort(table(pl_data$labels[which(
+                  pl_data$goodproba == paste(">", threshold))]), 
+                  decreasing=TRUE)))
+      }
+      gg <- ggplot(pl_data, aes_string(x="labels", fill="goodproba")) +
+        geom_bar() +
+        scale_fill_brewer(direction=-1, palette="Accent",
+                          name="Max\nconditional\nprobability") +
+        scale_x_discrete(name="Cluster") +
+        scale_y_continuous(name="Number of observations")
+      print(gg)
+    
+    }
+  }
+  
+  #####################################################
+  ## PROBAPOST HISTOGRAM
+  #####################################################
+  if("probapost_histogram" %in% graphs) {
+    pl_data <- data.frame(ID=ifelse(rep(length(rownames(y_profiles))==0, nrow(y_profiles)), 
+                                    rep(1:nrow(y_profiles), times=ncol(y_profiles)),
+                                    rownames(y_profiles)),
+                          y_prof=as.vector(y_profiles), 
+                          col_num=rep(1:ncol(y_profiles), each=nrow(y_profiles)),
+                          col_nam=rep(colnames(y_profiles), each=nrow(y_profiles)),
+                          conds=conds_vec,
+                          labels=rep(labels, times=ncol(y_profiles)),
+                          proba=rep(proba, times=ncol(y_profiles)))
+    pl_data_tmp <- pl_data[which(pl_data$col_num == 1),]
+    gg <- ggplot(pl_data_tmp, aes_string(x="proba")) +
+      geom_histogram(binwidth = 0.01) +
+      scale_x_continuous(name = "Maximum conditional probability") + theme_bw()
+    print(gg)
+  }
+
 }
 
 
-
-
-# 
-# ## boxplot des probapost
-# if("boxplots" %in% graphs) {
-#   probapost <- x$ICL.results$probaPost
-#   label <- apply(probapost,1,which.max)
-#   A <- boxplot(apply(probapost,1,max)~label, plot=F)
-#   if(order==TRUE){
-#     J <- sort.int(A$stat[3,],index.return=T,decreasing=T)$ix   #ordre par rapport à la mediane
-#   } else{
-#     J<-seq(1,ncol(probapost),1)
-#   }  
-#   boxplot(A$stat[,J],axes=F,outline=T)
-#   axis(side=1, at=seq(1,ncol(probapost)), labels=J, cex.lab=0.5)
-#   axis(side=2)
-# }
-# 
-# ## graphe barplot de la proportion de probapost >seuil et < seuil par classe
-# if("barplots" %in% graphs) {
-#   A<-matrix(0, nrow=2, ncol=ncol(probapost))
-#   for (k in 1:ncol(probapost)){
-#     I<-which(label==k)
-#     A[,k]<-c(sum(probapost[I,k]>threshold), sum(probapost[I,k]<=threshold))
-#   }
-#   barplot(A[,J],names.arg=J)
-# }
-
- # 
- # PPmoy<-function(PP, conds){
- #   a<-unique(conds)
- #   A<-apply(PP[,which(conds==a[1])],1,mean)
- #   if (length(a)>1){
- #     for (k in 2:length(a))
- #       A<-cbind(A,apply(PP[,which(conds==a[k])],1,mean))
- #   }
- #   return(A)
- # }
- # 
- # graphprofilsPP<-function(Res,PP,ordercluster=NULL,conds=NULL,group=F){
- #   label<-apply(Res$ICL.results$probaPost,1,which.max)
- #   proba<-apply(Res$ICL.results$probaPost,1,max)
- #   if (is.null(ordercluster)==T){
- #     ordercluster<-seq(1,max(label))
- #   }
- #   if (group==T & is.null(conds)==F){     #il faut rajouter des sécurités sur conds, group=T nécessite conds= un bon vecteur, ....
- #     PP<-PPmoy(PP,conds)
- #     conds<-seq(1,length(unique(conds)))
- #   }
- #   v<-floor(max(label)/6)
- #   if (v>0){
- #     for (u in 1:v){
- #       op<-par(mfrow=c(2,3),mar=1.8*rep(1,4))
- #       for (k in ((u-1)*6 +1):(u*6)){
- #         if (is.null(conds)==T){
- #           BoxplotProfilPP(Res,PP,cluster=ordercluster[k])
- #         }else{BoxplotProfilPP(Res,PP,cluster=ordercluster[k],conds=conds)}
- #       }
- #    }
- #   }
- #   if (max(label) > (6*v)){
- #     op<-par(mfrow=c(3,3),mar=1.8*rep(1,4))
- #     for (k in (v*6 +1):max(label)){
- #       if (is.null(conds)==T){
- #         BoxplotProfilPP(Res,PP,cluster=ordercluster[k])
- #       }else{BoxplotProfilPP(Res,PP,cluster=ordercluster[k],conds=conds)}
- #     }
- #   }
- # }

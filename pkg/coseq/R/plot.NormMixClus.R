@@ -1,15 +1,34 @@
 #' Visualize results from clustering using a Normal mixture model
 #' 
-#' Blah blah blah.
+#' Plot a NormMixClus object.
 #'
 #' @param x An object of class \code{"NormMixClus"}
-#' @param threshold Minimum threshold for conditional probabilities used in graphing
-#' @param order If \code{TRUE}, orders boxplots by the median condiitonal probability value
-#' @param graphs Type of graph to be included in plots. May be equal to \code{c("ICL",
-#' "BIC")} for objects of class \code{"NormMixClus"}
-#' @param ... Additional arguments
+#' @param y_profiles y (\emph{n} x \emph{q}) matrix of observed profiles for \emph{n}
+#' observations and \emph{q} variables to be used for graphing results (optional for
+#' \code{logLike}, \code{ICL}, \code{probapost_boxplots}, and \code{probapost_barplots})
+#' @param K If desired, the specific model to use for plotting. If \code{NULL},
+#' the model chosen by ICL will be plotted
+#' @param threshold Threshold used for maximum conditional probability; only observations
+#' with maximum conditional probability greater than this threshold are visualized 
+#' @param conds Condition labels, if desired
+#' @param average_over_conds If \code{TRUE}, average values of \code{y_profiles} within
+#' each condition identified by \code{conds} for the \code{profiles} and \code{boxplots}
+#' plots
+#' @param graphs Graphs to be produced, one (or more) of the following: 
+#' \code{"logLike"} (log-likelihood plotted versus number of clusters),
+#' \code{"ICL"} (ICL plotted versus number of clusters), 
+#' \code{"profiles"} (line plots of profiles in each cluster), \code{"boxplots"} 
+#' (boxplots of profiles in each cluster), \code{"probapost_boxplots"} (boxplots of
+#' maximum conditional probabilities per cluster), \code{"probapost_barplots"} 
+#' (number of observations with a maximum conditional probability greater than 
+#' \code{threshold} per cluster), \code{"probapost_histogram"} (histogram of maximum
+#' conditional probabilities over all clusters) ...
+#' @param order If \code{TRUE}, order clusters in \code{probapost_boxplot} by median and
+#' \code{probapost_barplot} by number of observations with maximum conditional probability
+#' greater than \code{threshold}
+#' @param ...  Additional optional plotting arguments
 #' 
-#' @author Cathy Maugis-Rabusseau
+#' @author Andrea Rau, Cathy Maugis-Rabusseau
 #'
 #' @export
 #' @importFrom graphics plot
@@ -17,20 +36,56 @@
 #' @importFrom graphics boxplot
 #' @importFrom graphics axis
 #' @importFrom graphics barplot
-plot.NormMixClus <- function(x, graphs=c("logLike", "ICL", "boxplots", "barplots"), 
-                             threshold=0.8, order=FALSE, ...) {
+plot.NormMixClus <- function(x, y_profiles=NULL, K=NULL, threshold=0.8, conds=NULL,
+                             average_over_conds=FALSE, 
+                             graphs=c("logLike", "ICL", 
+                                      "profiles", "boxplots", "probapost_boxplots",
+                                      "probapost_barplots", "probapost_histogram"), 
+                             order=FALSE, ...) {
 
-  ## graphe de la logvraisemblance
+  ## Parse ellipsis function
+  arg.user <- list(...)
+  if(is.null(arg.user$alpha)) arg.user$alpha<-0.3;
+  
+  pl_data <- data.frame(Cluster = as.numeric(substr(names(x$logLike.all), 3, 10)),
+                        logLike = x$logLike.all,
+                        ICL = x$ICL.all)
+  ## Likelihood plot
   if("logLike" %in% graphs) {
-    plot(x$nbClust.all, x$logLike.all, type="l",xlab="nbCluster",ylab="loglikelihood",main="")
-    points(x$nbClust.all, x$logLike.all, pch=20)
+    gg <- ggplot(pl_data, aes_string(x="Cluster", y="logLike")) + 
+      geom_point() + geom_line() +
+      scale_y_continuous(name = "Log-likelihood")
+    print(gg)
   }
   
-  ## graphe de ICL
+  ## ICL plot
   if("ICL" %in% graphs) {
-    plot(x$nbClust.all, x$ICL.all,type="l",xlab="nbCluster",ylab="ICL",main="")
-    points(x$nbClust.all, x$ICL.all,pch=20)
+    gg <- ggplot(pl_data, aes_string(x="Cluster", y="ICL")) + 
+      geom_point() + geom_line() 
+    print(gg)
   }
+  
+  ## Model-specific plots
+  if("profiles" %in% graphs | "boxplots" %in% graphs | "probapost_boxplots" %in% graphs |
+     "probapost_barplots" %in% graphs | "probapost_histogram" %in% graphs) {
+    if(is.null(K) == TRUE) xx <- x$ICL.results;
+    if(is.null(K) == FALSE) {
+      if(K != "ICL") {
+        if(length(which(names(x$all.results) == paste("K=",K,sep=""))) == 0)
+          stop("Selected model was not estimated by coseq");
+        if(length(K) > 1) 
+          stop("K must be NULL, a single value, or ICL")
+        xx <- x$all.results[[which(names(x$all.results) == paste("K=",K,sep=""))]]
+      }
+      if(K == "ICL") {
+        xx <- x$ICL.results;
+        K <- NULL;
+      }
+    }
 
-
+    gr <- which(!graphs %in% c("ICL", "logLike"))
+    plot(x=xx, y_profiles=y_profiles, K=K, threshold=threshold, conds=conds,
+         average_over_conds=average_over_conds, 
+         graphs=graphs[gr], order = order, alpha=arg.user$alpha, ...)
+  }
 }

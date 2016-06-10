@@ -42,6 +42,6 @@ criterion}
 Output of \code{NormMixClus} is an S3 object of class \code{NormMixClus}.
 }
 \author{
-Cathy Maugis-Rabusseau, Andrea Rau
+Andrea Rau, Cathy Maugis-Rabusseau
 }
 

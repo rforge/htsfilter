@@ -143,7 +143,8 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
                     colour=alpha("red", arg.user$alpha), 
                     aes_string(x="conds", y="y_prof", group="ID")) +
           theme_bw() + ggtitle(paste("Cluster", K)) +
-          scale_y_continuous(name="Average y") + scale_x_discrete(name="Conditions")
+          scale_y_continuous(name="Average y") + 
+          scale_x_discrete(name="Conditions")
         
         print(g1b)
       }

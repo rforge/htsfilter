@@ -2,19 +2,20 @@
 % Please edit documentation in R/matchContTable.R
 \name{matchContTable}
 \alias{matchContTable}
-\title{Permute rows/columns in a contingency table comparing two data clusterings}
+\title{Permute columns of a contingency table}
 \usage{
 matchContTable(table_1, table_2)
 }
 \arguments{
-\item{table_1}{Partition from a data clustering}
+\item{table_1}{Partition from a first data clustering}
 
-\item{table_2}{Partition from a data clustering}
+\item{table_2}{Partition from a second data clustering}
 }
 \value{
-Permuted table
+Permuted contingency table
 }
 \description{
-Blah blah blah
+Permute the columns of a contingency table comparing two clusterings
+to load the diagonal as much as possible.
 }
 

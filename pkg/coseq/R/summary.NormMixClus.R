@@ -1,11 +1,11 @@
 #' Summarize results from clustering using a Normal mixture model
 #' 
-#' A function to summarize the clustering results obtained from a Poisson
-#' mixture model.
+#' A function to summarize the clustering results obtained from a Normal
+#' mixture model estimated using \code{NormMixClus}.
 #' 
-#' The summary function for an object of class \code{"PoisMixClus"}
-#' provides the number of clusters selected for the BIC, ICL, DDSE, and Djump
-#' model selection approaches.
+#' The summary function for an object of class \code{"NormMixClus"}
+#' provides the number of clusters selected for the ICL
+#' model selection approach.
 #' 
 #' @param object An object of class \code{"NormClus"} 
 #' @param y_profiles y (\emph{n} x \emph{q}) matrix of observed profiles for \emph{n}

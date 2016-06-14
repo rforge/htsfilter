@@ -9,8 +9,8 @@
 #' means that it cannot be found using \code{vignette}, hence the need for this
 #' special function.
 #' 
-#' If the operating system is other than Windows, then the PDF viewer used is
-#' that given by \code{Sys.getenv("R_PDFVIEWER")}. The PDF viewer can be
+#' If the operating system is not Windows, the PDF viewer used is
+#' given by \code{Sys.getenv("R_PDFVIEWER")}. The PDF viewer can be
 #' changed using \code{Sys.putenv(R_PDFVIEWER=)}.
 #' 
 #' Note that this function was adapted from that defined by Gordon Smyth in the

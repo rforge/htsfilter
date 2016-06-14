@@ -18,13 +18,13 @@ for mixture model parameters}
 \item{...}{Additional arguments}
 }
 \description{
-A function to summarize the clustering results obtained from a Poisson
-mixture model.
+A function to summarize the clustering results obtained from a Normal
+mixture model estimated using \code{NormMixClus}.
 }
 \details{
-The summary function for an object of class \code{"PoisMixClus"}
-provides the number of clusters selected for the BIC, ICL, DDSE, and Djump
-model selection approaches.
+The summary function for an object of class \code{"NormMixClus"}
+provides the number of clusters selected for the ICL
+model selection approach.
 }
 \examples{
 

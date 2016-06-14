@@ -9,7 +9,7 @@
 #' @param probaPost Matrix containing the conditional probabilities of belonging 
 #' to each cluster for all observations
 #'
-#' @return Entropy per clusters
+#' @return Entropy per cluster
 #'
 #' @author Cathy Maugis-Rabusseau
 #' 

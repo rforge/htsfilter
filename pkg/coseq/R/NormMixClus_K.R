@@ -1,6 +1,10 @@
-#' Normal mixture model estimation and model selection
+#' Normal mixture model estimation
 #'
-#' Output of \code{NormMixClus_K} is an S3 object of class \code{NormMixClus_K}.
+#' Perform co-expression and co-abudance analysis of high-throughput 
+#' sequencing data, with or without data transformation, using a Normal 
+#' mixture models for single number of clusters \emph{K}. 
+#' The output of \code{NormMixClus_K} is an S3 object of 
+#' class \code{NormMixClus_K}.
 #'
 #' @param y_profiles y (\emph{n} x \emph{q}) matrix of observed profiles for \emph{n}
 #' observations and \emph{q} variables
@@ -23,6 +27,7 @@
 #' \code{probaPost} output
 #'
 #' @return
+#' An S3 object of class \code{NormMixClus_K} containing the following:
 #' \item{probaPost }{Matrix containing the conditional
 #' probabilities of belonging to each cluster for all observations}
 #' \item{log.like }{Value of log likelihood} 

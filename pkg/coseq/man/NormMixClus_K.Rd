@@ -2,7 +2,7 @@
 % Please edit documentation in R/NormMixClus_K.R
 \name{NormMixClus_K}
 \alias{NormMixClus_K}
-\title{Normal mixture model estimation and model selection}
+\title{Normal mixture model estimation}
 \usage{
 NormMixClus_K(y_profiles, K, alg.type = "EM", init.runs = 50,
   init.type = "small-em", GaussianModel = "Gaussian_pk_Lk_Ck",
@@ -41,6 +41,7 @@ Small-EM strategry, with a default value of 20}
 \code{probaPost} output}
 }
 \value{
+An S3 object of class \code{NormMixClus_K} containing the following:
 \item{probaPost }{Matrix containing the conditional
 probabilities of belonging to each cluster for all observations}
 \item{log.like }{Value of log likelihood} 
@@ -49,7 +50,11 @@ probabilities of belonging to each cluster for all observations}
 \item{GaussianModel }{Gaussian model form fit in the mixture model}
 }
 \description{
-Output of \code{NormMixClus_K} is an S3 object of class \code{NormMixClus_K}.
+Perform co-expression and co-abudance analysis of high-throughput 
+sequencing data, with or without data transformation, using a Normal 
+mixture models for single number of clusters \emph{K}. 
+The output of \code{NormMixClus_K} is an S3 object of 
+class \code{NormMixClus_K}.
 }
 \author{
 Cathy Maugis-Rabusseau, Andrea Rau

@@ -2,7 +2,7 @@
 % Please edit documentation in R/NormMixParam.R
 \name{NormMixParam}
 \alias{NormMixParam}
-\title{Calculate the mean and variance parameters for a normal mixture model}
+\title{Calculate the mean and covariance for a Normal mixture model}
 \usage{
 NormMixParam(x, y_profiles = NULL, modelChoice = NULL, digits = 3)
 }
@@ -34,6 +34,10 @@ estimated correlation matrices from the Gaussian mixture model, where \emph{d} i
 number of samples in the data \code{y_profiles} and \emph{K} is the number of clusters}
 }
 \description{
-Corresponds to pK_Lk_Ck model
+Calculates the mean and covariance parameters for a normal mixture model
+of the form pK_Lk_Ck
+}
+\author{
+Andrea Rau, Cathy Maugis-Rabusseau
 }
 

@@ -1,6 +1,9 @@
 #' Normal mixture model estimation and selection for a series of cluster numbers
 #'
-#' Output of \code{NormMixClus} is an S3 object of class \code{NormMixClus}.
+#' Perform co-expression and co-abudance analysis of high-throughput 
+#' sequencing data, with or without data transformation, using a Normal 
+#' mixture models. The output of \code{NormMixClus} is an S3 object of 
+#' class \code{NormMixClus}.
 #'
 #' @param y_profiles  (\emph{n} x \emph{q}) matrix of observed profiles for \emph{n}
 #' observations and \emph{q} variables
@@ -18,7 +21,8 @@
 #' will be used.
 #' @param ... Additional optional parameters to be passed to \code{\link{NormMixClus_K}}.
 #'
-#' @return
+#' @return 
+#' An S3 object of class \code{NormMixClus} containing the following:
 #' \item{nbCluster.all }{Vector giving the number of clusters for each of the fitted models}
 #' \item{loglike.all }{Log likelihoods calculated for each of the fitted models}
 #' \item{ICL.all}{ICL values calculated for each of the fitted models}

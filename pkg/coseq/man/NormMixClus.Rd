@@ -30,6 +30,7 @@ will be used.}
 \item{...}{Additional optional parameters to be passed to \code{\link{NormMixClus_K}}.}
 }
 \value{
+An S3 object of class \code{NormMixClus} containing the following:
 \item{nbCluster.all }{Vector giving the number of clusters for each of the fitted models}
 \item{loglike.all }{Log likelihoods calculated for each of the fitted models}
 \item{ICL.all}{ICL values calculated for each of the fitted models}
@@ -39,7 +40,10 @@ criterion}
 \item{all.results }{List of objects of class \code{NormMixClus} giving the results for all models}
 }
 \description{
-Output of \code{NormMixClus} is an S3 object of class \code{NormMixClus}.
+Perform co-expression and co-abudance analysis of high-throughput 
+sequencing data, with or without data transformation, using a Normal 
+mixture models. The output of \code{NormMixClus} is an S3 object of 
+class \code{NormMixClus}.
 }
 \author{
 Andrea Rau, Cathy Maugis-Rabusseau

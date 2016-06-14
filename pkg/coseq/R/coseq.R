@@ -1,12 +1,14 @@
 #' Co-expression and co-abudance analysis of high-throughput sequencing data
 #'
+#' Perform co-expression and co-abudance analysis of high-throughput 
+#' sequencing data, with or without data transformation, using mixture models.
+#' The output of \code{coseq} is an S3 object of class \code{coseq}.
+#'
 #' @name coseq
 #' 
 #' @param y (\emph{n} x \emph{q}) matrix of observed counts for \emph{n}
 #' observations and \emph{q} variables
-#' @param K Number of clusters (a single value). If \code{fixed.lambda}
-#' contains a list of lambda values to be fixed, \code{K} corresponds to the
-#' number of clusters in addition to those fixed.
+#' @param K Number of clusters (a single value or a vector of values)
 #' @param conds Vector of length \emph{q} defining the condition (treatment
 #' group) for each variable (column) in \code{y} 
 #' @param norm The type of estimator to be used to normalize for differences in
@@ -37,11 +39,17 @@
 #' @param ... Additional optional parameters.
 #'
 #' @return
-#' Object of class \code{coseq} containing the full \code{results} (itself an object
-#' of class \code{NormMixClus} or \code{PoisMixClusWrapper}, the latter being the class
-#' defined by the HTSCluster package), the \code{model} used, the specific \code{transformation}
-#' used on the data, the transformed data themselves (\code{tcounts}) 
-#' used in model estimation, and the normalized profiles (\code{y_profiles}) for use in plotting
+#' An S3 object of class \code{coseq} containing the following:
+#' \item{results }{Object of class \code{NormMixClus} or 
+#' \code{PoisMixClusWrapper}, the latter being the class defined by the 
+#' HTSCluster package}
+#' \item{model }{Model used, either \code{Normal} or \code{Poisson}}
+#' \item{transformation }{Transformation used on the data}
+#' \item{tcounts }{Transformed data using to estimate model}
+#' \item{y_profiles }{Normalized profiles for use in plotting}
+#' 
+#' @author Andrea Rau
+#' 
 #' @export
 #' @importFrom HTSCluster PoisMixClus
 #' @importFrom HTSCluster PoisMixClusWrapper

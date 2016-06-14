@@ -2,25 +2,40 @@
 % Please edit documentation in R/compareARI.R
 \name{compareARI}
 \alias{compareARI}
-\title{Title}
+\title{Pairwise comparisons of ARI values among a set of clustering partitions}
 \usage{
 compareARI(x, parallel = FALSE, BPPARAM = bpparam(), plot = TRUE, ...)
 }
 \arguments{
-\item{x}{blah}
+\item{x}{Object of class \code{coseq}, \code{NormMixClus}, or 
+\code{PoisMixClusWrapper} (object defined in the HTSCluster package that
+is indirectly called by \code{coseq} for Poisson mixture models),
+or alternatively a \emph{n} x \emph{M} \code{data.frame} or \code{matrix} 
+containing the clustering partitions for \emph{M} different models}
 
-\item{parallel}{blah}
+\item{parallel}{If \code{FALSE}, no parallelization. If \code{TRUE}, parallel 
+execution using BiocParallel (see next argument \code{BPPARAM}). 
+Note that parallelization is unlikely to be helpful unless the number of 
+observations \emph{n} in the clustering partitions or the number of 
+models \emph{M} are very large.}
 
-\item{BPPARAM}{blah}
+\item{BPPARAM}{Optional parameter object passed internally to \code{bplapply} 
+when \code{parallel=TRUE}. If not specified, the parameters last registered 
+with \code{register} will be used.}
 
-\item{plot}{blah}
+\item{plot}{If \code{TRUE}, provide a heatmap using corrplot to visualize 
+the calculated pairwise ARI values.}
 
-\item{...}{Additional parameters for corrplot}
+\item{...}{Additional optional parameters for corrplot}
 }
 \value{
-Matrix of adjusted rand index values calculated between each pair of models.
+Matrix of adjusted rand index values calculated between each pair 
+of models.
 }
 \description{
-Title
+Provides the adjusted rand index (ARI) between pairs of clustering paritions.
+}
+\author{
+Andrea Rau
 }
 

@@ -1,15 +1,12 @@
-####################################################
-## Function of permuting columns in contingency table 
-## to compare two clustering results
-
-#' Permute rows/columns in a contingency table comparing two data clusterings
+#' Permute columns of a contingency table
 #' 
-#' Blah blah blah
+#' Permute the columns of a contingency table comparing two clusterings
+#' to load the diagonal as much as possible.
 #'
-#' @param table_1 Partition from a data clustering
-#' @param table_2 Partition from a data clustering
+#' @param table_1 Partition from a first data clustering
+#' @param table_2 Partition from a second data clustering
 #'
-#' @return Permuted table 
+#' @return Permuted contingency table 
 #' @export
 #' 
 #' @importFrom e1071 matchClasses

@@ -1,6 +1,7 @@
-#' Calculate the mean and variance parameters for a normal mixture model
+#' Calculate the mean and covariance for a Normal mixture model
 #' 
-#' Corresponds to pK_Lk_Ck model
+#' Calculates the mean and covariance parameters for a normal mixture model
+#' of the form pK_Lk_Ck
 #'
 #' @param x Object of class \code{coseq}, \code{NormMixClus}, or \code{NormMixClus_K}
 #' @param y_profiles y (\emph{n} x \emph{q}) matrix of observed profiles for \emph{n}
@@ -11,7 +12,7 @@
 #' by the ICL criterion is used; otherwise, \code{modelChoice} should designate the number
 #' of clusters in the desired model
 #' @param digits Integer indicating the number of decimal places to be used for output
-
+#'
 #'
 #' @return
 #' \item{pi }{ Vector of dimension \emph{K} with the estimated cluster proportions from
@@ -25,6 +26,8 @@
 #' \item{rho }{ Array of dimension \emph{d} x \emph{d} x \emph{K} containing the
 #' estimated correlation matrices from the Gaussian mixture model, where \emph{d} is the
 #' number of samples in the data \code{y_profiles} and \emph{K} is the number of clusters}
+#' 
+#' @author Andrea Rau, Cathy Maugis-Rabusseau
 #' 
 #' @export
 #' @importFrom stats cov2cor

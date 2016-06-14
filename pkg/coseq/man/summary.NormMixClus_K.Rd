@@ -7,7 +7,7 @@
 \method{summary}{NormMixClus_K}(object, y_profiles, digits = 3, ...)
 }
 \arguments{
-\item{object}{An object of class \code{"NormMixClus"}}
+\item{object}{An object of class \code{"NormMixClus_K"}}
 
 \item{y_profiles}{y (\emph{n} x \emph{q}) matrix of observed profiles for \emph{n}
 observations and \emph{q} variables}

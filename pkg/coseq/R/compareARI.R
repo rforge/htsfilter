@@ -1,12 +1,29 @@
-#' Title
+#' Pairwise comparisons of ARI values among a set of clustering partitions
+#' 
+#' Provides the adjusted rand index (ARI) between pairs of clustering paritions.
 #'
-#' @param x blah
-#' @param parallel blah
-#' @param BPPARAM blah
-#' @param plot blah
-#' @param ... Additional parameters for corrplot
+#' @param x Object of class \code{coseq}, \code{NormMixClus}, or 
+#' \code{PoisMixClusWrapper} (object defined in the HTSCluster package that
+#' is indirectly called by \code{coseq} for Poisson mixture models),
+#' or alternatively a \emph{n} x \emph{M} \code{data.frame} or \code{matrix} 
+#' containing the clustering partitions for \emph{M} different models 
+#' @param parallel If \code{FALSE}, no parallelization. If \code{TRUE}, parallel 
+#' execution using BiocParallel (see next argument \code{BPPARAM}). 
+#' Note that parallelization is unlikely to be helpful unless the number of 
+#' observations \emph{n} in the clustering partitions or the number of 
+#' models \emph{M} are very large.
+#' @param BPPARAM Optional parameter object passed internally to \code{bplapply} 
+#' when \code{parallel=TRUE}. If not specified, the parameters last registered 
+#' with \code{register} will be used. 
+#' @param plot If \code{TRUE}, provide a heatmap using corrplot to visualize 
+#' the calculated pairwise ARI values.
+#' @param ... Additional optional parameters for corrplot
 #'
-#' @return Matrix of adjusted rand index values calculated between each pair of models.
+#' @return Matrix of adjusted rand index values calculated between each pair 
+#' of models.
+#' 
+#' @author Andrea Rau
+#' 
 #' @export
 #' @importFrom HTSCluster highDimensionARI
 #' @importFrom corrplot corrplot

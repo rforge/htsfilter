@@ -21,7 +21,7 @@
 #' 
 #' 5) \eqn{\ensuremath\boldsymbol{\pi}}{\pi} values for the selected model.
 #' 
-#' @param object An object of class \code{"NormMixClus"}
+#' @param object An object of class \code{"NormMixClus_K"}
 #' @param y_profiles y (\emph{n} x \emph{q}) matrix of observed profiles for \emph{n}
 #' observations and \emph{q} variables
 #' @param digits Integer indicating the number of decimal places to be used

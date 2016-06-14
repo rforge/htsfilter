@@ -12,8 +12,8 @@
 \item{...}{Additional arguments}
 }
 \description{
-A function to summarize the clustering results obtained from a Poisson or Gaussian
-mixture model.
+A function to summarize the clustering results obtained from a Poisson or 
+Gaussian mixture model estimated using \code{coseq}.
 }
 \examples{
 

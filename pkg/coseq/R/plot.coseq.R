@@ -32,6 +32,7 @@
 #' @author Andrea Rau, Cathy Maugis-Rabusseau
 #'
 #' @export
+#' 
 ## TODO: COMPARISON OF DIFFERENT TRANSFORMATIONS?
 plot.coseq <- function(x, y_profiles=NULL, K=NULL, threshold=0.8, conds=NULL,
                              average_over_conds=FALSE, 
@@ -40,7 +41,7 @@ plot.coseq <- function(x, y_profiles=NULL, K=NULL, threshold=0.8, conds=NULL,
                                       "probapost_barplots", "probapost_histogram"), 
                              order=FALSE, ...) {
   
-  if(is.null(y_profiles) == TRUE) y_profiles <- x$tcounts
+  if(is.null(y_profiles) == TRUE) y_profiles <- x$y_profiles
   
   plot(x$results, y_profiles=y_profiles, K=K, threshold=threshold, conds=conds,
        average_over_conds=average_over_conds, graphs=graphs, 

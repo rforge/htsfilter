@@ -58,7 +58,7 @@ summary.NormMixClus <-
     
     tab <- table(labels)
     names(tab) <- paste("Cluster", names(tab))
-    param <- NormMixParam(x, y_profiles) 
+    param <- NormMixParam(x=x, y_profiles=y_profiles, digits=digits) 
     mu <- param$mu
     pi <- param$pi
     rownames(mu) <- names(pi) <- names(tab)

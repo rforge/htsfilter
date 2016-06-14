@@ -5,7 +5,7 @@
 \title{Co-expression and co-abudance analysis of high-throughput sequencing data}
 \usage{
 coseq(y, K, conds = NULL, norm = "TMM", model = "Normal",
-  transformation = "none", subset.index = NA, meanFilterCutoff = NULL,
+  transformation = "none", subset.index = NA, meanFilterCutoff = 50,
   geneIDs = 1:nrow(y), parallel = TRUE, BPPARAM = bpparam(), ...)
 }
 \arguments{
@@ -37,7 +37,8 @@ for each sample.}
 genes that should be used for the co-expression analysis (i.e., row indices
 of the data matrix \code{y}.}
 
-\item{meanFilterCutoff}{Value used to filter low mean normalized counts if desired.}
+\item{meanFilterCutoff}{Value used to filter low mean normalized counts if desired (by default,
+set to a value of 50)}
 
 \item{geneIDs}{Optional vector of gene ID's.}
 
@@ -56,8 +57,9 @@ will be used.}
 \value{
 Object of class \code{coseq} containing the full \code{results} (itself an object
 of class \code{NormMixClus} or \code{PoisMixClusWrapper}, the latter being the class
-defined by the HTSCluster package), the \code{model} used, and if
-applicable, the data \code{transformation} used.
+defined by the HTSCluster package), the \code{model} used, the specific \code{transformation}
+used on the data, the transformed data themselves (\code{tcounts}) 
+used in model estimation, and the normalized profiles (\code{y_profiles}) for use in plotting
 }
 \description{
 Co-expression and co-abudance analysis of high-throughput sequencing data

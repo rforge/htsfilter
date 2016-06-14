@@ -32,7 +32,7 @@ summary.coseq <-
     cat("Model: ", x$model, "\n", sep = "")
     cat("Transformation: ", x$transformation, "\n", sep = "")
 
-    if(class(x$results) == "NormMixClus") summary(x$results, x$tcounts)
+    if(class(x$results) == "NormMixClus") summary(object=x$results, y_profiles=x$tcounts, ...)
     if(class(x$results) == "HTSClusterWrapper") summary(x$results, ...)
   }
 

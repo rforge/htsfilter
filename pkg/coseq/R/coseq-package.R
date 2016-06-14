@@ -7,7 +7,7 @@
 #' criterion. 
 #' 
 #' \tabular{ll}{ Package: \tab coseq\cr Type: \tab Package\cr Version:
-#' \tab 0.1.2\cr Date: \tab 2016-09-06\cr License: \tab GPL (>=3)\cr LazyLoad:
+#' \tab 0.1.3\cr Date: \tab 2016-06-14\cr License: \tab GPL (>=3)\cr LazyLoad:
 #' \tab yes\cr }
 #' 
 #' @name coseq-package

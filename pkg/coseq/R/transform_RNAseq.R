@@ -17,6 +17,7 @@
 #' @param geneLength Vector of length equal to the number of rows in \dQuote{\code{y}} providing
 #' the gene length (bp) for RPKM calculation
 #' @param meanFilterCutoff Value used to filter low mean normalized counts 
+#' @param verbose If \code{TRUE}, include verbose output
 #'
 #' @return
 #' \item{tcounts }{Transformed counts}
@@ -34,7 +35,7 @@
 
 
 transform_RNAseq <- function(y, norm="TMM", transformation="voom", 
-                             geneLength=NA, meanFilterCutoff=NULL) {
+                             geneLength=NA, meanFilterCutoff=NULL, verbose=TRUE) {
 
   ##################################
   ## Calculate normalization factors
@@ -73,9 +74,13 @@ transform_RNAseq <- function(y, norm="TMM", transformation="voom",
   ## Filter data based on mean count if desired
   ##################################
   if(is.null(meanFilterCutoff) == FALSE) {
-      cat("Filter applied: remove observations with normalized mean < ", meanFilterCutoff, "\n")
+
       filter <- HTSBasicFilter(y, method="mean", cutoff.type="value", 
                                cutoff=meanFilterCutoff, normalization=norm)
+      if(verbose == TRUE) {
+        cat("Filter applied: remove observations with normalized mean < ", meanFilterCutoff, "\n")
+        cat("               ", nrow(filter$filteredData), "observations retained for analysis\n")
+      }
       y <- filter$filteredData
       geneLength <- unlist(geneLength)[which(filter$on == 1)]
   }

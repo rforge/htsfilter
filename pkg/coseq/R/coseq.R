@@ -23,7 +23,8 @@
 #' @param subset.index Optional vector providing the indices of a subset of
 #' genes that should be used for the co-expression analysis (i.e., row indices
 #' of the data matrix \code{y}.
-#' @param meanFilterCutoff Value used to filter low mean normalized counts if desired.
+#' @param meanFilterCutoff Value used to filter low mean normalized counts if desired (by default,
+#' set to a value of 50)
 #' @param geneIDs Optional vector of gene ID's.
 #' @param parallel If \code{FALSE}, no parallelization. If \code{TRUE}, parallel 
 #' execution using BiocParallel (see next argument \code{BPPARAM}). A note on running 
@@ -38,17 +39,19 @@
 #' @return
 #' Object of class \code{coseq} containing the full \code{results} (itself an object
 #' of class \code{NormMixClus} or \code{PoisMixClusWrapper}, the latter being the class
-#' defined by the HTSCluster package), the \code{model} used, and if
-#' applicable, the data \code{transformation} used.
+#' defined by the HTSCluster package), the \code{model} used, the specific \code{transformation}
+#' used on the data, the transformed data themselves (\code{tcounts}) 
+#' used in model estimation, and the normalized profiles (\code{y_profiles}) for use in plotting
 #' @export
 #' @importFrom HTSCluster PoisMixClus
 #' @importFrom HTSCluster PoisMixClusWrapper
 #' @importFrom stats na.omit
 #' @importFrom capushe capushe
 #'
+#'
 #' 
 coseq <- function(y, K, conds=NULL, norm="TMM", model="Normal", transformation="none", 
-                       subset.index=NA, meanFilterCutoff=NULL,
+                       subset.index=NA, meanFilterCutoff=50,
                        geneIDs=1:nrow(y), parallel=TRUE, BPPARAM=bpparam(), ...) {
   
   ## Parse ellipsis function
@@ -81,7 +84,12 @@ coseq <- function(y, K, conds=NULL, norm="TMM", model="Normal", transformation="
     if(is.null(arg.user$init.iter)) arg.user$init.iter<-20;
     if(is.null(arg.user$iter)) arg.user$iter<-1000;
     if(is.null(arg.user$cutoff)) arg.user$cutoff<-0.001;
+    if(is.null(arg.user$digits)) arg.user$digits<-3; 
   }
+  
+  y_profiles <- round(transform_RNAseq(y, norm=norm, transformation="profile",
+                                       meanFilterCutoff=meanFilterCutoff, verbose=TRUE)$tcounts,
+                      digits=arg.user$digits)
   
   ########################
   ## POISSON MIXTURE MODEL
@@ -118,7 +126,7 @@ coseq <- function(y, K, conds=NULL, norm="TMM", model="Normal", transformation="
     
     tcounts <- transform_RNAseq(y, norm=norm, transformation="none", 
                                 geneLength=arg.user$geneLength, 
-                                meanFilterCutoff=meanFilterCutoff)
+                                meanFilterCutoff=meanFilterCutoff, verbose=FALSE)
     
     if(parallel == FALSE) {
       run <- PoisMixClusWrapper(y=tcounts$tcounts, gmin=min(K), gmax=max(K), conds=conds,
@@ -235,15 +243,15 @@ coseq <- function(y, K, conds=NULL, norm="TMM", model="Normal", transformation="
     
     tcounts <- transform_RNAseq(y, norm=norm, transformation=transformation, 
                                 geneLength=arg.user$geneLength,
-                                meanFilterCutoff=meanFilterCutoff)
-    if(parallel == TRUE) arg.user$verbose <- FALSE;
+                                meanFilterCutoff=meanFilterCutoff, verbose=FALSE)
+#    if(parallel == TRUE) arg.user$verbose <- FALSE;
     run <- NormMixClus(y_profiles=tcounts$tcounts, K=K, subset.index=subset.index, 
                        parallel=parallel,
                        BPPARAM=BPPARAM, alg.type=arg.user$alg.type, 
                        init.runs=arg.user$init.runs,
                        init.type=arg.user$init.type, init.iter=arg.user$init.iter, 
                        iter=arg.user$iter, cutoff=arg.user$cutoff,
-                       verbose=arg.user$verbose)
+                       verbose=arg.user$verbose, digits=arg.user$digits)
   }
 
   ####################################
@@ -259,7 +267,7 @@ coseq <- function(y, K, conds=NULL, norm="TMM", model="Normal", transformation="
   ####################################
   
   RESULTS <- list(results=run, model=model, transformation=transformation, 
-                  tcounts=tcounts$tcounts)
+                  tcounts=tcounts$tcounts, y_profiles=y_profiles)
   class(RESULTS) <- "coseq"
   return(RESULTS)
 }

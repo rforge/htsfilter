@@ -5,7 +5,7 @@
 \title{Transform RNA-seq data using common transformations}
 \usage{
 transform_RNAseq(y, norm = "TMM", transformation = "voom",
-  geneLength = NA, meanFilterCutoff = NULL)
+  geneLength = NA, meanFilterCutoff = NULL, verbose = TRUE)
 }
 \arguments{
 \item{y}{(\emph{n} x \emph{q}) matrix of observed counts for \emph{n}
@@ -27,6 +27,8 @@ for each sample.}
 the gene length (bp) for RPKM calculation}
 
 \item{meanFilterCutoff}{Value used to filter low mean normalized counts}
+
+\item{verbose}{If \code{TRUE}, include verbose output}
 }
 \value{
 \item{tcounts }{Transformed counts}

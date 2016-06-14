@@ -27,6 +27,7 @@
 #' @param digits Integer indicating the number of decimal places to be used
 #' for mixture model parameters
 #' @param ... Additional arguments
+#' 
 #' @author Andrea Rau
 #' @seealso \code{\link{NormMixClus}}, \code{\link{NormMixClus_K}}
 #' @keywords methods
@@ -44,7 +45,7 @@
     probaPost <- x$probaPost
     labels <- apply(probaPost, 1, which.max)
     
-    param <- NormMixParam(x, y_profiles) 
+    param <- NormMixParam(x, y_profiles, digits=digits) 
     mu <- param$mu
     pi <- param$pi
     g <- x$nbCluster

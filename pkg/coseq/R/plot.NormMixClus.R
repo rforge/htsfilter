@@ -68,7 +68,13 @@ plot.NormMixClus <- function(x, y_profiles=NULL, K=NULL, threshold=0.8, conds=NU
   ## Model-specific plots
   if("profiles" %in% graphs | "boxplots" %in% graphs | "probapost_boxplots" %in% graphs |
      "probapost_barplots" %in% graphs | "probapost_histogram" %in% graphs) {
-    if(is.null(K) == TRUE) xx <- x$ICL.results;
+    if("profiles" %in% graphs | "boxplots" %in% graphs) {
+      if(is.null(y_profiles)) stop("y_profiles needed to plot selected graphs")
+    }
+    if(is.null(K) == TRUE) {
+      xx <- x$ICL.results
+      KK <- NULL
+    }
     if(is.null(K) == FALSE) {
       if(K != "ICL") {
         if(length(which(names(x$all.results) == paste("K=",K,sep=""))) == 0)
@@ -76,15 +82,17 @@ plot.NormMixClus <- function(x, y_profiles=NULL, K=NULL, threshold=0.8, conds=NU
         if(length(K) > 1) 
           stop("K must be NULL, a single value, or ICL")
         xx <- x$all.results[[which(names(x$all.results) == paste("K=",K,sep=""))]]
+        KK <- NULL
+        if(length(xx$log.like) == 0) stop("Selected model was not estimated by coseq");
       }
       if(K == "ICL") {
         xx <- x$ICL.results;
-        K <- NULL;
+        KK <- NULL;
       }
     }
 
     gr <- which(!graphs %in% c("ICL", "logLike"))
-    plot(x=xx, y_profiles=y_profiles, K=K, threshold=threshold, conds=conds,
+    plot(x=xx, y_profiles=y_profiles, K=KK, threshold=threshold, conds=conds,
          average_over_conds=average_over_conds, 
          graphs=graphs[gr], order = order, alpha=arg.user$alpha, ...)
   }

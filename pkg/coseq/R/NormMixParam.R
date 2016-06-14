@@ -10,6 +10,8 @@
 #' class \code{coseq} or \code{NormMixClus}. When \code{NULL}, the model selected
 #' by the ICL criterion is used; otherwise, \code{modelChoice} should designate the number
 #' of clusters in the desired model
+#' @param digits Integer indicating the number of decimal places to be used for output
+
 #'
 #' @return
 #' \item{pi }{ Vector of dimension \emph{K} with the estimated cluster proportions from
@@ -20,11 +22,15 @@
 #' \item{Sigma }{ Array of dimension \emph{d} x \emph{d} x \emph{K} containing the
 #' estimated covariance matrices from the Gaussian mixture model, where \emph{d} is the
 #' number of samples in the data \code{y_profiles} and \emph{K} is the number of clusters}
+#' \item{rho }{ Array of dimension \emph{d} x \emph{d} x \emph{K} containing the
+#' estimated correlation matrices from the Gaussian mixture model, where \emph{d} is the
+#' number of samples in the data \code{y_profiles} and \emph{K} is the number of clusters}
 #' 
 #' @export
+#' @importFrom stats cov2cor
 #'
 
-NormMixParam <- function(x, y_profiles=NULL, modelChoice=NULL) {
+NormMixParam <- function(x, y_profiles=NULL, modelChoice=NULL, digits=3) {
   
   if (class(x) != "coseq" & class(x) != "NormMixClus" & class(x) != "NormMixClus_K") {
     stop(paste(sQuote("x"), sep = ""), " must be of class ", 
@@ -39,7 +45,10 @@ NormMixParam <- function(x, y_profiles=NULL, modelChoice=NULL) {
         GaussianModel <- x$results$ICL.results$GaussianModel
       }
     }
-    if(is.null(modelChoice) == TRUE) mod <- x$results$ICL.results;
+    if(is.null(modelChoice) == TRUE) {
+      mod <- x$results$ICL.results;
+      GaussianModel <- x$results$ICL.results$GaussianModel
+    }
     if(is.numeric(modelChoice) == TRUE) {
       mod <- x$results$all.results[[paste("K=", modelChoice,sep="")]]
       GaussianModel <- x$results$all.results[[paste("K=", modelChoice,sep="")]]$GaussianModel
@@ -81,7 +90,19 @@ NormMixParam <- function(x, y_profiles=NULL, modelChoice=NULL) {
     Sigma[,,k] <- (t(y_profiles) - mu[k,]) %*% ( t(t(y_profiles) - mu[k,]) * probaPost[,k])
     Sigma[,,k] <- Sigma[,,k] / sum(probaPost[,k])
   }
+  rho <- lapply(1:ncol(probaPost), function(xx) cov2cor(Sigma[,,xx]))
+  rho <- array(unlist(rho), dim = c(dim(rho[[1]]), length(rho)))
   
-  param <- list(pi=pi, mu=mu, Sigma=Sigma)
+  dimnames(rho) <- list(colnames(y_profiles), colnames(y_profiles), 
+                        paste("Cluster", 1:ncol(probaPost)))
+  dimnames(Sigma) <- list(colnames(y_profiles), colnames(y_profiles), 
+                        paste("Cluster", 1:ncol(probaPost)))
+  colnames(mu) <- colnames(y_profiles)
+  rownames(mu) <- paste("Cluster", 1:ncol(probaPost))
+  
+  
+
+  param <- list(pi=round(pi, digits), mu=round(mu, digits), Sigma=round(Sigma, digits),
+                rho=round(rho, digits))
   return(param)           
 }

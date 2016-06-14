@@ -36,7 +36,6 @@
 NormMixClus <- function(y_profiles, K, subset.index=NA, parallel=TRUE, BPPARAM=bpparam(), ...){
   
   ## Parse ellipsis function
-#  arg.user <- as.list(substitute(list(...)))[-1L]
   arg.user <- list(...)
   if(is.null(arg.user$alg.type)) arg.user$alg.type<-"EM";
   if(is.null(arg.user$init.runs)) arg.user$init.runs<-50;
@@ -46,6 +45,7 @@ NormMixClus <- function(y_profiles, K, subset.index=NA, parallel=TRUE, BPPARAM=b
   if(is.null(arg.user$cutoff)) arg.user$cutoff<-0.001;
   if(is.null(arg.user$GaussianModel)) arg.user$GaussianModel<-"Gaussian_pk_Lk_Ck";
   if(is.null(arg.user$verbose)) arg.user$verbose<-TRUE;
+  if(is.null(arg.user$digits)) arg.user$digits <- 3;
   
   y_profiles <- as.data.frame(y_profiles)
   
@@ -82,7 +82,7 @@ NormMixClus <- function(y_profiles, K, subset.index=NA, parallel=TRUE, BPPARAM=b
                              alg.type=arg.user$alg.type, init.runs=arg.user$init.runs,
                              init.type=arg.user$init.type, init.iter=arg.user$init.iter,
                              iter=arg.user$iter, cutoff=arg.user$cutoff,
-                             GaussianModel=arg.user$GaussianModel))
+                             GaussianModel=arg.user$GaussianModel, digits=arg.user$digits))
 
         return(res)}, BPPARAM=BPPARAM)
       Kmods <- paste("K=", unlist(lapply(tmp, function(x) x$nbCluster)), sep="")

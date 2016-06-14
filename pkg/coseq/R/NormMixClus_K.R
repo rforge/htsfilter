@@ -19,6 +19,8 @@
 #' @param cutoff Cutoff to declare algorithm convergence
 #' @param iter Maximum number of iterations to be run for the chosen algorithm
 #' @param verbose If \code{TRUE}, verbose output is created
+#' @param digits Integer indicating the number of decimal places to be used for the
+#' \code{probaPost} output
 #'
 #' @return
 #' \item{probaPost }{Matrix containing the conditional
@@ -37,7 +39,7 @@
 
 NormMixClus_K <- function(y_profiles, K, alg.type="EM", init.runs=50, 
                           init.type="small-em", GaussianModel="Gaussian_pk_Lk_Ck",
-                          init.iter=20, iter=1000, cutoff=0.001, verbose=TRUE) {
+                          init.iter=20, iter=1000, cutoff=0.001, verbose=TRUE, digits=3) {
      
   if(!is.data.frame(y_profiles)) y_profiles <- as.data.frame(y_profiles)
   
@@ -54,7 +56,8 @@ NormMixClus_K <- function(y_profiles, K, alg.type="EM", init.runs=50,
   #param<-list(pi=xem["bestResult"]@parameters@proportions,
   #            mu=xem["bestResult"]@parameters@mean,
   #            variance=xem["bestResult"]@parameters@variance)
-  res <- list(probaPost=xem["bestResult"]@proba, log.like=xem["bestResult"]@likelihood,
+  pp <- round(xem["bestResult"]@proba, digits=digits )
+  res <- list(probaPost=pp, log.like=xem["bestResult"]@likelihood,
               ICL=xem["bestResult"]@criterionValue, nbCluster=xem["bestResult"]@nbCluster,
               GaussianModel=GaussianModel)
   class(res) <- "NormMixClus_K"

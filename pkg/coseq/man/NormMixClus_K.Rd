@@ -6,7 +6,8 @@
 \usage{
 NormMixClus_K(y_profiles, K, alg.type = "EM", init.runs = 50,
   init.type = "small-em", GaussianModel = "Gaussian_pk_Lk_Ck",
-  init.iter = 20, iter = 1000, cutoff = 0.001, verbose = TRUE)
+  init.iter = 20, iter = 1000, cutoff = 0.001, verbose = TRUE,
+  digits = 3)
 }
 \arguments{
 \item{y_profiles}{y (\emph{n} x \emph{q}) matrix of observed profiles for \emph{n}
@@ -35,6 +36,9 @@ Small-EM strategry, with a default value of 20}
 \item{cutoff}{Cutoff to declare algorithm convergence}
 
 \item{verbose}{If \code{TRUE}, verbose output is created}
+
+\item{digits}{Integer indicating the number of decimal places to be used for the
+\code{probaPost} output}
 }
 \value{
 \item{probaPost }{Matrix containing the conditional

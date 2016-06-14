@@ -4,7 +4,7 @@
 \alias{NormMixParam}
 \title{Calculate the mean and variance parameters for a normal mixture model}
 \usage{
-NormMixParam(x, y_profiles = NULL, modelChoice = NULL)
+NormMixParam(x, y_profiles = NULL, modelChoice = NULL, digits = 3)
 }
 \arguments{
 \item{x}{Object of class \code{coseq}, \code{NormMixClus}, or \code{NormMixClus_K}}
@@ -17,6 +17,8 @@ or \code{NormMixClus_K}}
 class \code{coseq} or \code{NormMixClus}. When \code{NULL}, the model selected
 by the ICL criterion is used; otherwise, \code{modelChoice} should designate the number
 of clusters in the desired model}
+
+\item{digits}{Integer indicating the number of decimal places to be used for output}
 }
 \value{
 \item{pi }{ Vector of dimension \emph{K} with the estimated cluster proportions from
@@ -26,6 +28,9 @@ vector from the Gaussian mixture model, where \emph{d} is the
 number of samples in the data \code{y_profiles} and \emph{K} is the number of clusters}
 \item{Sigma }{ Array of dimension \emph{d} x \emph{d} x \emph{K} containing the
 estimated covariance matrices from the Gaussian mixture model, where \emph{d} is the
+number of samples in the data \code{y_profiles} and \emph{K} is the number of clusters}
+\item{rho }{ Array of dimension \emph{d} x \emph{d} x \emph{K} containing the
+estimated correlation matrices from the Gaussian mixture model, where \emph{d} is the
 number of samples in the data \code{y_profiles} and \emph{K} is the number of clusters}
 }
 \description{

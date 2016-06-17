@@ -7,11 +7,14 @@
 #' @param y_profiles y (\emph{n} x \emph{q}) matrix of observed profiles for \emph{n}
 #' observations and \emph{q} variables, required for \code{x} of class \code{NormMixClus}
 #' or \code{NormMixClus_K}
-#' @param modelChoice The model used for parameter estimation for objects \code{x} of
+#' @param K The model used for parameter estimation for objects \code{x} of
 #' class \code{coseq} or \code{NormMixClus}. When \code{NULL}, the model selected
-#' by the ICL criterion is used; otherwise, \code{modelChoice} should designate the number
+#' by the ICL criterion is used; otherwise, \code{K} should designate the number
 #' of clusters in the desired model
 #' @param digits Integer indicating the number of decimal places to be used for output
+#' @param plot If \code{true}, produce heatmaps to visualize the estimated per-cluster
+#' correlation matrices
+#' @param ... Additional optional parameters to pass to \code{corrplot}, if desired
 #'
 #'
 #' @return
@@ -31,9 +34,11 @@
 #' 
 #' @export
 #' @importFrom stats cov2cor
+#' @importFrom grDevices n2mfrow
+#' @importFrom graphics mtext par
 #'
 
-NormMixParam <- function(x, y_profiles=NULL, modelChoice=NULL, digits=3) {
+NormMixParam <- function(x, y_profiles=NULL, K=NULL, digits=3, plot=FALSE, ...) {
   
   if (class(x) != "coseq" & class(x) != "NormMixClus" & class(x) != "NormMixClus_K") {
     stop(paste(sQuote("x"), sep = ""), " must be of class ", 
@@ -42,19 +47,19 @@ NormMixParam <- function(x, y_profiles=NULL, modelChoice=NULL, digits=3) {
   }
   if(class(x) == "coseq") {
     y_profiles <- x$tcounts
-    if(is.character(modelChoice) == TRUE) {
-      if(modelChoice == "ICL") {
+    if(is.character(K) == TRUE) {
+      if(K == "ICL") {
         mod <- x$results$ICL.results;
         GaussianModel <- x$results$ICL.results$GaussianModel
       }
     }
-    if(is.null(modelChoice) == TRUE) {
+    if(is.null(K) == TRUE) {
       mod <- x$results$ICL.results;
       GaussianModel <- x$results$ICL.results$GaussianModel
     }
-    if(is.numeric(modelChoice) == TRUE) {
-      mod <- x$results$all.results[[paste("K=", modelChoice,sep="")]]
-      GaussianModel <- x$results$all.results[[paste("K=", modelChoice,sep="")]]$GaussianModel
+    if(is.numeric(K) == TRUE) {
+      mod <- x$results$all.results[[paste("K=", K,sep="")]]
+      GaussianModel <- x$results$all.results[[paste("K=", K,sep="")]]$GaussianModel
     }
     probaPost <- mod$probaPost
   }
@@ -62,13 +67,13 @@ NormMixParam <- function(x, y_profiles=NULL, modelChoice=NULL, digits=3) {
     if(is.null(y_profiles) == TRUE) stop(paste(dQuote("y_profiles"), sep = ""), " must
                                            be included for class ", 
                                          paste(dQuote("NormMixClus"), sep = ""))
-    if(modelChoice == "ICL" | is.null(modelChoice)==TRUE) {
+    if(K == "ICL" | is.null(K)==TRUE) {
       mod <- x$ICL.results;
       GaussianModel <- x$ICL.results$GaussianModel
     }
-    if(is.numeric(modelChoice) == TRUE) {
-      mod <- x$all.results[[paste("K=", modelChoice,sep="")]]
-      GaussianModel <- x$all.results[[paste("K=", modelChoice,sep="")]]$GaussianModel
+    if(is.numeric(K) == TRUE) {
+      mod <- x$all.results[[paste("K=", K,sep="")]]
+      GaussianModel <- x$all.results[[paste("K=", K,sep="")]]$GaussianModel
     }
     probaPost <- mod$probaPost
   }
@@ -103,7 +108,14 @@ NormMixParam <- function(x, y_profiles=NULL, modelChoice=NULL, digits=3) {
   colnames(mu) <- colnames(y_profiles)
   rownames(mu) <- paste("Cluster", 1:ncol(probaPost))
   
-  
+  if(plot == TRUE) {
+    par(mfrow=n2mfrow(ncol(probaPost)))
+    for(kk in 1:ncol(probaPost)) {
+      corrplot(rho[,,kk],  method="ellipse", type="upper",
+               tl.pos="d", ...)
+      mtext(paste("K =", kk), side=2, las=1, line=-1)
+    }
+  }
 
   param <- list(pi=round(pi, digits), mu=round(mu, digits), Sigma=round(Sigma, digits),
                 rho=round(rho, digits))

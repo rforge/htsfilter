@@ -11,7 +11,7 @@ clusterEntropy(probaPost)
 to each cluster for all observations}
 }
 \value{
-Entropy per clusters
+Entropy per cluster
 }
 \description{
 Provides the calculation of per-cluster entropy, equivalent to 

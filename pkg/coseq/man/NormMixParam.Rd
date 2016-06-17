@@ -4,7 +4,8 @@
 \alias{NormMixParam}
 \title{Calculate the mean and covariance for a Normal mixture model}
 \usage{
-NormMixParam(x, y_profiles = NULL, modelChoice = NULL, digits = 3)
+NormMixParam(x, y_profiles = NULL, K = NULL, digits = 3, plot = FALSE,
+  ...)
 }
 \arguments{
 \item{x}{Object of class \code{coseq}, \code{NormMixClus}, or \code{NormMixClus_K}}
@@ -13,12 +14,17 @@ NormMixParam(x, y_profiles = NULL, modelChoice = NULL, digits = 3)
 observations and \emph{q} variables, required for \code{x} of class \code{NormMixClus}
 or \code{NormMixClus_K}}
 
-\item{modelChoice}{The model used for parameter estimation for objects \code{x} of
+\item{K}{The model used for parameter estimation for objects \code{x} of
 class \code{coseq} or \code{NormMixClus}. When \code{NULL}, the model selected
-by the ICL criterion is used; otherwise, \code{modelChoice} should designate the number
+by the ICL criterion is used; otherwise, \code{K} should designate the number
 of clusters in the desired model}
 
 \item{digits}{Integer indicating the number of decimal places to be used for output}
+
+\item{plot}{If \code{true}, produce heatmaps to visualize the estimated per-cluster
+correlation matrices}
+
+\item{...}{Additional optional parameters to pass to \code{corrplot}, if desired}
 }
 \value{
 \item{pi }{ Vector of dimension \emph{K} with the estimated cluster proportions from

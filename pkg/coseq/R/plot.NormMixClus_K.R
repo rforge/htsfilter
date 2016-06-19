@@ -337,16 +337,17 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
   ## PROBAPOST BARPLOTS
   #####################################################
   if("probapost_barplots" %in% graphs) {
-    pl_data <- data.frame(ID=ifelse(rep(length(rownames(y_profiles))==0, nrow(y_profiles)), 
+    pl_data <- data.frame(ID=ifelse(rep(length(rownames(y_profiles))==0, nrow(y_profiles)),
                                     rep(1:nrow(y_profiles), times=ncol(y_profiles)),
                                     rownames(y_profiles)),
-                          y_prof=as.vector(y_profiles), 
+                          y_prof=as.vector(y_profiles),
                           col_num=rep(1:ncol(y_profiles), each=nrow(y_profiles)),
                           col_nam=rep(colnames(y_profiles), each=nrow(y_profiles)),
                           conds=conds_vec,
                           labels=rep(labels, times=ncol(y_profiles)),
                           proba=rep(proba, times=ncol(y_profiles)))
-    pl_data$goodproba <- factor(ifelse(pl_data$proba > threshold, 
+    pl_data <- pl_data[which(pl_data$col_num==1),]
+    pl_data$goodproba <- factor(ifelse(pl_data$proba > threshold,
                                 paste(">", threshold), paste("<", threshold)),
                                 levels=c(paste(">", threshold),
                                          paste("<", threshold)))

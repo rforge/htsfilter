@@ -62,6 +62,9 @@ NormMixClus_K <- function(y_profiles, K, alg.type="EM", init.runs=50,
   #            mu=xem["bestResult"]@parameters@mean,
   #            variance=xem["bestResult"]@parameters@variance)
   pp <- round(xem["bestResult"]@proba, digits=digits )
+  
+  if(nrow(pp) != 0 & !is.null(rownames(y_profiles))) rownames(pp) <- rownames(y_profiles)
+  
   res <- list(probaPost=pp, log.like=xem["bestResult"]@likelihood,
               ICL=xem["bestResult"]@criterionValue, nbCluster=xem["bestResult"]@nbCluster,
               GaussianModel=GaussianModel)

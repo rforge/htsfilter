@@ -27,40 +27,35 @@
 #' @param order If \code{TRUE}, order clusters in \code{probapost_boxplot} by median and
 #' \code{probapost_barplot} by number of observations with maximum conditional probability
 #' greater than \code{threshold}
+#' @param profiles_order If \code{NULL} or \code{FALSE}, line plots and boxplots of profiles are 
+#' plotted sequentially by cluster number (K=1, K=2, ...). If \code{TRUE}, line plots and boxplots of
+#' profiles are plotted in an automatically calculated order (according to the Euclidean distance
+#' between cluster means) to plot clusters with similar mean profiles next to one another. 
+#' Otherwise, the user may provide a vector (of length equal to the number of clusters in the 
+#' given model) providing the desired order of plots.
+#' @param n_row Number of rows for plotting layout of line plots and boxplots of profiles.
+#' Note that if \code{n_row} x \code{n_col} is less than the total number of clusters plotted,
+#' plots will be divided over multiple pages.
+#' @param n_col Number of columns for plotting layout of line plots and boxplots of profiles.
+#' Note that if \code{n_row} x \code{n_col} is less than the total number of clusters plotted,
+#' plots will be divided over multiple pages.
 #' @param ...  Additional optional plotting arguments
 #' 
 #' @author Andrea Rau, Cathy Maugis-Rabusseau
 #'
 #' @export
 #' 
-## TODO: COMPARISON OF DIFFERENT TRANSFORMATIONS?
 plot.coseq <- function(x, y_profiles=NULL, K=NULL, threshold=0.8, conds=NULL,
                              average_over_conds=FALSE, 
                              graphs=c("logLike", "ICL", 
                                       "profiles", "boxplots", "probapost_boxplots",
                                       "probapost_barplots", "probapost_histogram"), 
-                             order=FALSE, ...) {
+                             order=FALSE, profiles_order=NULL, n_row=NULL, n_col=NULL, ...) {
   
-  if(is.null(y_profiles) == TRUE) y_profiles <- x$y_profiles
+  if(is.null(y_profiles) == TRUE) y_profiles <- x$tcounts
   
   plot(x$results, y_profiles=y_profiles, K=K, threshold=threshold, conds=conds,
        average_over_conds=average_over_conds, graphs=graphs, 
-       order=order, ...)
+       order=order, profiles_order=profiles_order, n_row=n_row, n_col=n_col, ...)
   
 }
-
-# plot.coseq <- function(resarcsin, reslogit, reslogMedianRef, y_profiles) {
-#   n=dim(y_profiles)[1]
-#   p=dim(y_profiles)[2]
-#   qarcsin<-(n*p*log(2)) + (0.5*sum(sum(log(y_profiles*(1-y_profiles)))))
-#   qlogit<-(n*p*log(log(2))) + (sum(sum(log(y_profiles*(1-y_profiles)))))
-#   qlogmedianref<-(n*p*log(log(2))) + sum(sum(log(y_profiles)))
-#   
-#   plot(resarcsin$nbClust,resarcsin$ICLvalue + (2*qarcsin),col="red",type="l",
-#        xlab="nb cluster",ylab="ICL sur les pi")
-#   points(reslogit$nbClust,reslogit$ICLvalue + (2*qlogit),col="blue",type="l")
-#   points(reslogMedianRef$nbClust, reslogMedianRef$ICLvalue + (2*qlogmedianref),
-#          col="magenta",type="l")
-#   legend("topright",legend=c("arcsin","logit","logMedianRef"),
-#          col=c("red","blue","magenta"),lty=1)
-# }

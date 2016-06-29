@@ -8,7 +8,7 @@
 #' @param y_profiles  (\emph{n} x \emph{q}) matrix of observed profiles for \emph{n}
 #' observations and \emph{q} variables
 #' @param K Number of clusters (a single value or a sequence of values).
-#' @param subset.index Optional vector providing the indices of a subset of
+#' @param subset Optional vector providing the indices of a subset of
 #' genes that should be used for the co-expression analysis (i.e., row indices
 #' of the data matrix \code{y}.
 #' @param parallel If \code{FALSE}, no parallelization. If \code{TRUE}, parallel 
@@ -37,7 +37,9 @@
 #' @importFrom BiocParallel bpparam
 #' @export
 
-NormMixClus <- function(y_profiles, K, subset.index=NA, parallel=TRUE, BPPARAM=bpparam(), ...){
+NormMixClus <- function(y_profiles, K, subset=NULL, parallel=TRUE, BPPARAM=bpparam(), ...){
+  
+  subset.index <- subset
   
   ## Parse ellipsis function
   arg.user <- list(...)
@@ -54,7 +56,7 @@ NormMixClus <- function(y_profiles, K, subset.index=NA, parallel=TRUE, BPPARAM=b
   y_profiles <- as.data.frame(y_profiles)
   
   ## In case only a subset of data are to be used for analysis
-  if(is.na(subset.index)[1] == FALSE) {
+  if(!is.null(subset.index)) {
     y_profiles <- y_profiles[subset.index,]
   }
                               
@@ -63,7 +65,14 @@ NormMixClus <- function(y_profiles, K, subset.index=NA, parallel=TRUE, BPPARAM=b
   if(arg.user$verbose == TRUE) {
     cat("Running K =", min(K), "...\n")
   }
-  all.results[[1]] <- suppressWarnings(NormMixClus_K(y_profiles, K=min(K), ...))
+  all.results[[1]] <- suppressWarnings(NormMixClus_K(y_profiles, K=min(K), alg.type=arg.user$alg.type, 
+                                                     init.runs=arg.user$init.runs,
+                                                     init.type=arg.user$init.type, 
+                                                     init.iter=arg.user$init.iter,
+                                                     iter=arg.user$iter, 
+                                                     cutoff=arg.user$cutoff,
+                                                     GaussianModel=arg.user$GaussianModel, 
+                                                     digits=arg.user$digits))
   index <- 2
   remainingK <- K[-which(K == min(K))]
   if (length(remainingK) > 0) {
@@ -73,7 +82,15 @@ NormMixClus <- function(y_profiles, K, subset.index=NA, parallel=TRUE, BPPARAM=b
         if(arg.user$verbose == TRUE) {
           cat("Running K =", k, "...\n")
         }
-        all.results[[index]] <- suppressWarnings(NormMixClus_K(y_profiles, K=k, ...))
+        all.results[[index]] <- suppressWarnings(NormMixClus_K(y_profiles=y_profiles, K=k, 
+                                                               alg.type=arg.user$alg.type, 
+                                                               init.runs=arg.user$init.runs,
+                                                               init.type=arg.user$init.type, 
+                                                               init.iter=arg.user$init.iter,
+                                                               iter=arg.user$iter, 
+                                                               cutoff=arg.user$cutoff,
+                                                               GaussianModel=arg.user$GaussianModel, 
+                                                               digits=arg.user$digits))
         index <- index + 1
       }
       ## In the case where parallelization IS used

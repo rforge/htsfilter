@@ -1,9 +1,7 @@
-## Simulate data as shown in Rau et al. (2011)
-## Library size setting "A", high cluster separation
-## n = 200 observations
-
-y <- matrix(rnorm(300*8), nrow=300, ncol=8)
+## Simulate toy data, n = 300 observations
+countmat <- matrix(rnorm(300*4), nrow=300, ncol=4)
 conds <- rep(c("A","B","C","D"), each=2)
 
-## Run the Normal mixture model for K = 3 and 4
-run <- coseq(y, K = 3:4, norm="none")
+## Run the Normal mixture model for K = 2,3
+run <- NormMixClus(y=countmat, K=2:3, iter=5)
+

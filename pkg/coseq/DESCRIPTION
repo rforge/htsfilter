@@ -1,8 +1,8 @@
 Package: coseq
 Type: Package
-Title: Clustering Analysis of Sequencing Data
-Version: 0.1.6
-Date: 2016-06-19
+Title: Co-expression Analysis of Sequencing Data
+Version: 0.1.7
+Date: 2016-06-27
 Author: Andrea Rau, Cathy Maugis-Rabusseau
 Maintainer: Andrea Rau <andrea.rau@jouy.inra.fr>
 Depends:
@@ -18,9 +18,12 @@ Imports:
     scales,
     HTSFilter,
     corrplot,
-    HTSCluster (>= 2.0.8)
+    HTSCluster (>= 2.0.8),
+    gridExtra
 Suggests:
-    Biobase
+    Biobase,
+    knitr,
+    rmarkdown
 Description: Gaussian and Poisson mixture models are implemented to cluster biological
 	entities (e.g., genes) from high-throughput sequencing data. Parameter estimation is
     performed using the EM algorithm and model selection criteria (to choose
@@ -28,3 +31,4 @@ Description: Gaussian and Poisson mixture models are implemented to cluster biol
 License: GPL (>=3)
 LazyLoad: yes
 RoxygenNote: 5.0.1
+VignetteBuilder: knitr

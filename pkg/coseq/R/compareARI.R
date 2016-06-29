@@ -7,6 +7,9 @@
 #' is indirectly called by \code{coseq} for Poisson mixture models),
 #' or alternatively a \emph{n} x \emph{M} \code{data.frame} or \code{matrix} 
 #' containing the clustering partitions for \emph{M} different models 
+#' @param K If \code{NULL}, pairwise ARI values will be calculated among every model in
+#' object \code{x}. Otherwise, \code{K} provides a vector of cluster numbers identifying
+#' a subset of models in \code{x}.
 #' @param parallel If \code{FALSE}, no parallelization. If \code{TRUE}, parallel 
 #' execution using BiocParallel (see next argument \code{BPPARAM}). 
 #' Note that parallelization is unlikely to be helpful unless the number of 
@@ -28,7 +31,7 @@
 #' @importFrom HTSCluster highDimensionARI
 #' @importFrom corrplot corrplot
 #'
-compareARI <- function(x, parallel=FALSE, BPPARAM=bpparam(), plot=TRUE, ...) {
+compareARI <- function(x, K=NULL, parallel=FALSE, BPPARAM=bpparam(), plot=TRUE, ...) {
   
   arg.user <- list(...)
   if(is.null(arg.user$digits)) arg.user$digits<-2;
@@ -45,12 +48,24 @@ compareARI <- function(x, parallel=FALSE, BPPARAM=bpparam(), plot=TRUE, ...) {
                                            function(y) apply(y$probaPost,1,which.max)))
   }
   
+  if(!is.null(K)) {
+    if(length(K) <= 1) {
+      stop("K must be a vector of length at least 2.")
+    }
+    index <- which(substr(colnames(full_labels), 3, 10) %in% K)
+    if(length(index) == 0) stop("None of the indicated models are included in argument x");
+    full_labels <- full_labels[,index]
+  }
+  
+  ## For class data.frame or matrix
   if(class(x) == "data.frame" | class(x) == "matrix") {
+    if(!is.null(K)) message("K argument only used for objects of class coseq, NormMixClus, and PoisMixClusWrapper.")
     full_labels <- x
     if(length(colnames(full_labels)) == 0) {
       colnames(full_labels) <- paste("Model", 1:ncol(full_labels));
     }
   }
+  
 
   ARI <- matrix(0, nrow=ncol(full_labels), ncol=ncol(full_labels))
   rownames(ARI) <- colnames(ARI) <- colnames(full_labels)

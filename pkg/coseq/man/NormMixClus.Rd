@@ -4,7 +4,7 @@
 \alias{NormMixClus}
 \title{Normal mixture model estimation and selection for a series of cluster numbers}
 \usage{
-NormMixClus(y_profiles, K, subset.index = NA, parallel = TRUE,
+NormMixClus(y_profiles, K, subset = NULL, parallel = TRUE,
   BPPARAM = bpparam(), ...)
 }
 \arguments{
@@ -13,7 +13,7 @@ observations and \emph{q} variables}
 
 \item{K}{Number of clusters (a single value or a sequence of values).}
 
-\item{subset.index}{Optional vector providing the indices of a subset of
+\item{subset}{Optional vector providing the indices of a subset of
 genes that should be used for the co-expression analysis (i.e., row indices
 of the data matrix \code{y}.}
 

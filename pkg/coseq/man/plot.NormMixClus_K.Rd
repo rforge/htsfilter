@@ -7,7 +7,8 @@
 \method{plot}{NormMixClus_K}(x, y_profiles, K = NULL, threshold = 0.8,
   conds = NULL, average_over_conds = FALSE, graphs = c("profiles",
   "boxplots", "probapost_boxplots", "probapost_barplots",
-  "probapost_histogram"), order = FALSE, ...)
+  "probapost_histogram"), order = FALSE, profiles_order = NULL,
+  n_row = NULL, n_col = NULL, ...)
 }
 \arguments{
 \item{x}{An object of class \code{"NormMixClus_K"}}
@@ -37,6 +38,21 @@ conditional probabilities over all clusters) ...}
 \item{order}{If \code{TRUE}, order clusters in \code{probapost_boxplot} by median and
 \code{probapost_barplot} by number of observations with maximum conditional probability
 greater than \code{threshold}}
+
+\item{profiles_order}{If \code{NULL} or \code{FALSE}, line plots and boxplots of profiles are 
+plotted sequentially by cluster number (K=1, K=2, ...). If \code{TRUE}, line plots and boxplots of
+profiles are plotted in an automatically calculated order (according to the Euclidean distance
+between cluster means) to plot clusters with similar mean profiles next to one another. 
+Otherwise, the user may provide a vector (of length equal to the number of clusters in the 
+given model) providing the desired order of plots.}
+
+\item{n_row}{Number of rows for plotting layout of line plots and boxplots of profiles.
+Note that if \code{n_row} x \code{n_col} is less than the total number of clusters plotted,
+plots will be divided over multiple pages.}
+
+\item{n_col}{Number of columns for plotting layout of line plots and boxplots of profiles.
+Note that if \code{n_row} x \code{n_col} is less than the total number of clusters plotted,
+plots will be divided over multiple pages.}
 
 \item{...}{Additional optional plotting arguments}
 }

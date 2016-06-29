@@ -4,7 +4,8 @@
 \alias{compareARI}
 \title{Pairwise comparisons of ARI values among a set of clustering partitions}
 \usage{
-compareARI(x, parallel = FALSE, BPPARAM = bpparam(), plot = TRUE, ...)
+compareARI(x, K = NULL, parallel = FALSE, BPPARAM = bpparam(),
+  plot = TRUE, ...)
 }
 \arguments{
 \item{x}{Object of class \code{coseq}, \code{NormMixClus}, or 
@@ -12,6 +13,10 @@ compareARI(x, parallel = FALSE, BPPARAM = bpparam(), plot = TRUE, ...)
 is indirectly called by \code{coseq} for Poisson mixture models),
 or alternatively a \emph{n} x \emph{M} \code{data.frame} or \code{matrix} 
 containing the clustering partitions for \emph{M} different models}
+
+\item{K}{If \code{NULL}, pairwise ARI values will be calculated among every model in
+object \code{x}. Otherwise, \code{K} provides a vector of cluster numbers identifying
+a subset of models in \code{x}.}
 
 \item{parallel}{If \code{FALSE}, no parallelization. If \code{TRUE}, parallel 
 execution using BiocParallel (see next argument \code{BPPARAM}). 

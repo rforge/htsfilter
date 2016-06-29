@@ -16,14 +16,12 @@ A function to summarize the clustering results obtained from a Poisson or
 Gaussian mixture model estimated using \code{coseq}.
 }
 \examples{
+## Simulate toy data, n = 300 observations
+countmat <- matrix(rnorm(300*8), nrow=300, ncol=8)
+conds <- rep(c("A","B","C","D"), each=2)
 
-set.seed(12345)
-
-## Simulate data as shown in Rau et al. (2011)
-## Library size setting "A", high cluster separation
-## n = 2000 observations
-
-
+## Run the Normal mixture model for K = 2,3,4
+run <- coseq(y=countmat, K=3:4, norm="none")
 }
 \author{
 Andrea Rau

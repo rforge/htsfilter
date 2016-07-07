@@ -81,6 +81,8 @@ coseq_run <- function(y, K, conds=NULL, norm="TMM", model="Normal", transformati
     if(is.null(arg.user$verbose)) arg.user$verbose<-FALSE;
     if(is.null(arg.user$EM.verbose)) arg.user$EM.verbose<-FALSE;
     if(is.null(arg.user$interpretation)) arg.user$interpretation<-"sum";
+    if(is.null(arg.user$digits)) arg.user$digits<-3; 
+    if(is.null(subset)) subset.index <- NA
   }
 
   ## Optional parameters for transform_RNAseq
@@ -97,7 +99,7 @@ coseq_run <- function(y, K, conds=NULL, norm="TMM", model="Normal", transformati
     if(is.null(arg.user$digits)) arg.user$digits<-3; 
   }
   
-  y_profiles <- round(transform_RNAseq(y, norm=norm, transformation="profile",
+  y_profiles <- round(transform_RNAseq(y=y, norm=norm, transformation="profile",
                                        meanFilterCutoff=meanFilterCutoff, verbose=TRUE)$tcounts,
                       digits=arg.user$digits)
   
@@ -124,17 +126,17 @@ coseq_run <- function(y, K, conds=NULL, norm="TMM", model="Normal", transformati
     rownames(y) <- rn;
     
     ## In case only a subset of data are to be used for analysis
-    if(!is.null(subset.index)) {
+    if(!is.null(subset)) {
       y <- y[subset.index,]
       n <- dim(y)[1];cols <- dim(y)[2]
       w <- rowSums(y)
     }
-    if(is.null(subset.index)) {
+    if(is.null(subset)) {
       n <- dim(y)[1];cols <- dim(y)[2]
       w <- rowSums(y)
     }
     
-    tcounts <- transform_RNAseq(y, norm=norm, transformation="none", 
+    tcounts <- transform_RNAseq(y=y, norm=norm, transformation="none", 
                                 geneLength=arg.user$geneLength, 
                                 meanFilterCutoff=meanFilterCutoff, verbose=FALSE)
     
@@ -251,7 +253,7 @@ coseq_run <- function(y, K, conds=NULL, norm="TMM", model="Normal", transformati
   ########################
   if(length(model) == 1 & model == "Normal") {
     
-    tcounts <- transform_RNAseq(y, norm=norm, transformation=transformation, 
+    tcounts <- transform_RNAseq(y=y, norm=norm, transformation=transformation, 
                                 geneLength=arg.user$geneLength,
                                 meanFilterCutoff=meanFilterCutoff, verbose=FALSE)
 #    if(parallel == TRUE) arg.user$verbose <- FALSE;

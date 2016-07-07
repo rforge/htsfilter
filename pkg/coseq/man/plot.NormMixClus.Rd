@@ -7,7 +7,8 @@
 \method{plot}{NormMixClus}(x, y_profiles = NULL, K = NULL,
   threshold = 0.8, conds = NULL, average_over_conds = FALSE,
   graphs = c("logLike", "ICL", "profiles", "boxplots", "probapost_boxplots",
-  "probapost_barplots", "probapost_histogram"), order = FALSE, ...)
+  "probapost_barplots", "probapost_histogram"), order = FALSE,
+  profiles_order = NULL, ...)
 }
 \arguments{
 \item{x}{An object of class \code{"NormMixClus"}}
@@ -41,6 +42,13 @@ conditional probabilities over all clusters) ...}
 \item{order}{If \code{TRUE}, order clusters in \code{probapost_boxplot} by median and
 \code{probapost_barplot} by number of observations with maximum conditional probability
 greater than \code{threshold}}
+
+\item{profiles_order}{If \code{NULL} or \code{FALSE}, line plots and boxplots of profiles are 
+plotted sequentially by cluster number (K=1, K=2, ...). If \code{TRUE}, line plots and boxplots of
+profiles are plotted in an automatically calculated order (according to the Euclidean distance
+between cluster means) to plot clusters with similar mean profiles next to one another. 
+Otherwise, the user may provide a vector (of length equal to the number of clusters in the 
+given model) providing the desired order of plots.}
 
 \item{...}{Additional optional plotting arguments}
 }

@@ -26,6 +26,12 @@
 #' @param order If \code{TRUE}, order clusters in \code{probapost_boxplot} by median and
 #' \code{probapost_barplot} by number of observations with maximum conditional probability
 #' greater than \code{threshold}
+#' @param profiles_order If \code{NULL} or \code{FALSE}, line plots and boxplots of profiles are 
+#' plotted sequentially by cluster number (K=1, K=2, ...). If \code{TRUE}, line plots and boxplots of
+#' profiles are plotted in an automatically calculated order (according to the Euclidean distance
+#' between cluster means) to plot clusters with similar mean profiles next to one another. 
+#' Otherwise, the user may provide a vector (of length equal to the number of clusters in the 
+#' given model) providing the desired order of plots. 
 #' @param ...  Additional optional plotting arguments
 #' 
 #' @author Andrea Rau, Cathy Maugis-Rabusseau
@@ -41,7 +47,7 @@ plot.NormMixClus <- function(x, y_profiles=NULL, K=NULL, threshold=0.8, conds=NU
                              graphs=c("logLike", "ICL", 
                                       "profiles", "boxplots", "probapost_boxplots",
                                       "probapost_barplots", "probapost_histogram"), 
-                             order=FALSE, ...) {
+                             order=FALSE, profiles_order=NULL, ...) {
 
   ## Parse ellipsis function
   arg.user <- list(...)
@@ -94,6 +100,7 @@ plot.NormMixClus <- function(x, y_profiles=NULL, K=NULL, threshold=0.8, conds=NU
     gr <- which(!graphs %in% c("ICL", "logLike"))
     plot(x=xx, y_profiles=y_profiles, K=KK, threshold=threshold, conds=conds,
          average_over_conds=average_over_conds, 
-         graphs=graphs[gr], order = order, alpha=arg.user$alpha, ...)
+         graphs=graphs[gr], order = order, alpha=arg.user$alpha, 
+         profiles_order=profiles_order, ...)
   }
 }

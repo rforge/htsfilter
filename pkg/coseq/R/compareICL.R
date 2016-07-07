@@ -39,7 +39,13 @@ compareICL <- function(x) {
      sum(resarcsin$y_profiles != reslogMedianRef$y_profiles) > 0) 
     stop("y_profiles in coseq objects not equal -- are models estimated on same data?")
   
-  PP <- resarcsin$y_profiles  
+  ## NOTE: REPLACE 0's with smallest value > 0, 1's with largest value < 1
+  
+  PP <- resarcsin$y_profiles 
+  PP[which(PP == 0)] <- min(PP[which(PP > 0)])
+  PP[which(PP == 1)] <- max(PP[which(PP < 1)])
+  
+  
   n <- dim(PP)[1]
   p <- dim(PP)[2]
   qarcsin <- (n*p*log(2)) + (0.5*sum(sum(log(PP*(1-PP)))))

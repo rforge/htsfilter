@@ -39,6 +39,13 @@ summary.NormMixClus <-
     cat("*************************************************\n")
     clustNum <-  paste(x$nbCluster.all, collapse=",")
     clustErr <- paste(x$nbCluster.error, collapse=",")
+    
+    
+    # clustErr <- paste(rep(paste(x$nbCluster.error, collapse=","),10), collapse=",")
+    # strwrap(clustErr, width=5, exdent=2, simplify=FALSE)
+                        
+                        
+                        
     clustErr <- ifelse(clustErr == "", "---", clustErr)
     cat("Clusters fit: ", clustNum, "\n", sep = "")
     cat("Clusters with errors: ", clustErr, "\n", sep= "")

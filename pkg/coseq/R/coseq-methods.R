@@ -21,7 +21,8 @@
 #' @author Andrea Rau
 #' @export
 coseq <- function(y, K, subset=NULL, model="Normal", transformation="none", norm="TMM", 
-                  meanFilterCutoff=NULL, parallel=FALSE, BPPARAM=bpparam(), ...) {
+                  meanFilterCutoff=NULL, modelChoice="ICL",
+                  parallel=FALSE, BPPARAM=bpparam(), ...) {
   UseMethod("coseq", y)
 }
 
@@ -32,13 +33,14 @@ coseq <- function(y, K, subset=NULL, model="Normal", transformation="none", norm
 #' @importFrom stats p.adjust
 #' @export
 coseq.matrix <- function(y, K, subset=NULL, model="Normal", transformation="none", 
-                         norm="TMM", meanFilterCutoff=NULL, parallel=FALSE, 
-                         BPPARAM=bpparam(), ...) {
+                         norm="TMM", meanFilterCutoff=NULL, modelChoice="ICL",
+                         parallel=FALSE,  BPPARAM=bpparam(), ...) {
   arg.user <- list(...)
   
   if(is.null(subset) | is.numeric(subset)) {
     run <- coseq_run(y=y, K=K, subset=subset, model=model, transformation=transformation, 
-                     norm=norm, meanFilterCutoff=meanFilterCutoff, parallel=parallel, 
+                     norm=norm, meanFilterCutoff=meanFilterCutoff, modelChoice=modelChoice,
+                     parallel=parallel, 
                      BPPARAM=BPPARAM, ...)
   }
   if(class(subset) == "DESeqResults") {
@@ -49,7 +51,8 @@ coseq.matrix <- function(y, K, subset=NULL, model="Normal", transformation="none
     cat(paste(length(subset.index), "DE genes at p-adj <", res@metadata$alpha, "\n"))
     cat("****************************************\n")
     run <- coseq_run(y=y, K=K, subset=subset.index, model=model, transformation=transformation, 
-                     norm="DESeq", meanFilterCutoff=NULL, parallel=parallel, 
+                     norm="DESeq", meanFilterCutoff=NULL, modelChoice=modelChoice,
+                     parallel=parallel, 
                      BPPARAM=BPPARAM, ...)
   }
   if(class(subset) == "DGELRT") {
@@ -65,7 +68,8 @@ coseq.matrix <- function(y, K, subset=NULL, model="Normal", transformation="none
     cat(paste(length(subset.index), "DE genes at p-adj <", alpha, "\n"))
     cat("****************************************\n")
     run <- coseq_run(y=y, K=K, subset=subset.index, model=model, transformation=transformation, 
-                     norm="TMM", meanFilterCutoff=NULL, parallel=parallel, 
+                     norm="TMM", meanFilterCutoff=NULL, modelChoice=modelChoice, 
+                     parallel=parallel, 
                      BPPARAM=BPPARAM, ...)
   }
   return(run)
@@ -77,13 +81,14 @@ coseq.matrix <- function(y, K, subset=NULL, model="Normal", transformation="none
 #' @method coseq data.frame
 #' @export
 coseq.data.frame <- function(y, K, subset=NULL, model="Normal", transformation="arcsin", 
-                             norm="TMM", meanFilterCutoff=NULL, parallel=FALSE, 
-                             BPPARAM=bpparam(), ...) {
+                             norm="TMM", meanFilterCutoff=NULL, modelChoice="ICL",
+                             parallel=FALSE, BPPARAM=bpparam(), ...) {
   arg.user <- list(...)
   
   if(is.null(subset) | is.numeric(subset)) {
     run <- coseq_run(y=y, K=K, subset=subset, model=model, transformation=transformation, 
-                     norm=norm, meanFilterCutoff=meanFilterCutoff, parallel=parallel, 
+                     norm=norm, meanFilterCutoff=meanFilterCutoff, modelChoice=modelChoice,
+                     parallel=parallel, 
                      BPPARAM=BPPARAM, ...)
   }
   if(class(subset) == "DESeqResults") {
@@ -94,7 +99,8 @@ coseq.data.frame <- function(y, K, subset=NULL, model="Normal", transformation="
     cat(paste(length(subset.index), "DE genes at p-adj <", res@metadata$alpha, "\n"))
     cat("****************************************\n")
     run <- coseq_run(y=y, K=K, subset=subset.index, model=model, transformation=transformation, 
-                     norm="DESeq", meanFilterCutoff=NULL, parallel=parallel, 
+                     norm="DESeq", meanFilterCutoff=NULL, modelChoice=modelChoice,
+                     parallel=parallel, 
                      BPPARAM=BPPARAM, ...)
   }
   if(class(subset) == "DGELRT") {
@@ -110,7 +116,8 @@ coseq.data.frame <- function(y, K, subset=NULL, model="Normal", transformation="
     cat(paste(length(subset.index), "DE genes at p-adj <", alpha, "\n"))
     cat("****************************************\n")
     run <- coseq_run(y=y, K=K, subset=subset.index, model=model, transformation=transformation, 
-                     norm="TMM", meanFilterCutoff=NULL, parallel=parallel, 
+                     norm="TMM", meanFilterCutoff=NULL, modelChoice=modelChoice,
+                     parallel=parallel, 
                      BPPARAM=BPPARAM, ...)
   }
   return(run)
@@ -126,8 +133,8 @@ coseq.data.frame <- function(y, K, subset=NULL, model="Normal", transformation="
 #' @importFrom DESeq2 results
 #' 
 coseq.DESeqDataSet <- function(y, K, subset=NULL, model="Normal", transformation="arcsin", 
-                               norm="TMM", meanFilterCutoff=NULL, parallel=FALSE, 
-                               BPPARAM=bpparam(), ...) {
+                               norm="TMM", meanFilterCutoff=NULL, modelChoice="ICL",
+                               parallel=FALSE, BPPARAM=bpparam(), ...) {
   
   ## Parse ellipsis function separately for DESeq and coseq
   dots <- dots_DESeq <- dots_coseq <- list(...)
@@ -139,7 +146,7 @@ coseq.DESeqDataSet <- function(y, K, subset=NULL, model="Normal", transformation
                                  "cutoff", "verbose", "digits", "fixed.lambda",
                                  "equal.proportions", "prev.labels", 
                                  "prev.probaPost", "interpretation", "EM.verbose",
-                                 "wrapper"))
+                                 "wrapper", "modelChoice"))
   dots_DESeq[DESeq_argindex] <- NULL
   dots_coseq[coseq_argindex] <- NULL
 

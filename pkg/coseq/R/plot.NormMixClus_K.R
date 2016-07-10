@@ -102,9 +102,14 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
   pl_data$labels <- factor(pl_data$labels)
   if(!is.null(profiles_order)) {
     if(length(profiles_order) == 1) {
-      if(profiles_order==TRUE) {
+      ## If actual normal mixture model
+      if(profiles_order==TRUE & is.null(x$lambda)) {
         meanmat <- NormMixParam(x, y_profiles)$mu
         ord <- hclust(dist(meanmat))$order
+        pl_data$labels <- factor(pl_data$labels, levels=ord)
+      }
+      if(profiles_order==TRUE & !is.null(x$lambda)) {
+        ord <- hclust(dist(t(x$lambda)))$order
         pl_data$labels <- factor(pl_data$labels, levels=ord)
       }
     } 
@@ -130,7 +135,7 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
                     colour=alpha("red", arg.user$alpha), 
                     aes_string(x="col_num", y="y_prof", group="ID")) +
           theme_bw() + ggtitle(paste("Cluster", K)) +
-          scale_y_continuous(name="y") + scale_x_continuous(name="Sample number")
+          scale_y_continuous(name="Expression profiles") + scale_x_continuous(name="Sample number")
         
         print(g1)
       }
@@ -145,7 +150,7 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
                       colour=alpha("red", arg.user$alpha), 
                       aes_string(x="col_num", y="y_prof", group="ID")) +
             theme_bw() +
-            scale_y_continuous(name="y") + scale_x_continuous(name="Sample number") +
+            scale_y_continuous(name="Expression profiles") + scale_x_continuous(name="Sample number") +
             facet_wrap(~labels)
           print(g2)
         }
@@ -161,7 +166,7 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
                         colour=alpha("red", arg.user$alpha), 
                         aes_string(x="col_num", y="y_prof", group="ID")) +
               theme_bw() + facet_wrap(~labels) +
-              scale_y_continuous(name="y") + scale_x_continuous(name="Sample number")
+              scale_y_continuous(name="Expression profiles") + scale_x_continuous(name="Sample number")
           })
           g2 <- marrangeGrob(g2_list, n_row, n_col)
           print(g2)
@@ -179,7 +184,7 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
                       colour=alpha("red", arg.user$alpha), 
                       aes_string(x="col_num", y="y_prof", group="ID")) +
             theme_bw() +
-            scale_y_continuous(name="y") + scale_x_continuous(name="Sample number") +
+            scale_y_continuous(name="Expression profiles") + scale_x_continuous(name="Sample number") +
             facet_wrap(~labels)
           print(g2bb)
         }
@@ -196,7 +201,7 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
                         colour=alpha("red", arg.user$alpha), 
                         aes_string(x="col_num", y="y_prof", group="ID")) +
               theme_bw() +
-              scale_y_continuous(name="y") + scale_x_continuous(name="Sample number") +
+              scale_y_continuous(name="Expression profiles") + scale_x_continuous(name="Sample number") +
               facet_wrap(~labels)
           })
           g2bb <- marrangeGrob(g2bb_list, n_row, n_col)
@@ -215,7 +220,7 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
                     colour=alpha("red", arg.user$alpha), 
                     aes_string(x="conds", y="y_prof", group="ID")) +
           theme_bw() + ggtitle(paste("Cluster", K)) +
-          scale_y_continuous(name="Average y") + 
+          scale_y_continuous(name="Average expression profiles") + 
           scale_x_discrete(name="Conditions")
         print(g1b)
       }
@@ -230,7 +235,7 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
                       colour=alpha("red", arg.user$alpha), 
                       aes_string(x="conds", y="y_prof", group="ID")) +
             theme_bw() +
-            scale_y_continuous(name="Average y") + scale_x_discrete(name="Conditions") +
+            scale_y_continuous(name="Average expression profiles") + scale_x_discrete(name="Conditions") +
             facet_wrap(~labels)
           print(g2b)
         }
@@ -246,7 +251,7 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
                         colour=alpha("red", arg.user$alpha), 
                         aes_string(x="conds", y="y_prof", group="ID")) +
               theme_bw() +
-              scale_y_continuous(name="Average y") + 
+              scale_y_continuous(name="Average expression profiles") + 
               scale_x_discrete(name="Conditions") +
               facet_wrap(~labels)
           })
@@ -266,7 +271,7 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
                       colour=alpha("red", arg.user$alpha), 
                       aes_string(x="conds", y="y_prof", group="ID")) +
             theme_bw() +
-            scale_y_continuous(name="Average y") + scale_x_discrete(name="Conditions") +
+            scale_y_continuous(name="Average expression profiles") + scale_x_discrete(name="Conditions") +
             facet_wrap(~labels)
           print(g2bb)
         }
@@ -283,7 +288,7 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
                         colour=alpha("red", arg.user$alpha), 
                         aes_string(x="conds", y="y_prof", group="ID")) +
               theme_bw() +
-              scale_y_continuous(name="Average y") + scale_x_discrete(name="Conditions") +
+              scale_y_continuous(name="Average expression profiles") + scale_x_discrete(name="Conditions") +
               facet_wrap(~labels)
           })
           g2bb <- marrangeGrob(g2bb_list, n_row, n_col)
@@ -314,7 +319,7 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
             stat_summary(fun.y=mean, geom="line", aes(group=1), colour="red")  + 
             stat_summary(fun.y=mean, geom="point", colour="red") +
             ggtitle(paste("Cluster", K)) +
-            scale_y_continuous(name="y") + scale_x_discrete(name="Sample number")
+            scale_y_continuous(name="Expression profiles") + scale_x_discrete(name="Sample number")
           print(g3)
         }
         if(length(conds)>0) {
@@ -324,7 +329,7 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
             stat_summary(fun.y=mean, geom="line", aes(group=1), colour="red")  + 
             stat_summary(fun.y=mean, geom="point", colour="red") +
             ggtitle(paste("Cluster", K)) +
-            scale_y_continuous(name="y") + scale_x_discrete(name="Sample number") +
+            scale_y_continuous(name="Expression profiles") + scale_x_discrete(name="Sample number") +
             scale_fill_discrete(name="Conditions")
           print(g4)
         }
@@ -338,7 +343,7 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
               geom_boxplot() +
               stat_summary(fun.y=mean, geom="line", aes(group=1), colour="red")  + 
               stat_summary(fun.y=mean, geom="point", colour="red") +
-              scale_y_continuous(name="y") + scale_x_discrete(name="Sample number") +
+              scale_y_continuous(name="Expression profiles") + scale_x_discrete(name="Sample number") +
               facet_wrap(~labels)
             print(g5)
           }
@@ -351,7 +356,7 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
                 geom_boxplot() +
                 stat_summary(fun.y=mean, geom="line", aes(group=1), colour="red")  + 
                 stat_summary(fun.y=mean, geom="point", colour="red") +
-                scale_y_continuous(name="y") + scale_x_discrete(name="Sample number") +
+                scale_y_continuous(name="Expression profiles") + scale_x_discrete(name="Sample number") +
                 facet_wrap(~labels)
             })
             g5 <- marrangeGrob(g5_list, n_row, n_col)
@@ -366,7 +371,7 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
               stat_summary(fun.y=mean, geom="line", aes(group=1), colour="red")  + 
               stat_summary(fun.y=mean, geom="point", colour="red") +
               facet_wrap(~labels) + 
-              scale_y_continuous(name="y") + scale_x_discrete(name="Sample number") +
+              scale_y_continuous(name="Expression profiles") + scale_x_discrete(name="Sample number") +
               scale_fill_discrete(name="Conditions")
             print(g6)
           }
@@ -380,7 +385,7 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
                 stat_summary(fun.y=mean, geom="line", aes(group=1), colour="red")  + 
                 stat_summary(fun.y=mean, geom="point", colour="red") +
                 facet_wrap(~labels) + 
-                scale_y_continuous(name="y") + scale_x_discrete(name="Sample number") +
+                scale_y_continuous(name="Expression profiles") + scale_x_discrete(name="Sample number") +
                 scale_fill_discrete(name="Conditions")
             })
             g6 <- marrangeGrob(g6_list, n_row, n_col)
@@ -397,7 +402,7 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
               geom_boxplot() +
               stat_summary(fun.y=mean, geom="line", aes(group=1), colour="red")  + 
               stat_summary(fun.y=mean, geom="point", colour="red") +
-              scale_y_continuous(name="y") + scale_x_discrete(name="Sample number") +
+              scale_y_continuous(name="Expression profiles") + scale_x_discrete(name="Sample number") +
               facet_wrap(~labels)
             print(g5b)
           }
@@ -410,7 +415,7 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
                 geom_boxplot() +
                 stat_summary(fun.y=mean, geom="line", aes(group=1), colour="red")  + 
                 stat_summary(fun.y=mean, geom="point", colour="red") +
-                scale_y_continuous(name="y") + scale_x_discrete(name="Sample number") +
+                scale_y_continuous(name="Expression profiles") + scale_x_discrete(name="Sample number") +
                 facet_wrap(~labels)
               })
             g5b <- marrangeGrob(g5b_list, n_row, n_col)
@@ -425,7 +430,7 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
               stat_summary(fun.y=mean, geom="line", aes(group=1), colour="red")  + 
               stat_summary(fun.y=mean, geom="point", colour="red") +
               facet_wrap(~labels) + 
-              scale_y_continuous(name="y") + scale_x_discrete(name="Sample number") +
+              scale_y_continuous(name="Expression profiles") + scale_x_discrete(name="Sample number") +
               scale_fill_discrete(name="Conditions")
             print(g6b)
           }
@@ -439,7 +444,7 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
                 stat_summary(fun.y=mean, geom="line", aes(group=1), colour="red")  + 
                 stat_summary(fun.y=mean, geom="point", colour="red") +
                 facet_wrap(~labels) + 
-                scale_y_continuous(name="y") + scale_x_discrete(name="Sample number") +
+                scale_y_continuous(name="Expression profiles") + scale_x_discrete(name="Sample number") +
                 scale_fill_discrete(name="Conditions")
             })
             g6b <- marrangeGrob(g6b_list, n_row, n_col)
@@ -457,7 +462,7 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
           stat_summary(fun.y=mean, geom="line", aes(group=1), colour="red")  + 
           stat_summary(fun.y=mean, geom="point", colour="red") +
           ggtitle(paste("Cluster", K)) +
-          scale_y_continuous(name="Average y") + scale_x_discrete(name="Conditions") +
+          scale_y_continuous(name="Average expression profiles") + scale_x_discrete(name="Conditions") +
           scale_fill_discrete(name="Conditions")
         print(g7)
       }
@@ -470,7 +475,7 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
             stat_summary(fun.y=mean, geom="line", aes(group=1), colour="red")  + 
             stat_summary(fun.y=mean, geom="point", colour="red") +
             facet_wrap(~labels) + 
-            scale_y_continuous(name="Average y") + scale_x_discrete(name="Conditions") +
+            scale_y_continuous(name="Average expression profiles") + scale_x_discrete(name="Conditions") +
             scale_fill_discrete(name="Conditions")
           print(g8)
         }
@@ -484,7 +489,7 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
               stat_summary(fun.y=mean, geom="line", aes(group=1), colour="red")  + 
               stat_summary(fun.y=mean, geom="point", colour="red") +
               facet_wrap(~labels) + 
-              scale_y_continuous(name="Average y") + scale_x_discrete(name="Conditions") +
+              scale_y_continuous(name="Average expression profiles") + scale_x_discrete(name="Conditions") +
               scale_fill_discrete(name="Conditions")
           })
           g8 <- marrangeGrob(g8_list, n_row, n_col)
@@ -500,7 +505,7 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
             stat_summary(fun.y=mean, geom="line", aes(group=1), colour="red")  + 
             stat_summary(fun.y=mean, geom="point", colour="red") +
             facet_wrap(~labels) + 
-            scale_y_continuous(name="Average y") + scale_x_discrete(name="Conditions") +
+            scale_y_continuous(name="Average expression profiles") + scale_x_discrete(name="Conditions") +
             scale_fill_discrete(name="Conditions")
           print(g9)
         }
@@ -514,7 +519,7 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
               stat_summary(fun.y=mean, geom="line", aes(group=1), colour="red")  + 
               stat_summary(fun.y=mean, geom="point", colour="red") +
               facet_wrap(~labels) + 
-              scale_y_continuous(name="Average y") + scale_x_discrete(name="Conditions") +
+              scale_y_continuous(name="Average expression profiles") + scale_x_discrete(name="Conditions") +
               scale_fill_discrete(name="Conditions")
           })
           g9 <- marrangeGrob(g9_list, n_row, n_col)

@@ -23,7 +23,9 @@
 #' maximum conditional probabilities per cluster), \code{"probapost_barplots"} 
 #' (number of observations with a maximum conditional probability greater than 
 #' \code{threshold} per cluster), \code{"probapost_histogram"} (histogram of maximum
-#' conditional probabilities over all clusters) ...
+#' conditional probabilities over all clusters), \code{"lambda_barplots"} (barplots of
+#' estimated proportions of counts per condition in each cluster for the Poisson mixture
+#' model)
 #' @param order If \code{TRUE}, order clusters in \code{probapost_boxplot} by median and
 #' \code{probapost_barplot} by number of observations with maximum conditional probability
 #' greater than \code{threshold}
@@ -49,11 +51,12 @@ plot.coseq <- function(x, y_profiles=NULL, K=NULL, threshold=0.8, conds=NULL,
                              average_over_conds=FALSE, 
                              graphs=c("logLike", "ICL", 
                                       "profiles", "boxplots", "probapost_boxplots",
-                                      "probapost_barplots", "probapost_histogram"), 
+                                      "probapost_barplots", "probapost_histogram",
+                                      "lambda_barplots"), 
                              order=FALSE, profiles_order=NULL, n_row=NULL, n_col=NULL, ...) {
   
-  if(is.null(y_profiles) == TRUE) y_profiles <- x$tcounts
-  
+  if(is.null(y_profiles) == TRUE) y_profiles <- x$y_profiles
+
   plot(x$results, y_profiles=y_profiles, K=K, threshold=threshold, conds=conds,
        average_over_conds=average_over_conds, graphs=graphs, 
        order=order, profiles_order=profiles_order, n_row=n_row, n_col=n_col, ...)

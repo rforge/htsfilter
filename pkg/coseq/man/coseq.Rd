@@ -8,20 +8,20 @@
 \title{Co-expression or co-abudance analysis of high-throughput sequencing data}
 \usage{
 coseq(y, K, subset = NULL, model = "Normal", transformation = "none",
-  norm = "TMM", meanFilterCutoff = NULL, parallel = FALSE,
-  BPPARAM = bpparam(), ...)
+  norm = "TMM", meanFilterCutoff = NULL, modelChoice = "ICL",
+  parallel = FALSE, BPPARAM = bpparam(), ...)
 
 \method{coseq}{matrix}(y, K, subset = NULL, model = "Normal",
   transformation = "none", norm = "TMM", meanFilterCutoff = NULL,
-  parallel = FALSE, BPPARAM = bpparam(), ...)
+  modelChoice = "ICL", parallel = FALSE, BPPARAM = bpparam(), ...)
 
 \method{coseq}{data.frame}(y, K, subset = NULL, model = "Normal",
   transformation = "arcsin", norm = "TMM", meanFilterCutoff = NULL,
-  parallel = FALSE, BPPARAM = bpparam(), ...)
+  modelChoice = "ICL", parallel = FALSE, BPPARAM = bpparam(), ...)
 
 \method{coseq}{DESeqDataSet}(y, K, subset = NULL, model = "Normal",
   transformation = "arcsin", norm = "TMM", meanFilterCutoff = NULL,
-  parallel = FALSE, BPPARAM = bpparam(), ...)
+  modelChoice = "ICL", parallel = FALSE, BPPARAM = bpparam(), ...)
 }
 \arguments{
 \item{y}{(\emph{n} x \emph{q}) matrix of observed counts for \emph{n}
@@ -52,6 +52,13 @@ for each sample.}
 
 \item{meanFilterCutoff}{Value used to filter low mean normalized counts if desired (by default,
 set to a value of 50)}
+
+\item{modelChoice}{Criterion used to select the best model. For Gaussian mixture models, 
+\dQuote{\code{ICL}} (integrated completed likelihood criterion) is currently supported. For Poisson
+mixture models, \dQuote{\code{ICL}}, \dQuote{\code{BIC}} (Bayesian information criterion), and a
+non-asymptotic criterion calibrated via the slope heuristics  using either the \dQuote{\code{DDSE}}
+(data-driven slope estimation) or \dQuote{\code{Djump}} (dimension jump) approaches may be used.
+See the \code{HTSCluster} package documentation for more details about the slope heuristics approaches.}
 
 \item{parallel}{If \code{FALSE}, no parallelization. If \code{TRUE}, parallel 
 execution using BiocParallel (see next argument \code{BPPARAM}). A note on running 

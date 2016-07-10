@@ -6,7 +6,7 @@
 \usage{
 coseq_run(y, K, conds = NULL, norm = "TMM", model = "Normal",
   transformation = "arcsin", subset = NULL, meanFilterCutoff = 50,
-  parallel = FALSE, BPPARAM = bpparam(), ...)
+  modelChoice = "ICL", parallel = FALSE, BPPARAM = bpparam(), ...)
 }
 \arguments{
 \item{y}{(\emph{n} x \emph{q}) matrix of observed counts for \emph{n}
@@ -41,6 +41,13 @@ DESeqResults (from the \code{results} function in \code{DESeq2}).}
 \item{meanFilterCutoff}{Value used to filter low mean normalized counts if desired (by default,
 set to a value of 50)}
 
+\item{modelChoice}{Criterion used to select the best model. For Gaussian mixture models, 
+\dQuote{\code{ICL}} (integrated completed likelihood criterion) is currently supported. For Poisson
+mixture models, \dQuote{\code{ICL}}, \dQuote{\code{BIC}} (Bayesian information criterion), and a
+non-asymptotic criterion calibrated via the slope heuristics  using either the \dQuote{\code{DDSE}}
+(data-driven slope estimation) or \dQuote{\code{Djump}} (dimension jump) approaches may be used.
+See the \code{HTSCluster} package documentation for more details about the slope heuristics approaches.}
+
 \item{parallel}{If \code{FALSE}, no parallelization. If \code{TRUE}, parallel 
 execution using BiocParallel (see next argument \code{BPPARAM}). A note on running 
 in parallel using BiocParallel: it may be advantageous to remove large, unneeded objects 
@@ -56,8 +63,7 @@ will be used.}
 \value{
 An S3 object of class \code{coseq} containing the following:
 \item{results }{Object of class \code{NormMixClus} or 
-\code{PoisMixClusWrapper}, the latter being the class defined by the 
-HTSCluster package}
+\code{PoisMixClus}}
 \item{model }{Model used, either \code{Normal} or \code{Poisson}}
 \item{transformation }{Transformation used on the data}
 \item{tcounts }{Transformed data using to estimate model}

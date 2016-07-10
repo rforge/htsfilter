@@ -27,6 +27,12 @@
 #' DESeqResults (from the \code{results} function in \code{DESeq2}).
 #' @param meanFilterCutoff Value used to filter low mean normalized counts if desired (by default,
 #' set to a value of 50)
+#' @param modelChoice Criterion used to select the best model. For Gaussian mixture models, 
+#' \dQuote{\code{ICL}} (integrated completed likelihood criterion) is currently supported. For Poisson
+#' mixture models, \dQuote{\code{ICL}}, \dQuote{\code{BIC}} (Bayesian information criterion), and a
+#' non-asymptotic criterion calibrated via the slope heuristics  using either the \dQuote{\code{DDSE}}
+#' (data-driven slope estimation) or \dQuote{\code{Djump}} (dimension jump) approaches may be used.
+#' See the \code{HTSCluster} package documentation for more details about the slope heuristics approaches.
 #' @param parallel If \code{FALSE}, no parallelization. If \code{TRUE}, parallel 
 #' execution using BiocParallel (see next argument \code{BPPARAM}). A note on running 
 #' in parallel using BiocParallel: it may be advantageous to remove large, unneeded objects 
@@ -40,8 +46,7 @@
 #' @return
 #' An S3 object of class \code{coseq} containing the following:
 #' \item{results }{Object of class \code{NormMixClus} or 
-#' \code{PoisMixClusWrapper}, the latter being the class defined by the 
-#' HTSCluster package}
+#' \code{PoisMixClus}}
 #' \item{model }{Model used, either \code{Normal} or \code{Poisson}}
 #' \item{transformation }{Transformation used on the data}
 #' \item{tcounts }{Transformed data using to estimate model}
@@ -59,7 +64,7 @@
 #'
 #' 
 coseq_run <- function(y, K, conds=NULL, norm="TMM", model="Normal", transformation="arcsin", 
-                       subset=NULL, meanFilterCutoff=50,
+                       subset=NULL, meanFilterCutoff=50, modelChoice="ICL",
                        parallel=FALSE, BPPARAM=bpparam(), ...) {
   
   subset.index <- subset
@@ -141,7 +146,8 @@ coseq_run <- function(y, K, conds=NULL, norm="TMM", model="Normal", transformati
                                 meanFilterCutoff=meanFilterCutoff, verbose=FALSE)
     
     if(parallel == FALSE) {
-      run <- PoisMixClusWrapper(y=tcounts$tcounts, gmin=min(K), gmax=max(K), conds=conds,
+      run <- suppressWarnings(PoisMixClusWrapper(y=tcounts$tcounts, gmin=min(K), 
+                                                 gmax=max(K), conds=conds,
                                 norm=tcounts$ellnorm / sum(tcounts$ellnorm), 
                                 gmin.init.type=arg.user$Kmin.init, 
                                 split.init=arg.user$split.init, subset.index=subset.index, 
@@ -151,7 +157,7 @@ coseq_run <- function(y, K, conds=NULL, norm="TMM", model="Normal", transformati
                                 fixed.lambda=arg.user$fixed.lambda, 
                                 equal.proportions=arg.user$equal.proportions,
                                 verbose=arg.user$verbose, EM.verbose=arg.user$EM.verbose, 
-                                interpretation=arg.user$interpretation)
+                                interpretation=arg.user$interpretation))
       names(run$all.results) <- paste("K=", K, sep="")
       run$nbCluster.all <- K
     }
@@ -240,10 +246,28 @@ coseq_run <- function(y, K, conds=NULL, norm="TMM", model="Normal", transformati
                   all.results = all.results,
                   DDSE.results = DDSE.results,
                   Djump.results = Djump.results,
-                  ICL.results = select.results,
-                  BIC.results = select.results2)
+                  BIC.results = select.results2,
+                  ICL.results = select.results)
       class(run) <- "HTSClusterWrapper"
     }
+    
+    if(modelChoice == "BIC") final.results <- run$BIC.results
+    if(modelChoice == "ICL") final.results <- run$ICL.results
+    if(modelChoice == "DDSE") final.results <- run$DDSE.results
+    if(modelChoice == "Djump") final.results <- run$Djump.results
+    
+    final.results$probaPost <- round(final.results$probaPost, arg.user$digits)
+    for(jj in 1:length(run$all.results)) {
+      run$all.results[[jj]]$probaPost <- round(run$all.results[[jj]]$probaPost,
+                                               arg.user$digits)
+    }
+    
+    final.run <- list(nbCluster.all=run$nbCluster.all, logLike.all=run$logLike.all,
+                      ICL.all=run$ICL.all, selected.results=final.results, 
+                      all.results=run$all.results,
+                      capushe=run$capushe)
+    run <- final.run
+    class(run) <- "PoisMixClus"
   }
   
   
@@ -277,7 +301,7 @@ coseq_run <- function(y, K, conds=NULL, norm="TMM", model="Normal", transformati
   ####################################
   ## RETURN RESULTS
   ####################################
-  if(!is.null(subset.index)) {
+  if(!is.null(subset)) {
     tcounts$tcounts <- tcounts$tcounts[subset.index,]
     y_profiles <- y_profiles[subset.index,]
   }

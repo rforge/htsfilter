@@ -28,7 +28,7 @@
 #' @export
 
 summary.PoisMixClus <-
-  function (object, y_profiles, digits=3, ...) 
+  function (object, digits=3, ...) 
   {
     x <- object
     if (class(x) != "PoisMixClus") {

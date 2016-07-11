@@ -4,7 +4,7 @@
 \alias{summary.PoisMixClus}
 \title{Summarize results from clustering using a Poisson mixture model}
 \usage{
-\method{summary}{PoisMixClus}(object, y_profiles, digits = 3, ...)
+\method{summary}{PoisMixClus}(object, digits = 3, ...)
 }
 \arguments{
 \item{object}{An object of class \code{"PoisMixClus"}}

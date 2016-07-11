@@ -1,20 +1,19 @@
-#' Summarize results from clustering using a Normal mixture model
+#' Summarize results from clustering using a Poisson mixture model
 #' 
-#' A function to summarize the clustering results obtained from a Normal
-#' mixture model estimated using \code{NormMixClus}.
+#' A function to summarize the clustering results obtained from a Poisson
+#' mixture model estimated using \code{coseq} (which indirectly calls
+#' \code{HTSCluster}.
 #' 
-#' The summary function for an object of class \code{"NormMixClus"}
-#' provides the number of clusters selected for the ICL
-#' model selection approach.
+#' The summary function for an object of class \code{"PoisMixClus"}
+#' provides the number of clusters selected according to the user-defined
+#' model selection criterion.
 #' 
-#' @param object An object of class \code{"NormMixClus"} 
-#' @param y_profiles y (\emph{n} x \emph{q}) matrix of observed profiles for \emph{n}
-#' observations and \emph{q} variables
+#' @param object An object of class \code{"PoisMixClus"} 
 #' @param digits Integer indicating the number of decimal places to be used
 #' for mixture model parameters
 #' @param ... Additional arguments
 #' @author Andrea Rau
-#' @seealso \code{\link{NormMixClus}}, \code{\link{NormMixClus_K}}
+#' @seealso \code{\link{coseq}}
 #' @references Rau, A., Maugis-Rabusseau, C., Martin-Magniette, M.-L., Celeux,
 #' G. (2015) Co-expression analysis of high-throughput transcriptome sequencing
 #' data with Poisson mixture models. Bioinformatics, doi:
@@ -24,53 +23,41 @@
 #' Clustering high-throughput sequencing data with Poisson mixture models.
 #' Inria Research Report 7786. Available at
 #' \url{http://hal.inria.fr/inria-00638082}.
+#' 
 #' @keywords methods
-#' @example /inst/examples/coseq-package.R
 #' @export
 
-summary.NormMixClus <-
+summary.PoisMixClus <-
   function (object, y_profiles, digits=3, ...) 
   {
     x <- object
-    if (class(x) != "NormMixClus") {
+    if (class(x) != "PoisMixClus") {
       stop(paste(sQuote("object"), sep = ""), " must be of class ", 
-           paste(dQuote("NormMixClus"), sep = ""), sep = "")
+           paste(dQuote("PoisMixClus"), sep = ""), sep = "")
     }
     cat("*************************************************\n")
     clustNum <-  paste(x$nbCluster.all, collapse=",")
-    clustErr <- paste(x$nbCluster.error, collapse=",")
     
-    
-    # clustErr <- paste(rep(paste(x$nbCluster.error, collapse=","),10), collapse=",")
-    # strwrap(clustErr, width=5, exdent=2, simplify=FALSE)
-                        
-                        
-                        
-    clustErr <- ifelse(clustErr == "", "---", clustErr)
     cat("Clusters fit: ", clustNum, "\n", sep = "")
-    cat("Clusters with errors: ", clustErr, "\n", sep= "")
-    cat("Selected number of clusters via ICL: ", x$ICL.results$nbCluster, "\n", sep = "")
-    cat("ICL of selected model: ", x$ICL.results$ICL, "\n", sep = "")
+    cat("Selected number of clusters: ", 
+        ncol(x$selected.results$probaPost), "\n", sep = "")
+    cat("Model selection criterion: ", 
+        x$selected.results$model.selection, "\n", sep = "")
     cat("*************************************************\n")
     
-    x <- object$ICL.results
+    x <- object$selected.results
     
     probaPost <- x$probaPost
     labels <- apply(probaPost, 1, which.max)
-    
-
     
     map <- apply(probaPost, 1, max)
     length(which(map > 0.9))/length(map)
     
     tab <- table(labels)
     names(tab) <- paste("Cluster", names(tab))
-    param <- NormMixParam(x=x, y_profiles=y_profiles, digits=digits) 
-    mu <- param$mu
-    pi <- param$pi
-    rownames(mu) <- names(pi) <- names(tab)
-    colnames(mu) <- colnames(y_profiles)
-    g <- x$nbCluster
+    lambda <- x$lambda
+    pi <- x$pi
+    g <- ncol(lambda)
     
     cat("Cluster sizes:\n"); print(tab); cat("\n")
     cat("Number of observations with MAP > 0.90 (% of total):\n")
@@ -100,11 +87,8 @@ summary.NormMixClus <-
     }
     print(tab2, quote = FALSE); cat("\n")
     
-    
-    
-    cat("Mu:\n"); print(round(mu,digits=digits)); cat("\n")
-    cat("Pi:\n"); print(round(pi,digits=digits)); cat("\n")
-    
+    cat("lamba:\n"); print(round(lambda,digits=digits)); cat("\n")
+    cat("pi:\n"); print(round(pi,digits=digits)); cat("\n")
     
   }
 

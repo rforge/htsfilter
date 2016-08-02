@@ -34,7 +34,7 @@
 #' @importFrom stats median
 
 
-transform_RNAseq <- function(y, norm="TMM", transformation="voom", 
+transform_RNAseq <- function(y, norm="TMM", transformation="arcsin", 
                              geneLength=NA, meanFilterCutoff=NULL, verbose=TRUE) {
 
   ##################################

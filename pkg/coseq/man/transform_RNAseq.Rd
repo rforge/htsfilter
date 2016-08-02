@@ -4,7 +4,7 @@
 \alias{transform_RNAseq}
 \title{Transform RNA-seq data using common transformations}
 \usage{
-transform_RNAseq(y, norm = "TMM", transformation = "voom",
+transform_RNAseq(y, norm = "TMM", transformation = "arcsin",
   geneLength = NA, meanFilterCutoff = NULL, verbose = TRUE)
 }
 \arguments{

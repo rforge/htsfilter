@@ -13,7 +13,7 @@ criterion.
 }
 \details{
 \tabular{ll}{ Package: \tab coseq\cr Type: \tab Package\cr Version:
-\tab 0.1.11\cr Date: \tab 2016-08-01\cr License: \tab GPL (>=3)\cr LazyLoad:
+\tab 0.1.12\cr Date: \tab 2016-09-23\cr License: \tab GPL (>=3)\cr LazyLoad:
 \tab yes\cr }
 }
 \examples{
@@ -23,16 +23,30 @@ countmat <- matrix(runif(300*4, min=0, max=500), nrow=300, ncol=4)
 countmat <- countmat[which(rowSums(countmat) > 0),]
 conds <- rep(c("A","B","C","D"), each=2)
 
-## Run the Normal mixture model for K = 2,3
-run <- coseq(y=countmat, K=2:3, iter=5, transformation="arcsin")
+## Run the Normal mixture model for K = 2,3,4
+run_arcsin <- coseq(y=countmat, K=2:4, iter=5, transformation="arcsin")
+
+## Plot and summarize results
+plot(run_arcsin)
+summary(run_arcsin)
+
+## Compare ARI values for all models (no plot generated here)
+ARI <- compareARI(run_arcsin, plot=FALSE)
+
+## Compare ICL values for models with arcsin and logit transformations
+run_logit <- coseq(y=countmat, K=2:4, iter=5, transformation="logit")
+compareICL(list(run_arcsin, run_logit))
 
 }
 \author{
 Andrea Rau, Cathy Maugis-Rabusseau
 
-Maintainer: Andrea Rau <\url{andrea.rau@jouy.inra.fr}>
+Maintainer: Andrea Rau <\url{andrea.rau@inra.fr}>
 }
 \references{
+Rau, A. and Maugis-Rabusseau, C. (2016) Transformation and model choice for
+co-expression analayis of RNA-seq data. bioRxiv, doi: http://dx.doi.org/10.1101/065607.
+
 Rau, A., Maugis-Rabusseau, C., Martin-Magniette, M.-L., Celeux,
 G. (2015) Co-expression analysis of high-throughput transcriptome sequencing
 data with Poisson mixture models. Bioinformatics, doi:

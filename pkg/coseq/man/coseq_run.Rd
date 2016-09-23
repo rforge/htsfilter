@@ -74,6 +74,20 @@ An S3 object of class \code{coseq} containing the following:
 Function for primary code to perform co-expression analysis, with or without data transformation,
 using mixture models. The output of \code{coseq_run} is an S3 object of class \code{coseq}.
 }
+\examples{
+## Simulate toy data, n = 300 observations
+set.seed(12345)
+countmat <- matrix(runif(300*4, min=0, max=500), nrow=300, ncol=4)
+countmat <- countmat[which(rowSums(countmat) > 0),]
+conds <- rep(c("A","B","C","D"), each=2)
+
+## Run the Normal mixture model for K = 2,3,4
+## The following are equivalent:
+run <- coseq_run(y=countmat, K=2:4, iter=5, transformation="arcsin")
+run <- coseq(y=countmat, K=2:4, iter=5, transformation="arcsin")
+
+
+}
 \author{
 Andrea Rau
 }

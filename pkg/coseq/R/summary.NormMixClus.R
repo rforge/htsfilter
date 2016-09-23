@@ -15,17 +15,12 @@
 #' @param ... Additional arguments
 #' @author Andrea Rau
 #' @seealso \code{\link{NormMixClus}}, \code{\link{NormMixClus_K}}
-#' @references Rau, A., Maugis-Rabusseau, C., Martin-Magniette, M.-L., Celeux,
-#' G. (2015) Co-expression analysis of high-throughput transcriptome sequencing
-#' data with Poisson mixture models. Bioinformatics, doi:
-#' 10.1093/bioinformatics/btu845.
+#' @references 
 #' 
-#' Rau, A., Celeux, G., Martin-Magniette, M.-L., Maugis-Rabusseau, C. (2011).
-#' Clustering high-throughput sequencing data with Poisson mixture models.
-#' Inria Research Report 7786. Available at
-#' \url{http://hal.inria.fr/inria-00638082}.
+#' Rau, A. and Maugis-Rabusseau, C. (2016) Transformation and model choice for
+#' co-expression analayis of RNA-seq data. bioRxiv, doi: http://dx.doi.org/10.1101/065607.
 #' @keywords methods
-#' @example /inst/examples/coseq-package.R
+#' @example /inst/examples/NormMixClus.R
 #' @export
 
 summary.NormMixClus <-

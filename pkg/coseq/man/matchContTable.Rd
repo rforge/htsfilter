@@ -18,4 +18,11 @@ Permuted contingency table
 Permute the columns of a contingency table comparing two clusterings
 to load the diagonal as much as possible.
 }
+\examples{
+## Generate arbitrary labels from two separate clustering results
+labels_1 <- sample(1:10, 1000, replace=TRUE)  ## K=10 clusters
+labels_2 <- sample(1:8, 1000, replace=TRUE)   ## K=8 clusters
+matchContTable(labels_1, labels_2)
+
+}
 

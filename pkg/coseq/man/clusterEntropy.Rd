@@ -21,7 +21,7 @@ to cluster \emph{k} and \eqn{C_k} corresponds to the set of indices of genes
 attributed to cluster \emph{k}.
 }
 \examples{
-## Generate artificial matrix of conditional probabilities
+## Generate artificial matrix of conditional probabilities for K=5 clusters
 tmp <- matrix(runif(100*5), nrow=100, ncol=5)
 probaPost <- tmp / rowSums(tmp)
 clusterEntropy(probaPost)

@@ -40,6 +40,8 @@
 #' @importFrom Rmixmod mixmodGaussianModel
 #' @importFrom Rmixmod mixmodStrategy
 #' @importFrom Rmixmod mixmodCluster
+#' @example inst/examples/NormMixClus.R
+#' 
 #' @export
 
 NormMixClus_K <- function(y_profiles, K, alg.type="EM", init.runs=50, 

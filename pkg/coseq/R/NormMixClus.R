@@ -33,6 +33,7 @@
 #' 
 #' @author Andrea Rau, Cathy Maugis-Rabusseau
 #' 
+#' @example inst/examples/NormMixClus.R
 #' @importFrom BiocParallel bplapply
 #' @importFrom BiocParallel bpparam
 #' @export

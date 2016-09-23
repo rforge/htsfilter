@@ -61,6 +61,17 @@
 #' @importFrom stats na.omit
 #' @importFrom capushe capushe
 #'
+#' @examples 
+#' ## Simulate toy data, n = 300 observations
+#' set.seed(12345)
+#' countmat <- matrix(runif(300*4, min=0, max=500), nrow=300, ncol=4)
+#' countmat <- countmat[which(rowSums(countmat) > 0),]
+#' conds <- rep(c("A","B","C","D"), each=2)
+#' 
+#' ## Run the Normal mixture model for K = 2,3,4
+#' ## The following are equivalent:
+#' run <- coseq_run(y=countmat, K=2:4, iter=5, transformation="arcsin")
+#' run <- coseq(y=countmat, K=2:4, iter=5, transformation="arcsin")
 #'
 #' 
 coseq_run <- function(y, K, conds=NULL, norm="TMM", model="Normal", transformation="arcsin", 

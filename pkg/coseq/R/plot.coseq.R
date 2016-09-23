@@ -44,6 +44,7 @@
 #' @param ...  Additional optional plotting arguments
 #' 
 #' @author Andrea Rau, Cathy Maugis-Rabusseau
+#' @example inst/examples/coseq-package.R
 #'
 #' @export
 #' 

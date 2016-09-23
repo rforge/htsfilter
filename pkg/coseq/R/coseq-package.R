@@ -7,7 +7,7 @@
 #' criterion. 
 #' 
 #' \tabular{ll}{ Package: \tab coseq\cr Type: \tab Package\cr Version:
-#' \tab 0.1.11\cr Date: \tab 2016-08-01\cr License: \tab GPL (>=3)\cr LazyLoad:
+#' \tab 0.1.12\cr Date: \tab 2016-09-23\cr License: \tab GPL (>=3)\cr LazyLoad:
 #' \tab yes\cr }
 #' 
 #' @name coseq-package
@@ -15,8 +15,12 @@
 #' @docType package
 #' @author Andrea Rau, Cathy Maugis-Rabusseau
 #' 
-#' Maintainer: Andrea Rau <\url{andrea.rau@@jouy.inra.fr}>
-#' @references Rau, A., Maugis-Rabusseau, C., Martin-Magniette, M.-L., Celeux,
+#' Maintainer: Andrea Rau <\url{andrea.rau@@inra.fr}>
+#' @references 
+#' Rau, A. and Maugis-Rabusseau, C. (2016) Transformation and model choice for
+#' co-expression analayis of RNA-seq data. bioRxiv, doi: http://dx.doi.org/10.1101/065607.
+#' 
+#' Rau, A., Maugis-Rabusseau, C., Martin-Magniette, M.-L., Celeux,
 #' G. (2015) Co-expression analysis of high-throughput transcriptome sequencing
 #' data with Poisson mixture models. Bioinformatics, doi:
 #' 10.1093/bioinformatics/btu845.

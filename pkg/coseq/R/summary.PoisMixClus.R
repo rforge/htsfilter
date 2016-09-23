@@ -25,6 +25,7 @@
 #' \url{http://hal.inria.fr/inria-00638082}.
 #' 
 #' @keywords methods
+#' @example inst/examples/PoisMixClus_ex.R
 #' @export
 
 summary.PoisMixClus <-

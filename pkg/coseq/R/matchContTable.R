@@ -9,6 +9,12 @@
 #' @return Permuted contingency table 
 #' @export
 #' 
+#' @examples 
+#' ## Generate arbitrary labels from two separate clustering results
+#' labels_1 <- sample(1:10, 1000, replace=TRUE)  ## K=10 clusters
+#' labels_2 <- sample(1:8, 1000, replace=TRUE)   ## K=8 clusters
+#' matchContTable(labels_1, labels_2)
+#' 
 #' @importFrom e1071 matchClasses
 matchContTable <- function(table_1, table_2){
   tab <- table(table_1, table_2)

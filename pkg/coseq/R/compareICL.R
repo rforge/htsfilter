@@ -13,6 +13,7 @@
 #' @author Andrea Rau, Cathy Maugis-Rabusseau
 #' 
 #' @export
+#' @example inst/examples/coseq-package.R
 #'
 compareICL <- function(x) {
   

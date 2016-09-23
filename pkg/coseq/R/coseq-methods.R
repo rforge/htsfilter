@@ -20,6 +20,8 @@
 #' 
 #' @author Andrea Rau
 #' @export
+#' @example inst/examples/coseq-package.R
+#' 
 coseq <- function(y, K, subset=NULL, model="Normal", transformation="none", norm="TMM", 
                   meanFilterCutoff=NULL, modelChoice="ICL",
                   parallel=FALSE, BPPARAM=bpparam(), ...) {

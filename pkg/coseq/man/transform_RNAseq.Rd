@@ -39,4 +39,16 @@ the gene length (bp) for RPKM calculation}
 \description{
 Application of common transformations for RNA-seq data prior to fitting a normal mixture model
 }
+\examples{
+set.seed(12345)
+countmat <- matrix(runif(300*4, min=0, max=500), nrow=300, ncol=4)
+countmat <- countmat[which(rowSums(countmat) > 0),]
+conds <- rep(c("A","B","C","D"), each=2)
+
+## Arcsin transformation, TMM normalization
+arcsin <- transform_RNAseq(countmat, norm="TMM", transformation="arcsin")$tcounts
+## Logit transformation, TMM normalization
+logit <- transform_RNAseq(countmat, norm="TMM", transformation="logit")$tcounts
+
+}
 

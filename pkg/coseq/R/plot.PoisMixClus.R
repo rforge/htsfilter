@@ -39,6 +39,7 @@
 #' @author Andrea Rau
 #'
 #' @export
+#' @example inst/examples/PoisMixClus_ex.R
 #' @importFrom graphics plot points boxplot axis barplot legend par mtext text layout abline
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom stats as.dendrogram

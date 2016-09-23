@@ -32,6 +32,7 @@
 #' 
 #' @author Andrea Rau, Cathy Maugis-Rabusseau
 #' 
+#' @example inst/examples/NormMixClus.R
 #' @export
 #' @importFrom stats cov2cor
 #' @importFrom grDevices n2mfrow

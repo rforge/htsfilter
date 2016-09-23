@@ -1,13 +1,11 @@
 citHeader("To cite the R package 'coseq' in publications use:")  
 
 citEntry(entry   = "article",
-         title   = "Co-expression analysis of high-throughput transcriptome sequencing data with Poisson mixture models",
-		 journal = "Bioinformatics",
-         number  = "doi: 10.1093/bioinformatics/btu845",
-         year    = "2015",
+         title   = "Transformation and model choice for co-expression analysis of RNA-seq data",
+		 journal = "bioRxiv",
+         number  = "doi: http://dx.doi.org/10.1101/065607 ",
+         year    = "2016",
          author  = personList(
            person(given="Andrea", family="Rau"),
-		   person(given="Cathy", family="Maugis-Rabusseau"),
-		   person(given="Marie-Laure", family="Martin-Magniette"),
-           person(given="Gilles", family="Celeux")),
-         textVersion = "A. Rau, C. Maugis-Rabusseau, M.-L. Martin-Magniette, G. Celeux (2015). Co-expression analysis of high-throughput transcriptome sequencing data with Poisson mixture models. Bioinformatics, doi: 10.1093/bioinformatics/btu845.")
+		   person(given="Cathy", family="Maugis-Rabusseau")),
+         textVersion = "Rau, A. and Maugis-Rabusseau, C. (2016) Transformation and model choice for co-expression analayis of RNA-seq data. bioRxiv, doi: http://dx.doi.org/10.1101/065607.")

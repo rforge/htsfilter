@@ -30,6 +30,8 @@
 #' @export
 #' @importFrom HTSCluster highDimensionARI
 #' @importFrom corrplot corrplot
+#' 
+#' @example inst/examples/coseq-package.R
 #'
 compareARI <- function(x, K=NULL, parallel=FALSE, BPPARAM=bpparam(), plot=TRUE, ...) {
   

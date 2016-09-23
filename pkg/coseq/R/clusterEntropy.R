@@ -14,7 +14,7 @@
 #' @author Cathy Maugis-Rabusseau
 #' 
 #' @examples
-#' ## Generate artificial matrix of conditional probabilities
+#' ## Generate artificial matrix of conditional probabilities for K=5 clusters
 #' tmp <- matrix(runif(100*5), nrow=100, ncol=5)
 #' probaPost <- tmp / rowSums(tmp)
 #' clusterEntropy(probaPost)

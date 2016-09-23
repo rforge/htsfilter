@@ -35,6 +35,8 @@
 #' Note that if \code{n_row} x \code{n_col} is less than the total number of clusters plotted,
 #' plots will be divided over multiple pages.
 #' @param ...  Additional optional plotting arguments
+#' 
+#' @example inst/examples/coseq-package.R
 #'
 #' @importFrom graphics matplot boxplot
 #' @importFrom grDevices heat.colors
@@ -68,17 +70,19 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
   arg.user <- list(...)
   if(is.null(arg.user$alpha)) arg.user$alpha<-0.3;
   
+  rn <- rownames(y_profiles)
+  cn <- colnames(y_profiles)
+  if(is.null(rn)) rn <- 1:nrow(y_profiles)
+  if(is.null(cn)) cn <- 1:ncol(y_profiles)
   
   #####################################################
   ## SET UP PLOTTING DATA.FRAME
   #####################################################
   if(average_over_conds == FALSE) {
-    pl_data <- data.frame(ID=ifelse(rep(length(rownames(y_profiles))==0, nrow(y_profiles)), 
-                                    rep(1:nrow(y_profiles), times=ncol(y_profiles)),
-                                    rownames(y_profiles)),
+    pl_data <- data.frame(ID=rep(rn, times=ncol(y_profiles)),
                           y_prof=as.vector(y_profiles), 
                           col_num=rep(1:ncol(y_profiles), each=nrow(y_profiles)),
-                          col_nam=rep(colnames(y_profiles), each=nrow(y_profiles)),
+                          col_nam=rep(cn, each=nrow(y_profiles)),
                           conds=conds_vec,
                           labels=rep(labels, times=ncol(y_profiles)),
                           proba=rep(proba, times=ncol(y_profiles)))
@@ -533,12 +537,10 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
   ## PROBAPOST BOXPLOTS
   #####################################################
   if("probapost_boxplots" %in% graphs) {
-    pl_data <- data.frame(ID=ifelse(rep(length(rownames(y_profiles))==0, nrow(y_profiles)), 
-                                    rep(1:nrow(y_profiles), times=ncol(y_profiles)),
-                                    rownames(y_profiles)),
+    pl_data <- data.frame(ID=rep(rn, times=ncol(y_profiles)),
                           y_prof=as.vector(y_profiles), 
                           col_num=rep(1:ncol(y_profiles), each=nrow(y_profiles)),
-                          col_nam=rep(colnames(y_profiles), each=nrow(y_profiles)),
+                          col_nam=rep(cn, each=nrow(y_profiles)),
                           conds=conds_vec,
                           labels=rep(labels, times=ncol(y_profiles)),
                           proba=rep(proba, times=ncol(y_profiles)))
@@ -569,12 +571,10 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
   ## PROBAPOST BARPLOTS
   #####################################################
   if("probapost_barplots" %in% graphs) {
-    pl_data <- data.frame(ID=ifelse(rep(length(rownames(y_profiles))==0, nrow(y_profiles)),
-                                    rep(1:nrow(y_profiles), times=ncol(y_profiles)),
-                                    rownames(y_profiles)),
+    pl_data <- data.frame(ID=rep(rn, times=ncol(y_profiles)),
                           y_prof=as.vector(y_profiles),
                           col_num=rep(1:ncol(y_profiles), each=nrow(y_profiles)),
-                          col_nam=rep(colnames(y_profiles), each=nrow(y_profiles)),
+                          col_nam=rep(cn, each=nrow(y_profiles)),
                           conds=conds_vec,
                           labels=rep(labels, times=ncol(y_profiles)),
                           proba=rep(proba, times=ncol(y_profiles)))
@@ -618,12 +618,10 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
   ## PROBAPOST HISTOGRAM
   #####################################################
   if("probapost_histogram" %in% graphs) {
-    pl_data <- data.frame(ID=ifelse(rep(length(rownames(y_profiles))==0, nrow(y_profiles)), 
-                                    rep(1:nrow(y_profiles), times=ncol(y_profiles)),
-                                    rownames(y_profiles)),
+    pl_data <- data.frame(ID=rep(rn, times=ncol(y_profiles)),
                           y_prof=as.vector(y_profiles), 
                           col_num=rep(1:ncol(y_profiles), each=nrow(y_profiles)),
-                          col_nam=rep(colnames(y_profiles), each=nrow(y_profiles)),
+                          col_nam=rep(cn, each=nrow(y_profiles)),
                           conds=conds_vec,
                           labels=rep(labels, times=ncol(y_profiles)),
                           proba=rep(proba, times=ncol(y_profiles)))

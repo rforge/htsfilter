@@ -142,7 +142,7 @@ plot.PoisMixClus <- function(x, y_profiles=NULL, K=NULL, threshold=0.8, conds=NU
       par(mar=c(0,0,0,0))
       plot(0,1, xaxt="n", col="white", yaxt="n", ylim=c(0,1), xlab="", frame.plot="F")
       axis(side=2, at=seq(-0.03,1.03,length=6), labels=seq(0,1,by=0.2))
-      mtext(side = 2, outer = F, expression(paste(lambda[jk], s[j.])), line = 2)
+      mtext(side = 2, outer = FALSE, expression(paste(lambda[jk], s[j.])), line = 2)
       ## Dendrogram
       par(mar=c(0,1,0,1))
       plot(lamsden , axes = FALSE, xaxs = "i", leaflab = "none")

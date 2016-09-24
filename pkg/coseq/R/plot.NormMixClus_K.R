@@ -556,8 +556,8 @@ plot.NormMixClus_K <- function(x, y_profiles, K=NULL, threshold=0.8, conds=NULL,
     ## All K
     if(is.null(K) == TRUE) {
       if(order == TRUE) {
-        A <- boxplot(pl_data$proba~pl_data$label, plot=F)
-        J <- sort.int(A$stat[3,],index.return=T,decreasing=T)$ix 
+        A <- boxplot(pl_data$proba~pl_data$label, plot=FALSE)
+        J <- sort.int(A$stat[3,],index.return=TRUE,decreasing=TRUE)$ix 
         pl_data$labels <- factor(pl_data$labels, levels=J)
       }
       gg <- ggplot(pl_data, aes_string(x="labels", y="proba")) +

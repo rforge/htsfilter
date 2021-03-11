@@ -132,8 +132,8 @@ if (exists("res1") && exists("res2"))
   rawpval <- list("pval1"=res1[["pvalue"]],"pval2"=res2[["pvalue"]])
   FC <- list("FC1"=res1[["log2FoldChange"]],"FC2"=res2[["log2FoldChange"]])
 } else {
-  rawpval=data("rawpval")
-  FC=data("fc")
+  data(rawpval)
+  data(FC)
 }
 @
 
@@ -143,7 +143,7 @@ if (exists("res1") && exists("res2"))
 {
   adjpval <- list("adjpval1"=res1[["padj"]],"adjpval2"=res2[["padj"]])
 } else {
-  adjpval=data("adjpval")
+  data(adjpval)
 }
 
 studies <- c("study1", "study2")
